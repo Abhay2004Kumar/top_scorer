@@ -1,0 +1,12 @@
+.option{
+    /* text-align: center; */
+    background-color: #000A27;
+    margin-top: 6px;
+    border-radius: 6px;
+    padding: 5px;
+    height: 22px;
+}
+.option:hover{
+    background-color: rgb(184, 179, 179);
+    color:black;
+}

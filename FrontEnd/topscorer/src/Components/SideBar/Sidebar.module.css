@@ -1,0 +1,32 @@
+.sidemenu{
+    background-color: #080A1F;
+    width: 180px;
+    height: 100vh;
+    /* position: absolute;
+    top: 0px; */
+    
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.sport{
+    color: white;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: #004D40;
+    border-radius: 6px;
+    
+    
+}
+.opt{
+    height: 340px;
+    overflow-y: scroll;
+}
+.space{
+    height: 40px;
+    width: 100%;
+    background-color: #004D40;
+}
+::-webkit-scrollbar{
+    width: 0px;
+}

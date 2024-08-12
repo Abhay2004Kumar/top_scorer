@@ -1,0 +1,47 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.hdiv{
+    height: 60px;
+    width: 100vw;
+    background-color: #080A1F;
+    display: flex;
+    
+    
+}
+.logo{
+    width: 70%;
+    height: 20px;
+  
+   padding: 20px;
+
+}
+.logo h2{
+    color: white;
+}
+.uprofile{
+    width: 30%;
+    height: 100%;
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+    /* padding: 30px; */
+}
+.login{
+    background-color:floralwhite;
+    margin-top: 13px;
+    margin-right: 10px;
+    float: right;
+    border-radius: 4px;
+    padding: 8px;
+    width: 50px;
+    border-style: none;
+    font-weight: bold;
+    
+}
+.login:hover{
+    scale: 1.1;
+    transition: 0.2s;
+    background-color: orange;
+}
