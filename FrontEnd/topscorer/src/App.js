@@ -9,8 +9,12 @@ function App() {
      <Header/>
      <div style={{display:"flex"}}>
      <Sidebar/>
-     <div style={{backgroundColor:"red",height:"100vh",width:"65%",backgroundColor:"#001E19"}}></div>       
-     <div style={{backgroundColor:"red",height:"100vh",width:"30%",backgroundColor:"#080A1F"}}></div>       
+     <div style={{backgroundColor:"red",height:"100vh",width:"65%",backgroundColor:"#001E19"}}>
+
+     </div>       
+     <div style={{backgroundColor:"red",height:"100vh",width:"30%",backgroundColor:"#080A1F"}}>
+      
+     </div>       
      </div>
     </>
   )
