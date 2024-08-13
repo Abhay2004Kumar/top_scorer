@@ -4,7 +4,9 @@
     margin-top: 6px;
     border-radius: 6px;
     padding: 5px;
-    height: 22px;
+    height: 28px;
+    width: 100px;
+    color: white;
 }
 .option:hover{
     background-color: rgb(184, 179, 179);
