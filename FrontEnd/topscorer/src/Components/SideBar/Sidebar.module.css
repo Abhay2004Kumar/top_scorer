@@ -2,10 +2,14 @@
     background-color: #080A1F;
     /* width: 150px; */
     height: 100vh;
+
     /* position: absolute;
     top: 0px; */
-   
+
     /* position: absolute; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+
     box-sizing: border-box;
     padding: 10px;
 }
@@ -17,6 +21,7 @@
     background-color: #004D40;
     border-radius: 6px;
     height: 390px;
+
     
 }
 .opt{

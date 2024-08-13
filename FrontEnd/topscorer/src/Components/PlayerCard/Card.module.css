@@ -1,0 +1,166 @@
+.outer {
+    /* background-color: rgb(89, 48, 48); */
+    border-radius: 20px;
+    height: 450px;
+    margin: 20px;
+    /* border: 1px solid wheat; */
+    overflow: hidden;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.upper {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    background-color: transparent;
+}
+
+.lower {
+    width: 100%;
+    height: 30%;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+}
+
+.lleft, .lmid, .lright {
+    /* width: 33%; */
+    height: 100%;
+}
+
+.lleft {
+    padding: 10px;
+    color: aliceblue;
+    width: 100%;
+    text-align: left;
+    /* border: 5px solid red; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #000A27;
+}
+
+.lright {
+    font-weight: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: bisque;
+    background-color: #004db1;
+}
+
+.lmid {
+    background-color: rgb(155, 25, 114);
+}
+
+.uleft, .umid, .uright {
+    width: 33%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.uleft {
+    background-color: #004db1;
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.s_name {
+    height: 10%;
+    padding-top: 10px;
+    padding-left: 15px;
+    color: aliceblue;
+    background-color: #000A27;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.P_Profile {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 40%;
+    background-color: #004db1;
+    /* border: 5px solid red; */
+    
+}
+
+.umid {
+    background-color: #c6cacf;
+}
+
+.uright {
+    display: flex;
+    width: 67%;
+    overflow: hidden;
+    flex-direction: column;
+    /* justify-content: space-between; Distributes space evenly between flag and country */
+    align-items: center; /* Centers the items horizontally */
+    background-color: #187cff;
+}
+
+.flag {
+    margin-top: 15%;
+    margin-left: 20px;
+    background-color: antiquewhite;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px; /* Adds space between flag and country */
+}
+
+.ctry {
+    margin-left: 20%;
+    background-color: antiquewhite;
+    height: 40px;
+    margin-top: 4px;
+    width: 50px;
+    /* border-radius: 50%; */ /* Keep or remove based on design needs */
+}
+.P_Image {
+    width: 130%;
+    /* border: 5px solid wheat; */
+    height: 130%;
+    object-fit: contain; /* Scale the image to fit within the container, with empty space if necessary */
+}
+.P_No
+{
+    margin-top: 30%;
+    font-size: 55px;
+}
+.P_Name
+{
+    width: 90%;
+    text-align: center;
+    font-size: 14px;
+    padding: 5px;
+    background-color:white ;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: #000A27;
+    margin-bottom: 5px;
+    border: 2px solid ;
+    border-radius: 15px;
+}
+table{
+    margin-top: 14px;
+    padding: 10px;
+}
+td{
+    /* margin: 5px; */
+    padding: 1px;
+    font-size: 13.4px;
+    font-weight: 700;
+}
+@media only screen and (max-width: 1000px) {
+    .outer{
+        width: 250px;
+        height: 400px;
+    }
+    
+    td{
+        
+        padding: 1px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+}

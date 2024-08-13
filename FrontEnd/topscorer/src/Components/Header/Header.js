@@ -1,5 +1,6 @@
 import React from 'react'
 import style from '../Header/Header.module.css'
+import  icons from "../../Project_Icon/Dark.png"
 
 function Header() {
   return (
@@ -7,7 +8,7 @@ function Header() {
        <div className={style.hdiv}>
          <div className={style.logo}>
             <div className={style.lg}>
-                <h2>LOGO</h2>
+            <img className='dkk' src={icons} alt="Dark Icon" />
             </div>
          </div>
          <div className={style.uprofile}>

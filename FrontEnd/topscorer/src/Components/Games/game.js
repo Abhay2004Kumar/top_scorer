@@ -5,10 +5,12 @@ import { BiSolidCricketBall } from "react-icons/bi";
 function Game() {
   return (
     <>
+
         <button className={style.option}>
         <BiSolidCricketBall style={{float:"left",marginRight:"3px "}}/>
             <b>Cricket</b>
         </button>
+
     </>
   )
 }
