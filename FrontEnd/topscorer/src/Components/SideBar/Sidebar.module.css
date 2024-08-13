@@ -1,12 +1,15 @@
 .sidemenu{
     background-color: #080A1F;
-    width: 180px;
+    /* width: 150px; */
     height: 100vh;
 
     /* position: absolute;
     top: 0px; */
+
+    /* position: absolute; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
+
     box-sizing: border-box;
     padding: 10px;
 }
@@ -17,13 +20,15 @@
     padding: 10px;
     background-color: #004D40;
     border-radius: 6px;
+    height: 390px;
 
-    
     
 }
 .opt{
-    height: 340px;
     overflow-y: scroll;
+    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
 }
 .space{
     height: 40px;
@@ -32,4 +37,33 @@
 }
 ::-webkit-scrollbar{
     width: 0px;
+}
+.close{
+    float: right;
+    background-color: #004D40;
+    font-weight: bold;
+}
+.close{
+   scale: 1.2;
+}
+.close:hover{
+    scale: 1.3;
+}
+.menu{
+    height: 20px;
+    border-style: none;
+    width: 30px;    
+}
+.menu button{
+    border-radius: 5px;
+
+}
+@media (max-width:570px){
+    .sport, .opt{
+        position: absolute;
+    }
+    .sport{
+        width: 130px;
+        border: 2px solid black;
+    }
 }

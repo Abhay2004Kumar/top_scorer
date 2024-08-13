@@ -1,0 +1,51 @@
+.box{
+    height: 40px;
+    width: 300px;
+    border-radius: 10px;
+    background-color:#90F0FD ;
+    display: flex;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    padding: 5px;
+}
+.live{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #305E64;
+    border-radius: 10px;
+}
+.upcoming{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #305E64;
+    border-radius: 10px;
+}
+.archived{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #305E64;
+    border-radius: 10px;
+}
+.box p{
+    color: white;
+}
+.icon{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: red;
+    margin-left: 5px;
+}
+button{
+    cursor: pointer;
+    border-style: none;
+}
