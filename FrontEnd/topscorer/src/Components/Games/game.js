@@ -6,8 +6,8 @@ function Game() {
   return (
     <>
         <div className={style.option}>
-        <BiSolidCricketBall style={{float:"left",marginRight:"3px "}}/>
-            <b>Cricket</b>
+        <BiSolidCricketBall style={{float:"left",marginRight:"10px "}}/>
+            <b>   Cricket</b>
         </div>
     </>
   )
