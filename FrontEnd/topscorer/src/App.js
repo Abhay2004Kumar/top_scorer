@@ -6,6 +6,7 @@ import Login from './Pages/LoginPage/login'
 import Options from './Components/Live_Upcoming/Options'
 import Cricket from './Pages/Cricket/Cricket'
 import Card from './Components/PlayerCard/Card'
+import Footer_main from './Components/Footer/Footer_main'
 
 
 function App() {
@@ -20,9 +21,19 @@ function App() {
       <Options/>
       <Cricket/>
 
-      </div>       
+      
+    
+      </div> 
+            
      <div style={{height:"100vh",width:"30%",backgroundColor:"#080A1F"}}></div>       
      </div>
+     
+      <div >
+        <Footer_main/>
+      </div>
+
+      
+
 
     </>
   )
