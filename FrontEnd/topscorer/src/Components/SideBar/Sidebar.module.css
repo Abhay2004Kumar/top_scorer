@@ -2,8 +2,10 @@
     background-color: #080A1F;
     width: 180px;
     height: 100vh;
+
     /* position: absolute;
     top: 0px; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
     box-sizing: border-box;
     padding: 10px;
@@ -15,6 +17,7 @@
     padding: 10px;
     background-color: #004D40;
     border-radius: 6px;
+
     
     
 }
