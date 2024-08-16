@@ -11,7 +11,7 @@ function Options() {
             </button>
             <button className={style.upcoming}>
                 <p>Upcoming</p>
-            </button>
+            </button> 
             <button className={style.archived}>
                 <p>Archived</p>
             </button>

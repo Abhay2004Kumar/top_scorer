@@ -7,6 +7,15 @@
     justify-content: space-evenly;
     box-sizing: border-box;
     padding: 5px;
+    margin-bottom: 10px;
+}
+@media (max-width:390px){
+    .live,.upcoming,.archived{
+        width: 20%;
+    }
+    .box{
+        scale: 0.9;
+    }
 }
 .live{
     width: 30%;
