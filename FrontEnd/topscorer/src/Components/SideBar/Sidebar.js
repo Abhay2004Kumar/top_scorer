@@ -11,7 +11,7 @@ function Sidebar() {
   }
   return (
     <>
-        <div className={style.sidemenu}>
+        <div className={style.sidemenu}>    
             {isopen? (
 
               <div className={style.sport}>

@@ -13,6 +13,11 @@
     box-sizing: border-box;
     padding: 10px;
 }
+@media (max-width:571px){
+    .sidemenu{
+        visibility:hidden;
+    }
+}
 
 .sport{
     color: white;
