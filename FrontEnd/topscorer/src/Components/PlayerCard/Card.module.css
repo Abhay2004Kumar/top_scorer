@@ -162,5 +162,13 @@ td{
         font-size: 12px;
         font-weight: 700;
     }
+    .P_No
+{
+    margin-top: 50%;
+    font-size: 30px;
+}
+.s_name {
+    font-size: 12px;
+ }
 
 }

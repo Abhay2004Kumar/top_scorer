@@ -1,0 +1,197 @@
+.foot_m {
+    height: 600px;
+    width: 100%;
+    
+    background-color: #001A1E;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* border: 5px solid wheat; */
+}
+
+.upper, .lower {
+    display: flex;
+    width: 95%;
+}
+
+.uleft, .umid, .uright {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.uleft {
+    width: 25%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 5px solid wheat;
+    box-sizing: border-box;
+}
+
+.umid {
+    width: 45%;
+    padding: 20px;
+    color: aliceblue;
+}
+.container{
+    width: 70%;
+    display: flex;
+    padding: 5px;
+}
+.uright {
+    width: 30%;
+    padding: 50px;
+    padding-top: 130px;
+}
+
+.lower {
+    border-top: 3px solid white;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    height: 10%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.lleft, .lright {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+}
+
+.lmid {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.icn {
+    width: 50%;
+    object-fit: contain;
+    padding: 20px;
+}
+
+input, textarea {
+    width: 90%;
+    margin: 4px 0;
+    padding: 10px;
+    background-color: #11270A;
+    border: 2px solid white;
+    color: bisque;
+    border-radius: 4px;
+}
+
+.sb_btn {
+    width: 100%;
+    padding: 10px;
+    background-color: aliceblue;
+    color: #001A1E;
+    border-radius: 20px;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+
+.msg_box {
+    height: 100px;
+    border-radius: 0 0 20px 20px;
+}
+
+.uinp {
+    border-radius: 20px 20px 0 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.btnContainer {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ilinks {
+    font-size: 30px;
+    color: aliceblue;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    border-bottom: 2px solid white;
+    margin-bottom: 15px;
+}
+
+.LLlinks {
+    margin: 10px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.LLlinks b {
+    margin-bottom: 10px;
+}
+.sb_btn:hover{
+    background-color: aquamarine;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@media only screen and (max-width: 1000px) {
+    .lower {
+        flex-direction: column;
+        box-sizing: border-box;
+        justify-content: center;
+        padding: 20px;
+    }
+    .lleft, .lright, .lmid {
+        width: 100%;
+        font-size: 12px;
+        margin: 5px;
+    }
+    .icn
+    {
+        width: 110px;
+    }
+    .upper{
+        flex-direction: column;
+        padding: 20px;
+    }
+    .uleft, .umid, .uright {
+        width:  100%;
+        
+    }
+    .uleft{
+        width: 90%;
+        border: none;
+        border-bottom: 2px solid wheat;
+        /* margin-top: 10px; */
+    }
+    .uright{
+        margin-left: -30px;
+        margin-top: -130px;
+    }
+    .foot_m{
+        height: 1000px;
+    }
+    .LLlinks {
+        font-size: 16px;
+    }
+    .ilinks {
+        font-size: 25px;
+        text-align: left;
+        justify-content: left;
+        box-sizing: border-box;
+    }
+
+    input, textarea {
+        width: 70%;
+      
+    }
+    
+}

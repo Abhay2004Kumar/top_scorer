@@ -19,11 +19,11 @@ export const Card = () => {
     // Simulating data fetch from backend
     const fetchData = () => {
       const fetchedData = {
-        name: "Virat Kohli",
+        name: "Rohit Sharma",
         role: "Cricket",
         stats: [
           { label: "Strike Rate", value: 145 },
-          { label: "Best Score", value: '263*' },
+          { label: "Best Score", value: '264*' },
           { label: "Win Rate", value: '74%' }
         ],
         number: 45,
