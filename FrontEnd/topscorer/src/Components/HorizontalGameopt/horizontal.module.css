@@ -1,0 +1,53 @@
+.scrollContainer {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    width: 70%;
+    padding:5px;
+    gap: 10px; /* Gap between buttons */
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    margin: 5px;
+    height: 0px;
+    width: 0px;
+   visibility: collapse;
+}
+
+.scrollContainer::-webkit-scrollbar {
+    height: 3px; /* Height of the scrollbar */
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    background-color: #bf1818; /* Color of the scrollbar thumb */
+    border-radius: 10px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Color of the scrollbar thumb on hover */
+}
+
+.scrollButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000A27;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.scrollButton:hover {
+    background-color: #0bb098;
+}
+
+.selected {
+    background-color: #088977;
+}
+@media (max-width:570px){
+    .scrollContainer{
+        visibility: visible;
+        height: fit-content;
+        width: 95%;
+    }
+}

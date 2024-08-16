@@ -6,23 +6,28 @@ import Login from './Pages/LoginPage/login'
 import Options from './Components/Live_Upcoming/Options'
 import Cricket from './Pages/Cricket/Cricket'
 import Card from './Components/PlayerCard/Card'
+import Horizontal from './Components/HorizontalGameopt/horizontal'
 
 
 function App() {
   return (
     <>
      <Header/>
-     <div style={{display:"flex",height:"120vh",backgroundColor:"#080A1F"}}>
+     <div style={{backgroundColor:"080A1F"}}>
+
+     <div style={{display:"flex",backgroundColor:"#080A1F"}}>
      <Sidebar/>
 
-     <div style={{height:"100vh",width:"65%",backgroundColor:"#001E19",padding:"10px"}}>
+     <div style={{width:"90vw",backgroundColor:"#001E19"}}>
       {/* <Login/> */}
-      <Options/>
+      <Horizontal/>
       <Cricket/>
 
       </div>       
-     <div style={{height:"100vh",width:"30%",backgroundColor:"#080A1F"}}></div>       
+     <div style={{width:"00px",backgroundColor:"#080A1F"}}></div>       
      </div>
+     </div>
+     
 
     </>
   )
