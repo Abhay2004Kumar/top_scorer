@@ -25,7 +25,7 @@ function Cricket() {
             
                 <div className={style.ttwo}>
                     <div className={style.img2}>
-                        <img src='https://admin.thecricketer.com/weblab/Sites/96c8b790-b593-bfda-0ba4-ecd3a9fdefc2/resources/images/site/kanewilliamsonheadshot-min.jpg'></img>
+                        <img src='https://media.assettype.com/freepressjournal/2024-06/66d475a3-582c-40f3-bcf6-a8bcc64e882c/Pat_Cummins_T20_WC.jpg?width=1200'></img>
                     </div>
                     <div className={style.score}>
                         <p>234/5</p>   

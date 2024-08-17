@@ -3,7 +3,7 @@
     width: 100%; 
     background-color: #004D40;
     margin-top: 10px;
-    border-radius: 10px;
+    border-radius: 30px ;
     box-sizing: border-box;
     padding: 15px;
   
@@ -21,11 +21,11 @@
     
 }
 .tone{
-    height: 300px;
-    width: 340px;
+    height: 350px;
+    width: 35%;
     padding: 8px;
     box-sizing: border-box;
-    border-radius: 8px ;
+    border-radius: 30px ;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -34,9 +34,9 @@
     background-color: #001E19;
 }
 .ttwo{
-    height: 300px;
-    width: 340px;
-    border-radius: 8px ;
+    height: 350px;
+    width: 35%;
+    border-radius: 30px ;
     padding: 8px;
     display: flex;
     flex-direction: column;
@@ -48,25 +48,24 @@
 }
 .img1{
     height: 200px;
-    width: 100%;
-    border-radius: 5px;
-  
+    width: 95%;
+    border-radius: 30px ;
     box-sizing: border-box;
     
 }
 .img1 img{
     height: 200px;
-    width: 100%;
-    border-radius: 10px;
+    /* width: 95%; */
+    border-radius: 30px ;
 }
 .img2 img{
     height: 200px;
-    width:100%;
-    border-radius: 10px;
+    /* width: 95%;      */
+    border-radius: 30px ;
 }
 .img2{
     height: 200px;
-    width: 100%;
+    width: 95%;
     border-radius: 5px;
     
     box-sizing: border-box;
@@ -104,7 +103,7 @@
     padding: 10px;
    margin-top: 10px;
     background-color: #001E19;
-    border-radius: 10px;
+    border-radius: 30px ;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -113,7 +112,7 @@
 .predic{
     height: 20px;
     width: 90%;
-    border-radius: 10px;
+    border-radius: 30px ;
     background-color: orange;
 }
 .currover{
@@ -121,7 +120,7 @@
     width: 90%;
     padding: 5px;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: 30px ;
     background-color: #080A1F;
     display: flex;
     flex-direction: column;
@@ -137,7 +136,7 @@
 .thisover{
     height: 30px;
     width: 75%;
-    border-radius: 10px;
+    border-radius: 30px ;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -174,15 +173,16 @@
     align-items: center;
 }
 .scoretxt{
-    border-radius: 10px;
+    border-radius: 30px ;
     background-color:#90F0FD ;
     height: 20px;
     width: 120px;
+    padding: 8px;
     text-align: center;
     margin-bottom: 10px;
 }
 .teamopt{
-    border-radius: 15px;
+    border-radius: 30px;
     background-color: #90F0FD;
     height: 40px;
     width: 40%;
@@ -209,7 +209,9 @@
 .teamopt button{
     background-color: #080A1F   ;
     color: white;
-    border-radius: 10px;
+    font-size: 15px;
+    
+    border-radius: 15px;
     padding: 5px 10px 5px 10px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    
@@ -226,17 +228,16 @@
 
 .table-container {
     width: 100%;
-    
+    justify-content: center;
     max-width: 800px;
     padding: 20px;
     background-color: #ffffff;
-    border-radius: 10px;
+    border-radius: 30px ;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .live-match-table {
     width: 100%;
-    
     border-collapse: collapse;
     margin: 0;
     padding: 0;

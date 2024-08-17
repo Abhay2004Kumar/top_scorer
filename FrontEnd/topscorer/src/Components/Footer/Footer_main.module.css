@@ -76,7 +76,7 @@
 input, textarea {
     width: 90%;
     margin: 4px 0;
-    padding: 10px;
+    padding: 5px;
     background-color: #11270A;
     border: 2px solid white;
     color: bisque;
@@ -84,6 +84,7 @@ input, textarea {
 }
 
 .sb_btn {
+    margin-top: 10px;
     width: 100%;
     padding: 10px;
     background-color: aliceblue;
@@ -147,7 +148,7 @@ input, textarea {
         flex-direction: column;
         box-sizing: border-box;
         justify-content: center;
-        padding: 20px;
+        
     }
     .lleft, .lright, .lmid {
         width: 100%;
@@ -160,20 +161,20 @@ input, textarea {
     }
     .upper{
         flex-direction: column;
-        padding: 20px;
+      
     }
     .uleft, .umid, .uright {
         width:  100%;
         
     }
     .uleft{
-        width: 90%;
+        width: 100%;
         border: none;
         border-bottom: 2px solid wheat;
         /* margin-top: 10px; */
     }
     .uright{
-        margin-left: -30px;
+        margin-left: -25px;
         margin-top: -130px;
     }
     .foot_m{
@@ -190,8 +191,7 @@ input, textarea {
     }
 
     input, textarea {
-        width: 70%;
-      
+        width: 100%;
     }
     
 }

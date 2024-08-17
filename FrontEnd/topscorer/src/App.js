@@ -8,6 +8,7 @@ import Cricket from './Pages/Cricket/Cricket'
 import Card from './Components/PlayerCard/Card'
 import Horizontal from './Components/HorizontalGameopt/horizontal'
 import Footer_main from './Components/Footer/Footer_main'
+import Football from './Pages/Football/Football'
 
 
 
@@ -23,19 +24,15 @@ function App() {
      <div style={{width:"90vw",backgroundColor:"#001E19"}}>
       {/* <Login/> */}
       <Horizontal/>
-      <Cricket/>
+      {/* <Cricket></Cricket> */}
+      <Football/>
       </div>       
      <div style={{width:"00px",backgroundColor:"#080A1F"}}></div>       
      </div>
      </div>
      
-      
-    
-      </div> 
-            
-     <div style={{height:"100vh",width:"30%",backgroundColor:"#080A1F"}}></div>       
-     </div>
      
+      
       <div >
         <Footer_main/>
       </div>
