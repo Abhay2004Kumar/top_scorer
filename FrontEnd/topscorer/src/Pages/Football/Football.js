@@ -1,26 +1,57 @@
 import React from 'react';
 import styles from "../Football/Football.module.css";
-import { SlEye } from 'react-icons/sl';
+import { IoMdFootball } from "react-icons/io";
 
 function Football() {
+  const matchData = {
+    sport: "Football",
+    teams: {
+      teamA: {
+        name: "FCB",
+        logo: "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png"
+      },
+      teamB: {
+        name: "Valencia CF",
+        logo: "https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/Valenciacf.svg/1200px-Valenciacf.svg.png"
+      }
+    },
+    score: "2 - 3",
+    latestUpdate: "Team B scored in the 85th minute!",
+    events: {
+      firstHalf: [
+        { time: "15'", event: "Goal", team: "Team A" },
+        { time: "30'", event: "Goal", team: "Team B" },
+        { time: "40'", event: "Goal", team: "Team A" }
+      ],
+      secondHalf: [
+        { time: "60'", event: "Goal", team: "Team B" },
+        { time: "85'", event: "Goal", team: "Team B" }
+      ]
+    }
+  };
+
   return (
     <>
       <div className={styles.MainDiv}>
         <div className={styles.ScoreBoard}>
-          <div className={styles.teamA}>
-            <p className={styles.tname}>FCB</p>
-            <div className={styles.teamA_Img}>
-              
-              <img className={styles.img1} src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png"></img>
+          <div className={styles.SportName}>
+            <p><IoMdFootball /> {matchData.sport}</p>
+          </div>
+          <div className={styles.FZF}>
+            <div className={styles.teamA}>
+              <p className={styles.tname}>{matchData.teams.teamA.name}</p>
+              <div className={styles.teamA_Img}>
+                <img className={styles.img1} src={matchData.teams.teamA.logo} alt={`${matchData.teams.teamA.name} logo`} />
+              </div>
             </div>
-          </div>
-          <div className={styles.VS}>
-            <h1 className={styles.gols}> 2 - 3 </h1>
-          </div>
-          <div className={styles.teamB}>
-          <p className={styles.tname}>Team B</p>
-            <div className={styles.teamA_Img}>
-              <img className={styles.img2} src="https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/Valenciacf.svg/1200px-Valenciacf.svg.png"></img>
+            <div className={styles.VS}>
+              <h1 className={styles.gols}>{matchData.score}</h1>
+            </div>
+            <div className={styles.teamB}>
+              <p className={styles.tname}>{matchData.teams.teamB.name}</p>
+              <div className={styles.teamA_Img}>
+                <img className={styles.img2} src={matchData.teams.teamB.logo} alt={`${matchData.teams.teamB.name} logo`} />
+              </div>
             </div>
           </div>
         </div>
@@ -29,7 +60,7 @@ function Football() {
           <div className={styles.predictor}>
             <div className={styles.bar}></div>
           </div>
-          <p>Latest Update: Team B scored in the 85th minute!</p>
+          <p>{matchData.latestUpdate}</p>
         </div>
 
         <div className={styles.Sumry}>
@@ -49,21 +80,13 @@ function Football() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>15'</td>
-                <td>Goal</td>
-                <td>Team A</td>
-              </tr>
-              <tr>
-                <td>30'</td>
-                <td>Goal</td>
-                <td>Team B</td>
-              </tr>
-              <tr>
-                <td>40'</td>
-                <td>Goal</td>
-                <td>Team A</td>
-              </tr>
+              {matchData.events.firstHalf.map((event, index) => (
+                <tr key={index}>
+                  <td>{event.time}</td>
+                  <td>{event.event}</td>
+                  <td>{event.team}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
 
@@ -79,16 +102,13 @@ function Football() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>60'</td>
-                <td>Goal</td>
-                <td>Team B</td>
-              </tr>
-              <tr>
-                <td>85'</td>
-                <td>Goal</td>
-                <td>Team B</td>
-              </tr>
+              {matchData.events.secondHalf.map((event, index) => (
+                <tr key={index}>
+                  <td>{event.time}</td>
+                  <td>{event.event}</td>
+                  <td>{event.team}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
