@@ -13,13 +13,16 @@ import Badminton_D from './Pages/Badminton_Doubles/Badminton_D'
 import Football from './Pages/Football/Football'
 import Tennis from './Pages/Tennis/Tennis'
 import Tennis_D from './Pages/Tennis_D/Tennis_D'
-
+import Kabaddi from './Pages/Kabaddi/Kabaddi'
+import { BrowserRouter as Router , Route, Routes} from 'react-router-dom'
+import Home from './Pages/Home_Page/home'
 
 function App() {
   return (
     <>
+    <Router>
      <Header/>
-     <div style={{backgroundColor:"080A1F"}}>
+     <div style={{backgroundColor:"#080A1F"}}>
 
      <div style={{display:"flex",backgroundColor:"#080A1F"}}>
      <Sidebar/>
@@ -27,16 +30,28 @@ function App() {
      <div style={{width:"90vw",backgroundColor:"#001E19"}}>
       {/* <Login/> */}
       <Horizontal/>
-      {/* <Cricket></Cricket> */}
-      {/* <Football/> */}
-      {/* <Badminton_D></Badminton_D> */}
-      {/* <Badminton /> */}
-      {/* <Tennis></Tennis>       */}
-      {/* <Tennis_D/> */}
+
+      <Routes>
+            <Route path='/' element={<Home/>} ></Route>
+            <Route path='/cricket' element={<Cricket/>} ></Route>
+            <Route path='/football' element={<Football/>} ></Route>
+            <Route path='/badminton' element={<Badminton/>} ></Route>
+            <Route path='/badminton_d' element={<Badminton_D/>} ></Route>
+            <Route path='/tennis' element={<Tennis/>} ></Route>
+            <Route path='/tennis_d' element={<Tennis_D/>} ></Route>
+            <Route path='/kabaddi' element={<Kabaddi/>} ></Route>
+
+
+      </Routes>
+
+    
+    
       </div>       
      <div style={{width:"00px",backgroundColor:"#080A1F"}}></div>       
      </div>
      </div>
+
+    </Router>
      
      
       

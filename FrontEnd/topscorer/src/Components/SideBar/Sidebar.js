@@ -3,6 +3,7 @@ import style from '../SideBar/Sidebar.module.css'
 import { TiThMenu } from "react-icons/ti";
 import { IoIosCloseCircle } from "react-icons/io";
 import Game from '../Games/game'
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
   const [isopen,setisopen] = useState(true);
@@ -20,15 +21,14 @@ function Sidebar() {
                                 </button> </h4></div>
                     
                     <div className={style.opt}>
-                    <Game/>
-                    <Game/>
-                    <Game/>
-                    <Game/>
-                    <Game/>
-                    <Game/>
-                    <Game/>
-                    <Game/>
-                    <Game/>
+                    <Link to={'/cricket'}><Game/></Link>
+                    <Link to={'/football'}><Game/></Link>
+                    <Link to={'/badminton'}><Game/></Link>
+                    <Link to={'/badminton_d'}><Game/></Link>
+                    <Link to={'/tennis'}><Game/></Link>
+                    <Link to={'/tennis_d'}><Game/></Link>
+                    <Link to={'/kabaddi'}><Game/></Link>
+              
                   </div>
                 </div>
                   <div className={style.space}></div>
