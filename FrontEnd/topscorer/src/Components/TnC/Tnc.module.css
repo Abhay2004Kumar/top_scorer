@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #001A1E;
+    padding: 40px;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: aliceblue;
+}
+
+.heading {
+    font-size: 36px;
+    background: linear-gradient(45deg, aquamarine, wheat);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+}
+
+.updated {
+    font-size: 16px;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.card {
+    background-color: #0C2F3A;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.subheading {
+    font-size: 20px;
+    color: #001A1E;
+    background: linear-gradient(45deg, aquamarine, wheat);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: aliceblue;
+}

@@ -1,14 +1,13 @@
 import React from 'react';
 import styles from '../Footer/Footer_main.module.css';
 import { RiInstagramLine } from "react-icons/ri";
-import { FaLinkedin } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
-
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import TermsAndConditions from '../TnC/Tnc';
+ 
 function Footer_main() {
   return (
     <div className={styles.foot_m}>
       <div className={styles.upper}>
-        {/* <div  className={styles.container}> */}
         <div className={styles.uleft}>
           <img 
             src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Cricket_India_Crest.svg/800px-Cricket_India_Crest.svg.png" 
@@ -28,19 +27,19 @@ function Footer_main() {
             </div>
           </form>
         </div>
-        {/* </div> */}
         
         <div className={styles.uright}>
-          <div>
-          <span className={styles.ilinks}>Important Links</span>
-          </div>
+          <h2 className={styles.ilinks}>Important Links</h2>
           <div className={styles.LLlinks}>
-            <b><RiInstagramLine style={{float:"left",marginRight:"3px "}}/> Instagram/topscorer </b>
-
-            <b><RiInstagramLine style={{float:"left",marginRight:"3px "}}/> Instagram/topscorer </b>
-
-            <b><RiInstagramLine style={{float:"left",marginRight:"3px "}}/> Instagram/topscorer </b>
-          
+            <a href="https://instagram.com/topscorer" className={styles.link}>
+              <RiInstagramLine className={styles.icon} /> Instagram/topscorer
+            </a>
+            <a href="https://linkedin.com/in/topscorer" className={styles.link}>
+              <FaLinkedin className={styles.icon} /> LinkedIn/topscorer
+            </a>
+            <a href="https://github.com/topscorer" className={styles.link}>
+              <FaGithub className={styles.icon} /> GitHub/topscorer
+            </a>
           </div>
         </div>
       </div>
@@ -50,11 +49,10 @@ function Footer_main() {
           <h3>© Litti Chokha</h3>
         </div>
         <div className={styles.lmid}>
-        <h3> Development Team</h3>
+          <a href="/dev++" className={styles.link}>Development Team</a>
         </div>
         <div className={styles.lright}>
-        <h3> IIIT Una</h3>
-
+          <a href="/tnc" className={styles.link}>Terms and Conditions</a>
         </div>
       </div>
     </div>

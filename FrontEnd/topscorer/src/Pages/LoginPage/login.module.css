@@ -1,14 +1,14 @@
 .f_div {
-    /* border: 5px solid wheat; */
-    height: 700px;
+    /* existing styles */
+    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    border-bottom: 10px solid white;
-    /* border: 5px solid red; */
+    /* background-color: #90F0FD   ; */
+    width: 90%;
 }
-h1{
+
+h1 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 20px;
 }
@@ -22,117 +22,145 @@ h1{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 570px;
+    height: 600px;
     width: 60%;
-    /* border: 5px solid pink; */
+    overflow: hidden; /* Ensure content stays within bounds */
 }
 
-input {
-    height: 34px;
-    border-radius: 20px;
-    text-align: center;
-    font-family: monospace;
-    border: none;
-}
 
 .image {
     position: relative;
     width: 40%;
     height: 100%;
-    /* border: 5px solid forestgreen; */
-   
+    border-radius: 100px;
 }
 
 .inner {
     padding: 30px;
-    height: 300px;
+    height: 350px; /* Increased height to accommodate the terms text */
     width: 240px;
     background-color: rgb(0, 0, 0);
     border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-.sb_btn{
+
+.sb_btn {
     width: 30%;
-    margin-left:65% ;
+    border-radius: 20px;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .inp {
-    margin: 20px;
+    border: 2px solid white;
+    border-radius: 40px;
+    height: 34px;
+    border-radius: 50px;
+    text-align: center;
+    font-family: monospace;
+    border: none;
 }
 
-img {
+img , .gradient{
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 20px;
     object-fit: cover;
-    z-index: 0; /* Places the image behind the gradient */
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
 
 .gradient {
     position: absolute;
-    z-index: 1; /* Places the gradient on top of the image */
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(to top, black, transparent); /* Gradient from black to transparent */
+    z-index: 1;
+    
+   
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Adjusted for better visibility */
 }
+
 .quote {
-    position: absolute; /* Allows the text to be positioned freely within the container */
-    z-index: 2; /* Ensures the text is on top of both the image and the gradient */
-    bottom: 30px; /* Position the text near the bottom of the image */
-    left: 50%; /* Centers the text horizontally */
-    transform: translateX(-50%); /* Adjusts the centering since left: 50% starts at the middle of the text */
+    position: absolute;
+    z-index: 2;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
     color: white;
     font-size: 24px;
     font-weight: bold;
     text-align: center;
 }
-.icon_c
-{
+
+.icon_c {
     display: flex;
     justify-content: center;
     margin-top: 7%;
     width: 100%;
 }
 
-.icon
-{
+.icon {
     background-color: white;
     color: black;
     display: flex;
     justify-content: center;
-    border-radius: 50% ;
+    border-radius: 50%;
     height: 40px;
     width: 40px;
     margin: 20px;
 }
-.ic{
+
+.ic {
     height: 40px;
 }
 
-.sb_btn:hover
-{
+.sb_btn:hover {
     background-color: aqua;
-    /* height:203%; */
     transition: 0.5s;
+}
 
+.terms {
+    margin-top: 20px;
+}
+
+.termsText {
+    color: white;
+    font-size: 14px;
+}
+
+.termsLink {
+    color: #90F0FD; /* Light blue color for better visibility */
+    text-decoration: underline;
+}
+
+.termsLink:hover {
+    color: #76d7c4; /* Slightly different color on hover */
 }
 
 @media only screen and (max-width: 1000px) {
     .image {
-        display: none; /* Collapse the div on smaller screens */
+        display: none;
     }
-    .inner
-    {
-        width: 100%;
+    .inner {
+        width: 90%;
     }
-    .main2
-    {
-        width: 320px;
+    .f_div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .main2 {
+        width: 360px;
+        position: relative;
+        left : 20px;
+        /* border: 3px solid red; */
     }
 }
