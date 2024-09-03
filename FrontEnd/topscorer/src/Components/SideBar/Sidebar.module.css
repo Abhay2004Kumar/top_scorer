@@ -43,7 +43,7 @@
 ::-webkit-scrollbar{
     width: 0px;
 }
-.close{
+.close{ 
     float: right;
     background-color: #0C2F3A;
     font-weight: bold;

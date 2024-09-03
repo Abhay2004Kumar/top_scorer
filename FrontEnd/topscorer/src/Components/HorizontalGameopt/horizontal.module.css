@@ -11,7 +11,7 @@
     height: 0px;
     width: 0px;
    visibility: collapse;
-}
+} 
 
 .scrollContainer::-webkit-scrollbar {
     height: 3px; /* Height of the scrollbar */
@@ -27,7 +27,8 @@
 }
 
 .scrollButton {
-    padding: 10px 20px;
+    
+    padding: 10px 30px 10px 10px;
     border: none;
     border-radius: 5px;
     background-color: #000A27;
