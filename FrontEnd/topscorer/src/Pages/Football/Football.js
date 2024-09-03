@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from "../Football/Football.module.css";
 import { IoMdFootball } from "react-icons/io";
+import Options from '../../Components/Live_Upcoming/Options';
 
 function Football() {
   const matchData = {
@@ -33,6 +34,7 @@ function Football() {
   return (
     <>
       <div className={styles.MainDiv}>
+      <Options />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
             <p><IoMdFootball /> {matchData.sport}</p>

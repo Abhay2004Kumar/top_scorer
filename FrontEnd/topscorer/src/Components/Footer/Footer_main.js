@@ -31,14 +31,14 @@ function Footer_main() {
         <div className={styles.uright}>
           <h2 className={styles.ilinks}>Important Links</h2>
           <div className={styles.LLlinks}>
-            <a href="https://instagram.com/topscorer" className={styles.link}>
-              <RiInstagramLine className={styles.icon} /> Instagram/topscorer
+            <a href="https://instagram.com/#" className={styles.link}>
+              <RiInstagramLine className={styles.icon} /> Instagram
             </a>
-            <a href="https://linkedin.com/in/topscorer" className={styles.link}>
-              <FaLinkedin className={styles.icon} /> LinkedIn/topscorer
+            <a href="https://linkedin.com/in/#" className={styles.link}>
+              <FaLinkedin className={styles.icon} /> LinkedIn
             </a>
-            <a href="https://github.com/topscorer" className={styles.link}>
-              <FaGithub className={styles.icon} /> GitHub/topscorer
+            <a href="https://github.com/#" className={styles.link}>
+              <FaGithub className={styles.icon} /> GitHub
             </a>
           </div>
         </div>

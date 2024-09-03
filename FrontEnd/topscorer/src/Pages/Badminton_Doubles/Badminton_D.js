@@ -14,7 +14,7 @@ function Badminton_D() {
     teamB: {
       name: "CHN",
       players: [
-        { name1: "Chen Yufei",name2 :"Chini CHor", flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" },
+        { name1: "Chen Yufei",name2 :"China Player 2", flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" },
          ]
     },
     setScore: "22 - 20",
@@ -24,7 +24,7 @@ function Badminton_D() {
       {
         events: [
           { player1: "PV Sindhu",player2:"Saina Nehwal", set1: "21", set2: "19", set3: "21", flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg" },
-          { player1: "Chen Yufei",player2: "Chini CHor", set1: "19", set2: "21", set3: "18",flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" }
+          { player1: "Chen Yufei",player2: "China Player 2", set1: "19", set2: "21", set3: "18",flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" }
         ]
       }
     ]

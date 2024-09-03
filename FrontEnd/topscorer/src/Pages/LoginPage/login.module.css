@@ -8,7 +8,7 @@
     width: 90%;
 }
 
-h1 {
+.main2 h2 {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 20px;
 }
@@ -52,16 +52,18 @@ h1 {
     border-radius: 20px;
 }
 
-form {
+.inner form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.inp {
+ .inp2 {
     border: 2px solid white;
     border-radius: 40px;
-    height: 34px;
+    height: 40px;
+    margin: 10px;
+    padding: 5px;
     border-radius: 50px;
     text-align: center;
     font-family: monospace;
