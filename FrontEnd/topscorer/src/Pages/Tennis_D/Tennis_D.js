@@ -53,7 +53,7 @@ function Tennis_D() {
           </div>
           <div className={styles.VS}>
             <h1 className={styles.gols}> {matchData.setScore} </h1>
-            <p className={styles.setInfo}>Set {matchData.currentSet}</p>
+            <p className={styles.setInfo}>Set  {matchData.currentSet}</p>
           </div>
           <div className={styles.teamB}>
             <p className={styles.tname}>{matchData.teamB.name}</p>

@@ -37,6 +37,7 @@ body{
     box-sizing: border-box;
     justify-content: center;
     text-align: center;
+    align-items: center;
 }
 
 .tableimg
@@ -61,10 +62,13 @@ th
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .VS{
-    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .gols
 {
+
     font-size: 50px;
     font-family: monospace;
 }
@@ -159,12 +163,18 @@ h2{
 }
 
 @media (max-width:1200px){
+    
     .gols{
         font-size: 32px;
+        position: relative;
+        border-top: 1px solid rgb(65, 55, 37);
+        border-bottom: 1px solid rgb(65, 55, 37);
+        padding: 13px;
+        margin-top: 20px;        
     }
     .VS{
         width: 230px;
-        /* border: 5px solid red; */
+        margin: 15px;
       
     }
     .tableimg{
@@ -206,6 +216,7 @@ h2{
     }
     .gols{
         font-size: 25px;
+        
     }
     .MainDiv{
         padding: 10px;
