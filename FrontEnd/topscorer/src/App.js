@@ -62,14 +62,7 @@ function App() {
       </div>       
      <div style={{width:"00px",backgroundColor:"#080A1F"}}></div>       
      </div>
-     
-     <div className={styles.Pcard}>
-      <Card/>
-
-      <Card/>
-
-      <Card/>
-      </div>
+    
       
      </div>
 

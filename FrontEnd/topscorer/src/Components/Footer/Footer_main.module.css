@@ -33,7 +33,7 @@
 
 .umid {
     width: 45%;
-    padding: 20px;
+    padding: 40px;
     color: aliceblue;
 }
 
@@ -151,6 +151,32 @@
     vertical-align: middle;
 }
 
+.uleft{
+    display: flex;
+    /* margin-top: 150px; */
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    /* border: 5px solid green; */
+    height: 370px;
+}
+.logoContainer {
+    display: flex;
+    height: 100%;
+    margin-left: 40px;
+    justify-content: center;
+    /* border: 5px solid red;; */
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    height: 110px; 
+    width: auto;  /* Maintain aspect ratio */
+    margin-right: 15px;
+}
+
 .lower .link {
     color: white;
     text-decoration: none;
@@ -168,10 +194,20 @@
         justify-content: center;
     }
 
+    .logo {
+        height: 80px; 
+        width: auto;  /* Maintain aspect ratio */
+        margin-right: 15px;
+    }
+
     .lleft, .lright, .lmid {
         width: 100%;
         font-size: 14px;
         margin: 5px 0;
+    }
+    .uleft{
+        margin-top: 0px;
+        height:80px;
     }
 
     .icn {
@@ -185,8 +221,6 @@
     .uleft, .umid, .uright {
         width: 100%;
         border-right: none;
-        border-bottom: 2px solid wheat;
-        margin-bottom: 20px;
     }
 
     .uright {
@@ -204,9 +238,18 @@
 
     .ilinks {
         font-size: 20px;
+        width: 90%;
     }
 
     .uinp,.emid, textarea , textarea {
         width: 100%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .logo {
+        height: 60px; 
+        width: auto;  /* Maintain aspect ratio */
+        margin-right: 15px;
     }
 }

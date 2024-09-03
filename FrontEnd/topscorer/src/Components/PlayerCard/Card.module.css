@@ -45,6 +45,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: bisque;
     background-color: #004db1;
+    /* border: 5px solid red; */
+    width: 50%;
 }
 
 .lmid {
@@ -166,6 +168,15 @@ table{
     .outer{
         width: 250px;
         height: 400px;
+    }
+
+    .lright {
+        /* font-weight: 50px; */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: bisque;
+        background-color: #004db1;
+        /* border: 5px solid red; */
+        width: 30%;
     }
     
     td{

@@ -18,10 +18,11 @@
 .logoContainer {
     display: flex;
     align-items: center;
+    width: 200px;
 }
 
 .logo {
-    height: 60px; /* Ensure the logo fits within the header height */
+    height: 65px; /* Ensure the logo fits within the header height */
     width: auto;  /* Maintain aspect ratio */
     margin-right: 15px;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import style from '../Cricket/cricket.module.css'
 import Horizontal from '../../Components/HorizontalGameopt/horizontal'
 import Options from '../../Components/Live_Upcoming/Options'
+import Card from '../../Components/PlayerCard/Card'
 
 function Cricket() {
     const [teamData, setTeamData] = useState(null);
@@ -62,8 +63,8 @@ function Cricket() {
                             <img src={teamData.team1.logo} alt={`${teamData.team1.name} logo`} />
                         </div>
                         <div className={style.score}>
-                            <p>{teamData.team1.score}</p>
-                            <p className={style.over}>{teamData.team1.overs}</p>
+                            <p className={style.over}>{teamData.team1.score}</p>
+                            <p >{teamData.team1.overs}</p>
                         </div>
                     </div>
 
@@ -72,8 +73,8 @@ function Cricket() {
                             <img src={teamData.team2.logo} alt={`${teamData.team2.name} logo`} />
                         </div>
                         <div className={style.score}>
-                            <p>{teamData.team2.score}</p>
-                            <p className={style.over}>{teamData.team2.overs}</p>
+                            <p className={style.over} >{teamData.team2.score}</p>
+                            <p >{teamData.team2.overs}</p>
                         </div>
                     </div>
                 </div>
@@ -164,6 +165,14 @@ function Cricket() {
                         </div>
                     </div>
                 </div>
+                 
+     <div className={style.Pcard}>
+      <Card/>
+
+      <Card/>
+
+      <Card/>
+      </div>
             </div>
         </>
     )

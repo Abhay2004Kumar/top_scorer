@@ -3,17 +3,22 @@ import styles from '../Footer/Footer_main.module.css';
 import { RiInstagramLine } from "react-icons/ri";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import TermsAndConditions from '../TnC/Tnc';
+import icons from '../../Project_Icon/Dark.png';
  
 function Footer_main() {
   return (
     <div className={styles.foot_m}>
       <div className={styles.upper}>
         <div className={styles.uleft}>
-          <img 
+          {/* <img 
             src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Cricket_India_Crest.svg/800px-Cricket_India_Crest.svg.png" 
             className={styles.icn} 
             alt="Cricket India Crest" 
-          />
+          /> */}
+      <div className={styles.logoContainer}>
+        <img className={styles.logo} src={icons} alt="Dark Icon" />
+        {/* <h1 className={styles.title}>Sports Updates</h1> */}
+      </div>
         </div>
 
         <div className={styles.umid}>

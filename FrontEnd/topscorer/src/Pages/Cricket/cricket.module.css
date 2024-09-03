@@ -9,6 +9,15 @@
   
 
 }
+.Pcard
+{
+    width: 100%;
+    /* border: 5px solid red; */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
 .teamslogo{
     /* padding: 5px; */
     display: flex;
@@ -82,6 +91,7 @@
 }
 .score{
     color: white;
+    text-align: center;
     font-weight: bold;
     font-size: 30px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
