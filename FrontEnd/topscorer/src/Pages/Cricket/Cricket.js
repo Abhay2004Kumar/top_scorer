@@ -53,6 +53,9 @@ function Cricket() {
         return <div>Loading...</div>; // Show a loading indicator while data is being set
     }
 
+    
+
+
     return (
         <>
             <div className={style.maindiv}>
