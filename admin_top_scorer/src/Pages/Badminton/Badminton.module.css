@@ -40,7 +40,7 @@
   input,
   textarea,
   select {
-    width: 100%; /* Full width inputs */
+    width: 95%; /* Full width inputs */
     padding: 10px;
     margin-bottom: 10px; /* Space below inputs */
     border: none;
@@ -57,7 +57,13 @@
     outline: none;
     border: 1px solid #004D40; /* Outline color on focus */
   }
-  
+  .Info{
+    padding: 10px;
+    background-color: #004D40;
+    margin: 5px;
+    border-radius: 10px;
+
+  }
   .submitButton {
     padding: 10px 20px;
     background-color: #004D40; /* Button color */
