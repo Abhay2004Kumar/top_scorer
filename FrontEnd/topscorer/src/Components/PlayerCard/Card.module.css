@@ -45,6 +45,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: bisque;
     background-color: #004db1;
+    /* border: 5px solid red; */
+    width: 50%;
 }
 
 .lmid {
@@ -130,8 +132,12 @@
 .P_Name
 {
     width: 90%;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
     font-size: 14px;
+    height: 12%;
     padding: 5px;
     background-color:white ;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -140,11 +146,19 @@
     border: 2px solid ;
     border-radius: 15px;
 }
+.P_Name h2{
+    padding:  0px;
+    margin: 0px;
+    font-size: 18px;
+    width: 140px;
+    text-align: center;
+    background-color: white;
+}
 table{
     margin-top: 14px;
     padding: 10px;
 }
-td{
+.lower td{
     /* margin: 5px; */
     padding: 1px;
     font-size: 13.4px;
@@ -154,6 +168,15 @@ td{
     .outer{
         width: 250px;
         height: 400px;
+    }
+
+    .lright {
+        /* font-weight: 50px; */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: bisque;
+        background-color: #004db1;
+        /* border: 5px solid red; */
+        width: 30%;
     }
     
     td{

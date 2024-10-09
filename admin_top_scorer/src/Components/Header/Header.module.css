@@ -1,0 +1,88 @@
+/* Header Styles */
+.Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #004D40;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .Logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .Logo img {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .Logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .Nav {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .Nav_Button {
+    background-color: transparent;
+    border: 1px solid white;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .Nav_Button:hover {
+    background-color: #26A69A;
+  }
+  
+  /* Horizontal Sports Bar */
+  .Sports_Bar {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    background-color: #013A33;
+    color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .Sports_Button {
+    background-color: transparent;
+    border: 1px solid white;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .Sports_Button:hover {
+    background-color: #004D40;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .Header {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .Sports_Bar {
+      flex-wrap: wrap;
+    }
+  
+    .Sports_Button {
+      flex: 1 1 100px;
+      text-align: center;
+    }
+  }
+  

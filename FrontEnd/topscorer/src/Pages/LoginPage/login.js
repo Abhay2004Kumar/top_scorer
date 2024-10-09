@@ -24,13 +24,13 @@ function Login() {
           <div className={style.inner}>
             <form>
               <input 
-                className={style.inp} 
+                className={style.inp2} 
                 type='text' 
                 placeholder='Username or Email'
               />
 
               <input 
-                className={style.inp} 
+                className={style.inp2} 
                 type="password" 
                 placeholder='Password or OTP'
               />

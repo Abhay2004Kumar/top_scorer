@@ -14,7 +14,7 @@ function Tennis_D() {
     teamB: {
       name: "JPN",
       players: [
-        { name1: "Chen Yufei",name2 :"Japani ch*t", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png" },
+        { name1: "Chen Yufei",name2 :"Japnese plyer", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png" },
          ]
     },
     setScore: "22 - 20",
@@ -24,7 +24,7 @@ function Tennis_D() {
       {
         events: [
           { player1: "PV Sindhu",player2:"Saina Nehwal", set1: "21", set2: "19", set3: "21", flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg" },
-          { player1: "Chen Yufei",player2: "Chini CHor", set1: "19", set2: "21", set3: "18",flag: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png" }
+          { player1: "Chen Yufei",player2: "Japnese plyer", set1: "19", set2: "21", set3: "18",flag: "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/1200px-Flag_of_Japan.svg.png" }
         ]
       }
     ]
@@ -53,7 +53,7 @@ function Tennis_D() {
           </div>
           <div className={styles.VS}>
             <h1 className={styles.gols}> {matchData.setScore} </h1>
-            <p className={styles.setInfo}>Set {matchData.currentSet}</p>
+            <p className={styles.setInfo}>Set  {matchData.currentSet}</p>
           </div>
           <div className={styles.teamB}>
             <p className={styles.tname}>{matchData.teamB.name}</p>
