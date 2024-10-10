@@ -56,7 +56,6 @@ function AdminBadminton() {
           <div className={style.adminSection}>
             <h3>Team A</h3>
             <input
-
               type="text"
               placeholder="Team Name"
               onChange={(e) => handleInputChange(e, 'teamA', 'name')}
@@ -85,47 +84,12 @@ function AdminBadminton() {
                 onChange={(e) => handleScoreChange(e, 'tmA_score', 2)}
               />
             </div>
-
-                type="text"
-                placeholder="Team Name"
-               
-              />
-              <input
-                type="text"
-                placeholder="Player Name"
-              />
-
-              {/* Scores */}
-              <div className={style.Info}>
-              {/* <input
-                type="text"
-                placeholder="Set: (1 - 2 - 3)"
-               
-              /> */}
-              <input
-                type="text"
-                placeholder="Set 1 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 2 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 3 Score"
-              />
-              </div>
-            
-
-            
-
           </div>
 
           {/* Team B Details */}
           <div className={style.adminSection}>
             <h3>Team B</h3>
             <input
-
               type="text"
               placeholder="Team Name"
               onChange={(e) => handleInputChange(e, 'teamB', 'name')}
@@ -138,49 +102,6 @@ function AdminBadminton() {
 
             {/* Scores */}
             <div className={style.Info}>
-
-                type="text"
-                placeholder="Team Name"
-               
-              />
-              <input
-                type="text"
-                placeholder="Player Name"
-               
-              />
-
-              {/* Scores */}
-              <div className={style.Info}>
-              {/* <input
-                type="text"
-                placeholder="Set: (1 - 2 - 3)"
-               
-              /> */}
-              <input
-                type="text"
-                placeholder="Set 1 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 2 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 3 Score"
-              />
-              </div>
-          
-            
-          </div>
-        </div>
-
-        {/* Set Scores */}
-        {/* <div className={style.adminSection}>
-          <h3>Set Scores</h3>
-          {matchData.setScores.map((set, index) => (
-            <div key={index}>
-              <h4>Set {index + 1}</h4>
-
               <input
                 type="number"
                 placeholder="Set 1 Score"
@@ -197,27 +118,8 @@ function AdminBadminton() {
                 onChange={(e) => handleScoreChange(e, 'tmB_score', 2)}
               />
             </div>
-
           </div>
         </div>
-=======
-          ))}
-        </div>
-
-        {/* Current Set */}
-        {/* <div className={style.adminSection}>
-          <h3>Current Set</h3>
-          <input
-            type="number"
-            min="1"
-            placeholder="Current Set"
-            value={matchData.currentSet}
-            onChange={(e) =>
-              setMatchData({ ...matchData, currentSet: e.target.value })
-            }
-          />
-        </div> */}
-
 
         {/* Latest Update */}
         <div className={style.adminSection}>
