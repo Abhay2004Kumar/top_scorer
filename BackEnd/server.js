@@ -12,18 +12,24 @@ const io = new Server(server, {
   }
 });
 
-let lastMessage = { matchData: "No available" };  // Variable to store the last message
+let lastMessageBD = { matchData: "No available" };  // Variable to store the last message
+let lastMessageBD_Double = { matchData: "No available" };  // Variable to store the last message
 
 io.on("connection", (socket) => {
   console.log("A user connected");
 
   // Send the last message to the newly connected client
-  socket.emit("bdminton", lastMessage);
-
-  // Listen for chat messages
+  socket.emit("bdminton", lastMessageBD);
   socket.on("bdminton", (payload) => {
-    lastMessage = payload; // Store the last message
+    lastMessageBD = payload; // Store the last message
     io.emit("bdminton", payload); // Send the message to all connected clients
+  });
+
+  // bd doubles
+  socket.emit('bdDoubles',lastMessageBD_Double);
+  socket.on('bdDoubles',(payload)=>{
+    lastMessageBD_Double = payload;
+    io.emit('bdDoubles',payload);
   });
 
   socket.on("disconnect", () => {
@@ -32,5 +38,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(5000, () => {
-  console.log('Server is running on http://10.22.12.166:5000');
+  console.log('Server is running on port: 5000');
 });

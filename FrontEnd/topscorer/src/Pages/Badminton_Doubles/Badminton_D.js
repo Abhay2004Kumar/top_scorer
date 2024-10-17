@@ -1,70 +1,70 @@
-import React from 'react';
-import styles from "../Badminton_Doubles/Badminton_D.module.css";
+import { useState, useEffect } from "react";
+import styles from "../Badminton/Badminton.module.css";
 import Options from '../../Components/Live_Upcoming/Options';
-import { MdSportsTennis } from "react-icons/md";
+import { GiTennisRacket } from "react-icons/gi";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:5000");
 
 function Badminton_D() {
-  const matchData = {
+  
+  const [matchData, setMatchData] = useState({
     teamA: {
-      name: "IND",
-      players: [
-        { name1: "PV Sindhu", name2 :"Sanya Nehwal",flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg" },
-       ]
+      name: "NA", 
+      player1: "NA",
+      player2: "NA",
     },
     teamB: {
-      name: "CHN",
-      players: [
-        { name1: "Chen Yufei",name2 :"China Player 2", flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" },
-         ]
+      name: "NA",
+      player1: "NA",
+      player2: "NA",
     },
-    setScore: "22 - 20",
-    currentSet: 3,
-    latestUpdate: "India won the final set 22-20!",
-    sets: [
-      {
-        events: [
-          { player1: "PV Sindhu",player2:"Saina Nehwal", set1: "21", set2: "19", set3: "21", flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg" },
-          { player1: "Chen Yufei",player2: "China Player 2", set1: "19", set2: "21", set3: "18",flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" }
-        ]
-      }
-    ]
-  };
+    tmA_score: [],
+    tmB_score: [],
+    currentSet: 1,
+    latestUpdate: "NA"
+  });
 
+  useEffect(() => {
+    socket.on("bdDoubles", (payload) => {
+      // console.log(io.length);
+      setMatchData(payload.matchData);
+      localStorage.setItem('badminton_D', JSON.stringify(payload)); // Store in localStorage as a string
+    });
+  }, []);  // Empty dependency array to ensure socket listener is set up only once
+  
+  // const val = localStorage.getItem('bdDoubles');
+  console.log('------------', matchData);
+  
   return (
     <>
       <div className={styles.MainDiv}>
-        <Options></Options>
+        <Options />
         <div className={styles.ScoreBoard}>
-
           <div className={styles.SportName}>
-            <p> <MdSportsTennis/> <MdSportsTennis/> Badminton_Doubles</p>
+            <p>< GiTennisRacket /> Badminton</p>
           </div>
-
-          <div className={styles.INFO}>
-          <div className={styles.teamA}>
-            <p className={styles.tname}>{matchData.teamA.name}</p>
-            {matchData.teamA.players.map((player, index) => (
-              <div key={index} className={styles.teamA_Img}>
-                <img className={styles.img1} src={player.flag} alt={`${player.name} Flag`} />
-                <p>{player.name1} (P)</p>
-                <p>{player.name2} (P)</p>
+          <div className={styles.FLZ}>
+            <div className={styles.teamA}>
+              <p className={styles.tname}>{matchData?.teamA?.name}</p> {/* Optional chaining */}
+              <div className={styles.teamA_Img}>
+                <img className={styles.img1} alt="Team A" src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png"/>
               </div>
-            ))}
-          </div>
-          <div className={styles.VS}>
-            <h1 className={styles.gols}> {matchData.setScore} </h1>
-            <p className={styles.setInfo}>Set {matchData.currentSet}</p>
-          </div>
-          <div className={styles.teamB}>
-            <p className={styles.tname}>{matchData.teamB.name}</p>
-            {matchData.teamB.players.map((player, index) => (
-              <div key={index} className={styles.teamA_Img}>
-                <img className={styles.img2} src={player.flag} alt={`${player.name} Flag`} />
-                <p>{player.name1} (P)</p>
-                <p>{player.name2} (P)</p>
+              <p>{matchData?.teamA?.player1}(P)</p>
+              <p>{matchData?.teamA?.player2}(P)</p>
+            </div>
+            <div className={styles.VS}>
+              <h1 style={{marginTop:"15px"}} className={styles.gols}> {matchData?.tmA_score?.at(-1)}-{matchData?.tmB_score?.at(-1)}</h1> {/* Optional chaining */}
+              <p className={styles.setInfo}>Set {matchData?.tmA_score?.length}</p>
+            </div>
+            <div className={styles.teamB}>
+              <p className={styles.tname}>{matchData?.teamB?.name}</p>
+              <div className={styles.teamA_Img}>
+                <img className={styles.img2} alt="Team B" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png" />
               </div>
-            ))}
-          </div>
+              <p>{matchData?.teamB?.player1}(P)</p>
+              <p>{matchData?.teamB?.player2}(P)</p>
+            </div>
           </div>
         </div>
 
@@ -72,7 +72,7 @@ function Badminton_D() {
           <div className={styles.predictor}>
             <div className={styles.bar}></div>
           </div>
-          <p>{matchData.latestUpdate}</p>
+          <p>{matchData?.latestUpdate}</p>
         </div>
 
         <div className={styles.Sumry}>
@@ -80,38 +80,44 @@ function Badminton_D() {
         </div>
 
         <div className={styles.table}>
-          {matchData.sets.map((set, index) => (
-            <div key={index} className={styles.sets}>
-              <h4>Set {index + 1}</h4>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Player 1</th>
-                    <th>Player 2</th>
-                    <th>Set 1</th>
-                    <th>Set 2</th>
-                    <th>Set 3</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {set.events.map((event, eventIndex) => (
-                    <tr key={eventIndex}>
-                      <td><span className={styles.flg}>
-                        <img className={styles.tableimg} src={event.flag}></img>
-                        </span></td>
-                      <td>{event.player1}</td>
-                      <td>{event.player2}</td>
-                      <td>{event.set1}</td>
-                      <td>{event.set2}</td>
-                      <td>{event.set3}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+          <div className={styles.sets}>
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Player 1</th>
+                  <th>Player 2</th>
+                  <th>Set1</th>
+                  <th>Set2</th>
+                  <th>Set3</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span className={styles.flg}>
+                    <img className={styles.tableimg} src="path/to/flag1.png" alt="Flag 1" />
+                  </span></td>
+                  <td>{matchData?.teamA?.player1}</td>
+                  <td>{matchData?.teamA?.player2}</td>
+                  <td>{matchData?.tmA_score?.[0]}</td>
+                  <td>{matchData?.tmA_score?.[1]}</td>
+                  <td>{matchData?.tmA_score?.[2]}</td>
+                </tr>
+                <tr>
+                  <td><span className={styles.flg}>
+                    <img className={styles.tableimg} src="path/to/flag2.png" alt="Flag 2" />
+                  </span></td>
+                  <td>{matchData?.teamB?.player1}</td>
+                  <td>{matchData?.teamB?.player2}</td>
+                  <td>{matchData?.tmB_score?.[0]}</td>
+                  <td>{matchData?.tmB_score?.[1]}</td>
+                  <td>{matchData?.tmB_score?.[2]}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
       </div>
     </>
   );

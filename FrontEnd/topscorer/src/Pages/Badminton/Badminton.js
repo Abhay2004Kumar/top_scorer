@@ -4,7 +4,7 @@ import Options from '../../Components/Live_Upcoming/Options';
 import { GiTennisRacket } from "react-icons/gi";
 import io from "socket.io-client";
 
-const socket = io.connect("http://10.22.12.166:5000");
+const socket = io.connect("http://localhost:5000");
 
 function Badminton() {
   
