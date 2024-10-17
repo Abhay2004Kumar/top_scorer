@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import style from '../Badminton/Badminton.module.css';
 import io from "socket.io-client";
 
-const socket = io.connect("http://10.22.12.166:5000");
+const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton() {
   const [matchData, setMatchData] = useState({
@@ -40,12 +40,7 @@ function AdminBadminton() {
     socket.emit("bdminton", payload);
   };
 
-  // useEffect(() => {
 
-  //   socket.on("bdminton", (payload) => {
-  //     setchat((prevChat) => [...prevChat, payload]);
-  //   });
-  // }, []);
 
   return (
     <div className={style.MainDiv}>

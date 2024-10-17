@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home_Page/Home';
 import Football from './Pages/Football/Football';
 import Cricket from './Pages/Cricket/Cricket';
+import AdminBadminton_D from './Pages/Badminton_D/Badminton_D';
 
 function App() {
   return (
@@ -16,9 +17,10 @@ function App() {
         <Header />
         
         {/* Define routes */}
-        <Routes>
+        <Routes> 
           <Route path='/' element={<Home />} />
           <Route path='/badminton' element={<AdminBadminton />} />
+          <Route path='/badmintonDoubles' element={<AdminBadminton_D />} />
           <Route path='/kabbadi' element={<Kabbadi />} />
           <Route path='/football' element={<Football />} />
           <Route path='/cricket' element={<Cricket />} />
