@@ -6,41 +6,55 @@ const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton() {
   const [matchData, setMatchData] = useState({
-    teamA: {
-      name: "", 
-      player: "",
-    },
-    teamB: {
-      name: "",
-      player: "",
-    },
-    tmA_score:[],
-    tmB_score:[],
-    currentSet: 1,
-    latestUpdate: ""
+    name: "Badminton",
+    data: {
+      teamA: {
+        name: "", 
+        player: "",
+        score: [0, 0, 0], // Initialize scores for 3 sets
+      },
+      teamB: {
+        name: "",
+        player: "",
+        score: [0, 0, 0], // Initialize scores for 3 sets
+      },
+      currentSet: 1,
+      latestUpdate: "",
+    }
   });
 
   const handleInputChange = (e, team, field) => {
-    setMatchData({
-      ...matchData,
-      [team]: { ...matchData[team], [field]: e.target.value },
-    });
+    setMatchData(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        [team]: { 
+          ...prevState.data[team], 
+          [field]: e.target.value 
+        },
+      }
+    }));
   };
 
   const handleScoreChange = (e, team, setIndex) => {
-    const newScores = [...matchData[team]];
-    newScores[setIndex] = parseInt(e.target.value);
-    setMatchData({ ...matchData, [team]: newScores });
+    const newScore = parseInt(e.target.value) || 0; // Ensure value is a number
+    setMatchData(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        [team]: {
+          ...prevState.data[team],
+          score: prevState.data[team].score.map((score, index) => index === setIndex ? newScore : score),
+        }
+      }
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("Match Data Submitted:", matchData);
-    const payload = {matchData};
-    socket.emit("bdminton", payload);
+    socket.emit("data", matchData);  // Emit the whole matchData object with "name" and "data"
   };
-
-
 
   return (
     <div className={style.MainDiv}>
@@ -53,31 +67,27 @@ function AdminBadminton() {
             <input
               type="text"
               placeholder="Team Name"
+              value={matchData.data.teamA.name}
               onChange={(e) => handleInputChange(e, 'teamA', 'name')}
             />
             <input
               type="text"
               placeholder="Player Name"
+              value={matchData.data.teamA.player}
               onChange={(e) => handleInputChange(e, 'teamA', 'player')}
             />
 
             {/* Scores */}
             <div className={style.Info}>
-              <input
-                type="number"
-                placeholder="Set 1 Score"
-                onChange={(e) => handleScoreChange(e, 'tmA_score', 0)}
-              />
-              <input
-                type="number"
-                placeholder="Set 2 Score"
-                onChange={(e) => handleScoreChange(e, 'tmA_score', 1)}
-              />
-              <input
-                type="number"
-                placeholder="Set 3 Score"
-                onChange={(e) => handleScoreChange(e, 'tmA_score', 2)}
-              />
+              {[0, 1, 2].map(setIndex => (
+                <input
+                  key={setIndex}
+                  type="number"
+                  placeholder={`Set ${setIndex + 1} Score`}
+                  value={matchData.data.teamA.score[setIndex] || ""}
+                  onChange={(e) => handleScoreChange(e, 'teamA', setIndex)}
+                />
+              ))}
             </div>
           </div>
 
@@ -87,31 +97,27 @@ function AdminBadminton() {
             <input
               type="text"
               placeholder="Team Name"
+              value={matchData.data.teamB.name}
               onChange={(e) => handleInputChange(e, 'teamB', 'name')}
             />
             <input
               type="text"
               placeholder="Player Name"
+              value={matchData.data.teamB.player}
               onChange={(e) => handleInputChange(e, 'teamB', 'player')}
             />
 
             {/* Scores */}
             <div className={style.Info}>
-              <input
-                type="number"
-                placeholder="Set 1 Score"
-                onChange={(e) => handleScoreChange(e, 'tmB_score', 0)}
-              />
-              <input
-                type="number"
-                placeholder="Set 2 Score"
-                onChange={(e) => handleScoreChange(e, 'tmB_score', 1)}
-              />
-              <input
-                type="number"
-                placeholder="Set 3 Score"
-                onChange={(e) => handleScoreChange(e, 'tmB_score', 2)}
-              />
+              {[0, 1, 2].map(setIndex => (
+                <input
+                  key={setIndex}
+                  type="number"
+                  placeholder={`Set ${setIndex + 1} Score`}
+                  value={matchData.data.teamB.score[setIndex] || ""}
+                  onChange={(e) => handleScoreChange(e, 'teamB', setIndex)}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -121,9 +127,15 @@ function AdminBadminton() {
           <h3>Latest Update</h3>
           <textarea
             placeholder="Latest Update"
-            value={matchData.latestUpdate}
+            value={matchData.data.latestUpdate}
             onChange={(e) =>
-              setMatchData({ ...matchData, latestUpdate: e.target.value })
+              setMatchData(prevState => ({
+                ...prevState,
+                data: {
+                  ...prevState.data,
+                  latestUpdate: e.target.value
+                }
+              }))
             }
           />
         </div> 

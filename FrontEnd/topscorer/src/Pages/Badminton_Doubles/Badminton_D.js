@@ -26,10 +26,10 @@ function Badminton_D() {
   });
 
   useEffect(() => {
-    socket.on("bdDoubles", (payload) => {
+    socket.on("FullPayLoad", (payload) => {
       // console.log(io.length);
-      setMatchData(payload.matchData);
-      localStorage.setItem('badminton_D', JSON.stringify(payload)); // Store in localStorage as a string
+      console.log(payload);
+      setMatchData(payload.badminton_double.lastMessageBDouble);
     });
   }, []);  // Empty dependency array to ensure socket listener is set up only once
   

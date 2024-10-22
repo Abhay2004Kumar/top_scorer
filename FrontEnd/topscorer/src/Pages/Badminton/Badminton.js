@@ -24,9 +24,11 @@ function Badminton() {
   });
 
   useEffect(() => {
-    socket.on("bdminton", (payload) => {
-      setMatchData(payload.matchData);
-      localStorage.setItem('badminton', JSON.stringify(payload)); // Store in localStorage as a string
+    socket.on("FullPayLoad", (payload) => {
+      
+      console.log(payload.badminton.lastMessageBD);
+      setMatchData(payload.badminton.lastMessageBD);
+
     });
   }, []);  // Empty dependency array to ensure socket listener is set up only once
   

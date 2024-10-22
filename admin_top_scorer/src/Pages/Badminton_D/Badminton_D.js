@@ -6,48 +6,61 @@ const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton_D() {
   const [matchData, setMatchData] = useState({
-    teamA: {
-      name: "", 
-      player1: "",
-      player2: "",
-    },
-    teamB: {
-      name: "",
-      player1: "",
-      player2: "",
-    },
-    tmA_score:[],
-    tmB_score:[],
-    currentSet: 1,
-    latestUpdate: ""
+    "name": "Badminton_D",
+    "data": {
+      teamA: {
+        name: "", 
+        player1: "",
+        player2: "",
+      },
+      teamB: {
+        name: "",
+        player1: "",
+        player2: "",
+      },
+      tmA_score: [],
+      tmB_score: [],
+      currentSet: 1,
+      latestUpdate: ""
+    }
   });
 
   const handleInputChange = (e, team, field) => {
-    setMatchData({
-      ...matchData,
-      [team]: { ...matchData[team], [field]: e.target.value },
-    });
+    setMatchData(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        [team]: { 
+          ...prevState.data[team], 
+          [field]: e.target.value 
+        },
+      }
+    }));
   };
 
   const handleScoreChange = (e, team, setIndex) => {
-    const newScores = [...matchData[team]];
-    newScores[setIndex] = parseInt(e.target.value);
-    setMatchData({ ...matchData, [team]: newScores });
+    const newScores = [...matchData.data[team]];
+    newScores[setIndex] = parseInt(e.target.value) || 0;
+    setMatchData(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        [team]: newScores
+      }
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("Match Data Submitted:", matchData);
-    
-    const payload = {matchData};
-    socket.emit("bdDoubles", payload);
+
+    const payload = matchData ;
+    socket.emit("data", payload);
   };
-
-
 
   return (
     <div className={style.MainDiv}>
-      <h2>Badminton Admin Page</h2>
+      <h2>Badminton Doubles Admin Page</h2>
       <form onSubmit={handleFormSubmit} className={style.adminForm}>
         <div className={style.teamsContainer}>
           {/* Team A Details */}
@@ -134,9 +147,12 @@ function AdminBadminton_D() {
           <h3>Latest Update</h3>
           <textarea
             placeholder="Latest Update"
-            value={matchData.latestUpdate}
+            value={matchData.data.latestUpdate}
             onChange={(e) =>
-              setMatchData({ ...matchData, latestUpdate: e.target.value })
+              setMatchData(prevState => ({
+                ...prevState,
+                data: { ...prevState.data, latestUpdate: e.target.value }
+              }))
             }
           />
         </div> 
