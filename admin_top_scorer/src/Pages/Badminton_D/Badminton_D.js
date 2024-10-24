@@ -6,7 +6,7 @@ const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton_D() {
   const [matchData, setMatchData] = useState({
-    "name": "Badminton_D",
+    "name": "Badminton_D", 
     "data": {
       teamA: {
         name: "", 
@@ -52,7 +52,7 @@ function AdminBadminton_D() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Match Data Submitted:", matchData);
+    // console.log("Match Data Submitted:", matchData);
 
     const payload = matchData ;
     socket.emit("data", payload);

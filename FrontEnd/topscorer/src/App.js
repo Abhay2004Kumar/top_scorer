@@ -1,4 +1,4 @@
-import React from 'react'
+import { React,useState, useEffect } from "react";
 import styles from './App.module.css'
 import Header from './Components/Header/Header'
 import Sidebar from './Components/SideBar/Sidebar'
@@ -19,9 +19,21 @@ import TermsAndConditions from './Components/TnC/Tnc'
 import { BrowserRouter as Router , Route, Routes} from 'react-router-dom'
 import Home from './Pages/Home_Page/home'
 import Chat from './Components/Chat/Chat'
+import io from "socket.io-client";
 
+const socket = io.connect("http://localhost:5000");
 
 function App() {
+  const[matchD,setMatchD] = useState({});
+  
+  useEffect(()=>{
+    socket.on("FullPayLoad",(payload)=>{
+      setMatchD((payload));
+      // console.log(matchD.badminton);
+    });
+  },[])
+  console.log("***** ",matchD);
+
   return (
     <>
     <Router>
@@ -43,8 +55,8 @@ function App() {
             <Route path='/' element={<Badminton/>} ></Route>
             <Route path='/cricket' element={<Cricket/>} ></Route>
             <Route path='/football' element={<Football/>} ></Route>
-            <Route path='/badminton' element={<Badminton/>} ></Route>
-            <Route path='/badminton_d' element={<Badminton_D/>} ></Route>
+            <Route path='/badminton' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>
+            <Route path='/badminton_d' element={<Badminton_D bdoubles={matchD.badminton_double.lastMessageBDouble}/>} ></Route>
             <Route path='/tennis' element={<Tennis/>} ></Route>
             <Route path='/tennis_d' element={<Tennis_D/>} ></Route>
             <Route path='/kabaddi' element={<Kabaddi/>} ></Route>
