@@ -9,7 +9,9 @@ import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 const socket = io.connect("http://10.22.17.61:5000");
 
 function Badminton() {
-  
+  const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
+  const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
+ 
   const [wdth, setWidth] = useState(50);
   const [matchData, setMatchData] = useState({
     teamA: {
@@ -84,7 +86,7 @@ function Badminton() {
             <div className={styles.teamA}>
               <p className={styles.tname}>{matchData?.teamA?.name}</p> {/* Optional chaining */}
               <div className={styles.teamA_Img}>
-                <img className={styles.img1} alt="Team A" src="https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png"/>
+                <img className={styles.img1} alt="Team A" src={flag1_link}/>
               </div>
               <p>{matchData?.teamA?.player}(P)</p>
             </div>
@@ -95,7 +97,7 @@ function Badminton() {
             <div className={styles.teamB}>
               <p className={styles.tname}>{matchData?.teamB?.name}</p>
               <div className={styles.teamA_Img}>
-                <img className={styles.img2} alt="Team B" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png" />
+                <img className={styles.img2} alt="Team B" src={flag2_link} />
               </div>
               <p>{matchData?.teamB?.player}(P)</p>
             </div>
@@ -129,7 +131,7 @@ function Badminton() {
               <tbody>
                 <tr>
                   <td><span className={styles.flg}>
-                    <img className={styles.tableimg} src="path/to/flag1.png" alt="Flag 1" />
+                    <img className={styles.tableimg} src={flag1_link} alt="Flag 1" />
                   </span></td>
                   <td>{matchData?.teamA?.player}</td>
                   <td>{matchData?.tmA_score?.[0]}</td>
@@ -138,7 +140,7 @@ function Badminton() {
                 </tr>
                 <tr>
                   <td><span className={styles.flg}>
-                    <img className={styles.tableimg} src="path/to/flag2.png" alt="Flag 2" />
+                    <img className={styles.tableimg} src={flag2_link} alt="Flag 2" />
                   </span></td>
                   <td>{matchData?.teamB?.player}</td>
                   <td>{matchData?.tmB_score?.[0]}</td>
