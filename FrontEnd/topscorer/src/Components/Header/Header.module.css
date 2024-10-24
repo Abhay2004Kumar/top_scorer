@@ -1,58 +1,67 @@
-*{
-    margin: 0px;
-    padding: 0px;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-.hdiv{
+.header {
     height: 80px;
     width: 100vw;
     background-color: #080A1F;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
     border-bottom: 1px solid #90F0FD;
-    
-    
-}
-.logo{
-    width: 70%;
-    height: 20px;
-    display: flex;
-    padding: 10px;
-  
-   /* border: 5px solid white; */
-
-}
-.logo h2{
-    color: white;
-}
-.uprofile{
-    width: 30%;
-    height: 100%;
-
-    /* border: 5px solid red; */
     box-sizing: border-box;
-    padding: 14px;
-}
-.login{
-    background-color:floralwhite;
-    margin-top: 13px;
-    margin-right: 10px;
-    float: right;
-    border-radius: 4px;
-    padding: 8px;
-    width: 50px;
-    border-style: none;
-    font-weight: bold;
-    
-}
-.login:hover{
-    scale: 1.1;
-    transition: 0.2s;
-    background-color: orange;
-}
-.lg{
-    position: relative;
-    height: 60px;
-    margin-left: 15px;
-    /* border: 4px solid red; */
 }
 
+.logoContainer {
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+
+.logo {
+    height: 65px; /* Ensure the logo fits within the header height */
+    width: auto;  /* Maintain aspect ratio */
+    margin-right: 15px;
+}
+
+.title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navLink {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navLink:hover {
+    color: #90F0FD;
+}
+
+.login {
+    background-color: floralwhite;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.login:hover {
+    background-color: orange;
+    transform: scale(1.1);
+}

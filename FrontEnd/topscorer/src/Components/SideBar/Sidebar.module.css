@@ -23,7 +23,7 @@
     color: white;
     box-sizing: border-box;
     padding: 10px;
-    background-color: #004D40;
+    background-color: #0C2F3A;
     border-radius: 6px;
     height: 390px;
 
@@ -38,15 +38,18 @@
 .space{
     height: 40px;
     width: 100%;
-    background-color: #004D40;
+    background-color: #0C2F3A;
 }
 ::-webkit-scrollbar{
     width: 0px;
 }
-.close{
+.close{ 
     float: right;
-    background-color: #004D40;
+    background-color: #0C2F3A;
     font-weight: bold;
+}
+.sp h4{
+    background-color: #0C2F3A;
 }
 .close{
    scale: 1.2;

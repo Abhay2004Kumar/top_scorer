@@ -1,0 +1,101 @@
+.Main_Div {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #004D40;
+    color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .Header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .Team_Container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .Team_Detail {
+    flex: 1;
+    background-color: #013A33;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 15px;
+  }
+  
+  .Input_Group {
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  
+  input, select {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #F5F5F5;
+  }
+  
+  input[type="file"] {
+    background-color: white;
+  }
+  
+  .Submit_Button {
+    padding: 10px 20px;
+    background-color: #26A69A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .Submit_Button:hover {
+    background-color: #1B8072;
+  }
+  
+  @media (max-width: 768px) {
+    .Team_Container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .Submit_Button {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    input, select {
+      font-size: 12px;
+    }
+  
+    .Submit_Button {
+      padding: 8px 15px;
+    }
+  }
+      

@@ -1,7 +1,7 @@
 .box{
     height: 40px;
     width: 300px;
-    border-radius: 10px;
+    border-radius: 30px;
     background-color:#90F0FD ;
     display: flex;
     justify-content: space-evenly;
@@ -24,7 +24,7 @@
     justify-content: center;
     align-items: center;
     background-color: #305E64;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 .upcoming{
     width: 30%;
@@ -33,7 +33,7 @@
     justify-content: center;
     align-items: center;
     background-color: #305E64;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 .archived{
     width: 30%;
@@ -42,7 +42,7 @@
     justify-content: center;
     align-items: center;
     background-color: #305E64;
-    border-radius: 10px;
+    border-radius: 30px;
 }
 .box p{
     color: white;

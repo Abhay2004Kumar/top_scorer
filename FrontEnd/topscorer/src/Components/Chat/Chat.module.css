@@ -1,0 +1,89 @@
+.chatContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #080A1F; /* Using existing color scheme */
+    color: white;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .open {
+    transform: translateX(0);
+  }
+  
+  .closed {
+    transform: translateX(100%);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #90F0FD; /* Border color for consistency */
+  }
+  
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+  }
+  
+  .body {
+    display: flex;
+    flex-direction: column;
+    height: 300px; /* Adjust height as needed */
+  }
+  
+  .messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .footer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #90F0FD; /* Border color for consistency */
+  }
+  
+  .emojiButton,
+  .attachmentButton,
+  .sendButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    margin: 0 5px;
+  }
+  
+  input {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #90F0FD; /* Border color for consistency */
+    border-radius: 20px;
+    background-color: #1E1E2D; /* Slightly different background for input */
+    color: white;
+  }
+  
+  .sendButton {
+    background-color: #90F0FD; /* Button color consistent with theme */
+    border-radius: 20px;
+    padding: 10px;
+    color: #080A1F; /* Text color */
+  }
+  
+  .sendButton:hover {
+    background-color: #76d8e7; /* Slight hover effect */
+  }
+  

@@ -1,0 +1,47 @@
+.maindiv {
+    background-color: #004D40; /* Same as other pages */
+    color: antiquewhite;
+    padding: 20px;
+    border-radius: 8px;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.adminContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.adminForm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.adminForm input {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+}
+
+.adminForm button {
+    padding: 10px;
+    background-color: #009688; /* Button color */
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.adminForm button:hover {
+    background-color: #00796b; /* Darker button color on hover */
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
