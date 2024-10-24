@@ -5,38 +5,41 @@ import { GiTennisRacket } from "react-icons/gi";
 import io from "socket.io-client";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
-const socket = io.connect("http://10.22.17.61:5000");
-
-function Badminton() {
+const socket = io.connect("http://localhost:5000");
+ 
+function Badminton({bd}) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
  
   const [wdth, setWidth] = useState(50);
-  const [matchData, setMatchData] = useState({
-    teamA: {
-      name: "NA", 
-      player: "NA",
-    },
-    teamB: {
-      name: "NA",
-      player: "NA",
-    },
-    tmA_score: [],
-    tmB_score: [],
-    currentSet: 1,
-    latestUpdate: "NA"
-  });
+  const matchData = bd;
+  // console.log("this ",matchData);
+  // const [matchData, setMatchData] = useState({
+  //   teamA: {
+  //     name: "NA", 
+  //     player: "NA",
+  //   },
+  //   teamB: {
+  //     name: "NA",
+  //     player: "NA",
+  //   },
+  //   tmA_score: [],
+  //   tmB_score: [],
+  //   currentSet: 1,
+  //   latestUpdate: "NA"
+  // });
 
   useEffect(() => {
     socket.on("FullPayLoad", (payload) => {
-      console.log(payload.badminton.lastMessageBD);
+      // console.log(payload);
+   
       
       // Set match data
       if(payload.badminton.lastMessageBD)
       {
 
-      setMatchData(payload.badminton.lastMessageBD);
-      const { tmA_score, tmB_score } = payload.badminton_double.lastMessageBDouble;
+      // setMatchData(payload.badminton.lastMessageBD);
+
       let score1 = payload.badminton.lastMessageBD?.tmA_score.length > 0
         ? parseInt(payload.badminton.lastMessageBD.tmA_score[payload.badminton.lastMessageBD.tmA_score.length - 1], 10) 
         : 0;
@@ -67,7 +70,7 @@ function Badminton() {
   }, []);
   
   // Log the match data
-  console.log('------------', matchData);
+  // console.log('------------', matchData);
   
   // Log width changes
   useEffect(() => {

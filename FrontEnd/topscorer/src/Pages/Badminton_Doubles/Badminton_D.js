@@ -5,28 +5,29 @@ import { GiTennisRacket } from "react-icons/gi";
 import io from "socket.io-client";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
-const socket = io.connect("http://10.22.17.61:5000");
+const socket = io.connect("http://localhost:5000");
 
-function Badminton_D() {
+function Badminton_D({bdoubles}) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
  
   const [wdth, setWidth] = useState(50);
-  const [matchData, setMatchData] = useState({
-    teamA: {
-      name: "NA", 
-      player1: "NA",
-      player2: "NA",
-    },
-    teamB: {
-      name: "NA",
-      player1: "NA",
-      player2: "NA",
-    },
-    tmA_score: [],
-    tmB_score: [],
-    latestUpdate: "NA"
-  });
+  const matchData = bdoubles;
+  // const [matchData, setMatchData] = useState({
+  //   teamA: {
+  //     name: "NA", 
+  //     player1: "NA",
+  //     player2: "NA",
+  //   },
+  //   teamB: {
+  //     name: "NA",
+  //     player1: "NA",
+  //     player2: "NA",
+  //   },
+  //   tmA_score: [],
+  //   tmB_score: [],
+  //   latestUpdate: "NA"
+  // });
 
   useEffect(() => {
     // Socket event listener
@@ -34,7 +35,7 @@ function Badminton_D() {
       console.log(payload.badminton_double.lastMessageBDouble);
 
       if (payload.badminton_double && payload.badminton_double.lastMessageBDouble) {
-        setMatchData(payload.badminton_double.lastMessageBDouble);
+        // setMatchData(payload.badminton_double.lastMessageBDouble);
 
         let score1 = payload.badminton_double.lastMessageBDouble?.tmA_score.length > 0
           ? parseInt(payload.badminton_double.lastMessageBDouble.tmA_score[payload.badminton_double.lastMessageBDouble.tmA_score.length - 1], 10) 

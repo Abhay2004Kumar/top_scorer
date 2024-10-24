@@ -57,18 +57,11 @@ io.on("connection", (socket) => {
       full_Payload.tennis.lastMessageBD = payload.data;
     }
     else if (payload.name === "tennis_D") {
-      // Update badminton_double data
+      // Update badminton_double data 
       console.log("tennis_D");
       full_Payload.tennis_D.lastMessageBD = payload.data;
     }
-  
-    // Log the incoming payload
-    console.log("Received Payload:", payload);
-  
-    // Log the updated full payload structure
-    console.log("Updated full_Payload:", full_Payload);
-  
-    // Broadcast the updated full payload to all connected clients
+
     io.emit("FullPayLoad", full_Payload);
   });
   

@@ -6,7 +6,7 @@ import io from "socket.io-client";
 import { MdOutlineSportsTennis } from "react-icons/md";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
-const socket = io.connect("http://10.22.17.61:5000");
+const socket = io.connect("http://localhost:5000");
 
 function Badminton() {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
