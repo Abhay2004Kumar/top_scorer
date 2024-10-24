@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import style from '../Badminton/Badminton.module.css';
+import style from '../Tennis_D/tennis_d.module.css';
 import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:5000");
 
-function AdminBadminton_D() {
+function AdminTennis_D() {
   const [matchData, setMatchData] = useState({
-    "name": "Badminton_D", 
+    "name": "tennis_D",
     "data": {
       teamA: {
         name: "", 
@@ -52,7 +52,7 @@ function AdminBadminton_D() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // console.log("Match Data Submitted:", matchData);
+    console.log("Match Data Submitted:", matchData);
 
     const payload = matchData ;
     socket.emit("data", payload);
@@ -60,7 +60,7 @@ function AdminBadminton_D() {
 
   return (
     <div className={style.MainDiv}>
-      <h2>Badminton Doubles Admin Page</h2>
+      <h2>Tennis Doubles Admin Page</h2>
       <form onSubmit={handleFormSubmit} className={style.adminForm}>
         <div className={style.teamsContainer}>
           {/* Team A Details */}
@@ -166,4 +166,4 @@ function AdminBadminton_D() {
   );
 }
 
-export default AdminBadminton_D;
+export default AdminTennis_D;

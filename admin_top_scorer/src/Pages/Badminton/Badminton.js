@@ -47,7 +47,7 @@ function AdminBadminton() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Match Data Submitted:", matchData);
+    // console.log("Match Data Submitted:", matchData);
     socket.emit("data", matchData);  // Emit the whole matchData object
   };
 

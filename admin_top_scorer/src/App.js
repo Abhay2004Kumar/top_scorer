@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import { React,useState, useEffect } from "react";
 import Kabbadi from './Pages/Kabbadi/Kabbadi';
 import Header from './Components/Header/Header';
 import AdminBadminton from './Pages/Badminton/Badminton';
@@ -10,8 +11,13 @@ import Football from './Pages/Football/Football';
 import Cricket from './Pages/Cricket/Cricket';
 import AdminBadminton_D from './Pages/Badminton_D/Badminton_D';
 import AdminTennis from './Pages/Tennis/Tennis';
+import AdminTennis_D from './Pages/Tennis_D/Admin_Tennis_D';
+
+
 
 function App() {
+
+
   return (
     <Router>
       <div className='main_div'>
@@ -23,6 +29,7 @@ function App() {
           <Route path='/badminton' element={<AdminBadminton />} />
           <Route path='/badmintonDoubles' element={<AdminBadminton_D />} />
           <Route path='/tennis' element={<AdminTennis/>} />
+          <Route path='/tennis_d' element={<AdminTennis_D/>} />
           <Route path='/kabbadi' element={<Kabbadi />} />
           <Route path='/football' element={<Football />} />
           <Route path='/cricket' element={<Cricket />} />
