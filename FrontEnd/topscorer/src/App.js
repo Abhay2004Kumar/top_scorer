@@ -25,7 +25,12 @@ import BlogFeed from './Pages/Blog_Page/BlogFeed'
 const socket = io.connect("http://localhost:5000");
 
 function App() {
-  const[matchD,setMatchD] = useState({});
+  const[matchD,setMatchD] = useState({
+    badminton:false,
+    badminton_double: false,
+    tennis:false,
+    tennis_D: false,
+  });
   
   useEffect(()=>{
     socket.on("FullPayLoad",(payload)=>{

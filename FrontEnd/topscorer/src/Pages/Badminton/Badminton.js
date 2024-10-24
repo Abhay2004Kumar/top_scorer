@@ -12,22 +12,22 @@ function Badminton({bd}) {
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
  
   const [wdth, setWidth] = useState(50);
-  const matchData = bd;
+  const matchData = bd? bd :{
+      teamA: {
+        name: "NA", 
+        player: "NA",
+      },
+      teamB: {
+        name: "NA",
+        player: "NA",
+      },
+      tmA_score: [],
+      tmB_score: [],
+      currentSet: 1,
+      latestUpdate: "NA"
+    };
   // console.log("this ",matchData);
-  // const [matchData, setMatchData] = useState({
-  //   teamA: {
-  //     name: "NA", 
-  //     player: "NA",
-  //   },
-  //   teamB: {
-  //     name: "NA",
-  //     player: "NA",
-  //   },
-  //   tmA_score: [],
-  //   tmB_score: [],
-  //   currentSet: 1,
-  //   latestUpdate: "NA"
-  // });
+  // const [matchData, setMatchData] = useState();
 
   useEffect(() => {
     socket.on("FullPayLoad", (payload) => {

@@ -12,22 +12,23 @@ function Badminton_D({bdoubles}) {
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
  
   const [wdth, setWidth] = useState(50);
-  const matchData = bdoubles;
-  // const [matchData, setMatchData] = useState({
-  //   teamA: {
-  //     name: "NA", 
-  //     player1: "NA",
-  //     player2: "NA",
-  //   },
-  //   teamB: {
-  //     name: "NA",
-  //     player1: "NA",
-  //     player2: "NA",
-  //   },
-  //   tmA_score: [],
-  //   tmB_score: [],
-  //   latestUpdate: "NA"
-  // });
+  const matchData = bdoubles? bdoubles: {
+      teamA: {
+        name: "NA", 
+        player1: "NA",
+        player2: "NA",
+      },
+      teamB: {
+        name: "NA",
+        player1: "NA",
+        player2: "NA",
+      },
+      tmA_score: [],
+      tmB_score: [],
+      latestUpdate: "NA"
+    }
+
+  // const [matchData, setMatchData] = useState();
 
   useEffect(() => {
     // Socket event listener
