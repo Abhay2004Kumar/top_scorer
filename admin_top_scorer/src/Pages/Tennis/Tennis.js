@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import style from '../Badminton/Badminton.module.css';
+import style from '../Tennis/Tennis.module.css'
 import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton() {
   const [matchData, setMatchData] = useState({
-    name: "Badminton",
+    name: "tennis",
     data: {
       teamA: {
         name: "NA", 
@@ -53,7 +53,7 @@ function AdminBadminton() {
 
   return (
     <div className={style.MainDiv}>
-      <h2>Badminton Admin Page</h2>
+      <h2>Tennis Admin Page - Score</h2>
       <form onSubmit={handleFormSubmit} className={style.adminForm}>
         <div className={style.teamsContainer}>
           {/* Team A Details */}

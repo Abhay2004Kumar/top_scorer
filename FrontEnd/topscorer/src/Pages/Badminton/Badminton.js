@@ -3,11 +3,13 @@ import styles from "../Badminton/Badminton.module.css";
 import Options from '../../Components/Live_Upcoming/Options';
 import { GiTennisRacket } from "react-icons/gi";
 import io from "socket.io-client";
+import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("http://10.22.17.61:5000");
 
 function Badminton() {
   
+  const [wdth, setWidth] = useState(50);
   const [matchData, setMatchData] = useState({
     teamA: {
       name: "NA", 
@@ -25,23 +27,58 @@ function Badminton() {
 
   useEffect(() => {
     socket.on("FullPayLoad", (payload) => {
-      
       console.log(payload.badminton.lastMessageBD);
-      setMatchData(payload.badminton.lastMessageBD);
+      
+      // Set match data
+      if(payload.badminton.lastMessageBD)
+      {
 
-    });
-  }, []);  // Empty dependency array to ensure socket listener is set up only once
+      setMatchData(payload.badminton.lastMessageBD);
+      const { tmA_score, tmB_score } = payload.badminton_double.lastMessageBDouble;
+      let score1 = payload.badminton.lastMessageBD?.tmA_score.length > 0
+        ? parseInt(payload.badminton.lastMessageBD.tmA_score[payload.badminton.lastMessageBD.tmA_score.length - 1], 10) 
+        : 0;
   
-  const val = localStorage.getItem('badminton');
+      let score2 = payload.badminton.lastMessageBD?.tmB_score.length > 0
+        ? parseInt(payload.badminton.lastMessageBD.tmB_score[payload.badminton.lastMessageBD.tmB_score.length - 1], 10) 
+        : 0;
+  
+      // Calculate probability and set width
+      let prbabs = Badminton_Probability(score1, score2) || 0;  // Default to 0 if undefined
+      if (!isNaN(prbabs)) {
+        // Normalize to range 0-100
+        prbabs = Math.max(0, Math.min(prbabs, 100));
+        setWidth(prbabs);
+        console.log("Width set to:", prbabs); // Log the new width
+      }
+  
+      console.log("Score ", score1, score2);
+      console.log("Probs", prbabs);
+
+      }
+      // Extract scores safely
+      
+    });
+
+    // Clean up socket connection on unmount
+    return () => socket.off("FullPayLoad");
+  }, []);
+  
+  // Log the match data
   console.log('------------', matchData);
   
+  // Log width changes
+  useEffect(() => {
+      console.log('Width updated to:', wdth); // Log width changes
+  }, [wdth]);
+
   return (
     <>
       <div className={styles.MainDiv}>
         <Options />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
-            <p>< GiTennisRacket /> Badminton</p>
+            <p><GiTennisRacket /> Badminton</p>
           </div>
           <div className={styles.FLZ}>
             <div className={styles.teamA}>
@@ -67,8 +104,9 @@ function Badminton() {
 
         <div className={styles.textUpdate}>
           <div className={styles.predictor}>
-            <div className={styles.bar}></div>
+              <div style={{ width: `${wdth}%`,transition:"1s"}} className={styles.bar}></div> {/* Display width as a percentage */}
           </div>
+
           <p>{matchData?.latestUpdate}</p>
         </div>
 

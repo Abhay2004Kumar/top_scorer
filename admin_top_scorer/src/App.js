@@ -9,6 +9,7 @@ import Home from './Pages/Home_Page/Home';
 import Football from './Pages/Football/Football';
 import Cricket from './Pages/Cricket/Cricket';
 import AdminBadminton_D from './Pages/Badminton_D/Badminton_D';
+import AdminTennis from './Pages/Tennis/Tennis';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/badminton' element={<AdminBadminton />} />
           <Route path='/badmintonDoubles' element={<AdminBadminton_D />} />
+          <Route path='/tennis' element={<AdminTennis/>} />
           <Route path='/kabbadi' element={<Kabbadi />} />
           <Route path='/football' element={<Football />} />
           <Route path='/cricket' element={<Cricket />} />

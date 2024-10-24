@@ -14,21 +14,23 @@ const io = new Server(server, {
   }
 });
 
-// Variables to store last messages for each game type
-let lastMessageBD = { matchData: "No available" };  // Variable to store last Badminton match data
-let lastMessageBDouble = { matchData: "No available" };  // Variable to store last Badminton Doubles match data
+// // Variables to store last messages for each game type
+let lastMessageBD = { matchData: false };  // Variable to store last Badminton match data
+let lastMessageBDouble = { matchData: false };  // Variable to store last Badminton Doubles match data
 
 // Full payload object to store all game data
 let full_Payload = {
   badminton: {
-    lastMessageBD
+    "lastMessageBD" : false
   },
   badminton_double: {
-    lastMessageBDouble
+    "lastMessageBDouble" : false
+  },
+  tennis : {
+    "lastMessageBD": false
   }
 };
 
-// Set up socket connection
 io.on("connection", (socket) => {
   console.log("A user connected");
 
@@ -45,6 +47,11 @@ io.on("connection", (socket) => {
     else if (payload.name === "Badminton_D") {
       // Update badminton_double data
       full_Payload.badminton_double.lastMessageBDouble = payload.data;
+    }
+    else if (payload.name === "tennis") {
+      // Update badminton_double data
+      console.log("TEnnis");
+      full_Payload.tennis.lastMessageBD = payload.data;
     }
   
     // Log the incoming payload
