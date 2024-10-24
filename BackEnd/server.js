@@ -28,6 +28,9 @@ let full_Payload = {
   },
   tennis : {
     "lastMessageBD": false
+  },
+  tennis_D: {
+    "lastMessageBD": false
   }
 };
 
@@ -49,9 +52,14 @@ io.on("connection", (socket) => {
       full_Payload.badminton_double.lastMessageBDouble = payload.data;
     }
     else if (payload.name === "tennis") {
-      // Update badminton_double data
+      // Update  data
       console.log("TEnnis");
       full_Payload.tennis.lastMessageBD = payload.data;
+    }
+    else if (payload.name === "tennis_D") {
+      // Update badminton_double data
+      console.log("tennis_D");
+      full_Payload.tennis_D.lastMessageBD = payload.data;
     }
   
     // Log the incoming payload
