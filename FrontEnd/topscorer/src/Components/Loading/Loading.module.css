@@ -1,0 +1,19 @@
+/* Loading.css */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full screen or any specific height */
+  }
+  
+  .spinner {
+    font-size: 60px; /* Adjust size of the spinner */
+    color: #3498db; /* Color of the spinner */
+    animation: spin 1s linear infinite; /* Spin animation */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

@@ -20,6 +20,8 @@ import { BrowserRouter as Router , Route, Routes} from 'react-router-dom'
 import Home from './Pages/Home_Page/home'
 import Chat from './Components/Chat/Chat'
 import io from "socket.io-client";
+import BlogFeed from './Pages/Blog_Page/BlogFeed'
+
 
 const socket = io.connect("http://localhost:5000");
 
@@ -64,6 +66,7 @@ function App() {
             <Route path='/dev++' element={<DevelopmentTeam/>} ></Route>
             <Route path='/login' element={<Login/>} ></Route>
             <Route path='/chat' element={<Chat/>} ></Route>
+            <Route path='/Blog' element={<BlogFeed/>} ></Route>
 
 
 
