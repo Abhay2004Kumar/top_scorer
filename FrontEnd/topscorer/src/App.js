@@ -40,7 +40,7 @@ function App() {
       <Card/> */}
 
       <Routes>
-            <Route path='/' element={<Home/>} ></Route>
+            <Route path='/' element={<Badminton/>} ></Route>
             <Route path='/cricket' element={<Cricket/>} ></Route>
             <Route path='/football' element={<Football/>} ></Route>
             <Route path='/badminton' element={<Badminton/>} ></Route>

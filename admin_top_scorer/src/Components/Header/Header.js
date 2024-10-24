@@ -25,9 +25,9 @@ function Header() {
         <button className={style.Sports_Button} onClick={() => navigateTo('/kabbadi')}>Kabbadi</button>
         <button className={style.Sports_Button} onClick={() => navigateTo('/football')}>Football</button>
         <button className={style.Sports_Button} onClick={() => navigateTo('/Badminton')}>Badminton</button>
-        <button className={style.Sports_Button} onClick={() => navigateTo('/Badminton')}>Badminton_D</button>
+        <button className={style.Sports_Button} onClick={() => navigateTo('/BadmintonDoubles')}>Badminton_D</button>
 
-        <button className={style.Sports_Button} onClick={() => navigateTo('/Badminton')}>Tennis</button>
+        <button className={style.Sports_Button} onClick={() => navigateTo('/tennis')}>Tennis</button>
         <button className={style.Sports_Button} onClick={() => navigateTo('/Badminton')}>Tennis_D</button>
         <button className={style.Sports_Button} onClick={() => navigateTo('/cricket')}>Cricket</button>
       </div>

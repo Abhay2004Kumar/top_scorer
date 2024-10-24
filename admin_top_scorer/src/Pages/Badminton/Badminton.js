@@ -1,47 +1,54 @@
 import React, { useState } from 'react';
 import style from '../Badminton/Badminton.module.css';
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton() {
   const [matchData, setMatchData] = useState({
-    teamA: {
-      name: "",
-      player: "",
-    },
-    teamB: {
-      name: "",
-      player: "",
-    },
-    setScores: [
-      { set1: "", set2: "", set3: "" },
-      { set1: "", set2: "", set3: "" }
-    ],
-    currentSet: 1,
-    latestUpdate: ""
+    name: "Badminton",
+    data: {
+      teamA: {
+        name: "NA", 
+        player: "NA",
+      },
+      teamB: {
+        name: "NA",
+        player: "NA",
+      },
+      tmA_score: [], // Initialize scores for Team A
+      tmB_score: [], // Initialize scores for Team B
+      currentSet: 1,
+      latestUpdate: "NA"
+    }
   });
 
-  const teams = [
-    { name: "India", players: ["PV Sindhu", "Kidambi Srikanth"], flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg" },
-    { name: "China", players: ["Chen Long", "Li Ning"], flag: "https://cdn.britannica.com/90/7490-050-5D33348F/Flag-China.jpg" },
-    { name: "Japan", players: ["Kento Momota", "Akane Yamaguchi"], flag: "https://cdn.britannica.com/32/1832-004-42C0E9AA/Flag-Japan.jpg" },
-    // Add more teams as needed
-  ];
-
   const handleInputChange = (e, team, field) => {
-    setMatchData({
-      ...matchData,
-      [team]: { ...matchData[team], [field]: e.target.value },
-    });
+    setMatchData(prevMatchData => ({
+      ...prevMatchData,
+      data: {
+        ...prevMatchData.data,
+        [team]: { ...prevMatchData.data[team], [field]: e.target.value },
+      },
+    }));
   };
 
-  const handleSetScoreChange = (e, setIndex, field) => {
-    const newSetScores = [...matchData.setScores];
-    newSetScores[setIndex][field] = e.target.value;
-    setMatchData({ ...matchData, setScores: newSetScores });
+  const handleScoreChange = (e, team, setIndex) => {
+    const newScores = [...matchData.data[team === 'teamA' ? 'tmA_score' : 'tmB_score']];
+    newScores[setIndex] = parseInt(e.target.value, 10) || 0; // Set to 0 if NaN
+    setMatchData(prevMatchData => ({
+      ...prevMatchData,
+      data: {
+        ...prevMatchData.data,
+        [team === 'teamA' ? 'tmA_score' : 'tmB_score']: newScores,
+      },
+    }));
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("Match Data Submitted:", matchData);
+    socket.emit("data", matchData);  // Emit the whole matchData object
   };
 
   return (
@@ -53,129 +60,77 @@ function AdminBadminton() {
           <div className={style.adminSection}>
             <h3>Team A</h3>
             <input
-                type="text"
-                placeholder="Team Name"
-               
-              />
-              <input
-                type="text"
-                placeholder="Player Name"
-              />
+              type="text"
+              placeholder="Team Name"
+              value={matchData.data.teamA.name}
+              onChange={(e) => handleInputChange(e, 'teamA', 'name')}
+            />
+            <input
+              type="text"
+              placeholder="Player Name"
+              value={matchData.data.teamA.player}
+              onChange={(e) => handleInputChange(e, 'teamA', 'player')}
+            />
 
-              {/* Scores */}
-              <div className={style.Info}>
-              {/* <input
-                type="text"
-                placeholder="Set: (1 - 2 - 3)"
-               
-              /> */}
-              <input
-                type="text"
-                placeholder="Set 1 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 2 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 3 Score"
-              />
-              </div>
-            
-
-            
+            {/* Scores */}
+            <div className={style.Info}>
+              {[0, 1, 2].map(setIndex => (
+                <input
+                  key={setIndex}
+                  type="number"
+                  placeholder={`Set ${setIndex + 1} Score`}
+                  value={matchData.data.tmA_score[setIndex] || ""}
+                  onChange={(e) => handleScoreChange(e, 'teamA', setIndex)}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Team B Details */}
           <div className={style.adminSection}>
             <h3>Team B</h3>
             <input
-                type="text"
-                placeholder="Team Name"
-               
-              />
-              <input
-                type="text"
-                placeholder="Player Name"
-               
-              />
+              type="text"
+              placeholder="Team Name"
+              value={matchData.data.teamB.name}
+              onChange={(e) => handleInputChange(e, 'teamB', 'name')}
+            />
+            <input
+              type="text"
+              placeholder="Player Name"
+              value={matchData.data.teamB.player}
+              onChange={(e) => handleInputChange(e, 'teamB', 'player')}
+            />
 
-              {/* Scores */}
-              <div className={style.Info}>
-              {/* <input
-                type="text"
-                placeholder="Set: (1 - 2 - 3)"
-               
-              /> */}
-              <input
-                type="text"
-                placeholder="Set 1 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 2 Score"
-              />
-              <input
-                type="text"
-                placeholder="Set 3 Score"
-              />
-              </div>
-          
-            
+            {/* Scores */}
+            <div className={style.Info}>
+              {[0, 1, 2].map(setIndex => (
+                <input
+                  key={setIndex}
+                  type="number"
+                  placeholder={`Set ${setIndex + 1} Score`}
+                  value={matchData.data.tmB_score[setIndex] || ""}
+                  onChange={(e) => handleScoreChange(e, 'teamB', setIndex)}
+                />
+              ))}
+            </div>
           </div>
         </div>
-
-        {/* Set Scores */}
-        {/* <div className={style.adminSection}>
-          <h3>Set Scores</h3>
-          {matchData.setScores.map((set, index) => (
-            <div key={index}>
-              <h4>Set {index + 1}</h4>
-              <input
-                type="text"
-                placeholder="Set 1 Score (Team A)"
-                value={set.set1}
-                onChange={(e) => handleSetScoreChange(e, index, "set1")}
-              />
-              <input
-                type="text"
-                placeholder="Set 2 Score (Team A)"
-                value={set.set2}
-                onChange={(e) => handleSetScoreChange(e, index, "set2")}
-              />
-              <input
-                type="text"
-                placeholder="Set 3 Score (Team A)"
-                value={set.set3}
-                onChange={(e) => handleSetScoreChange(e, index, "set3")}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Current Set */}
-        {/* <div className={style.adminSection}>
-          <h3>Current Set</h3>
-          <input
-            type="number"
-            min="1"
-            placeholder="Current Set"
-            value={matchData.currentSet}
-            onChange={(e) =>
-              setMatchData({ ...matchData, currentSet: e.target.value })
-            }
-          />
-        </div> */}
 
         {/* Latest Update */}
         <div className={style.adminSection}>
           <h3>Latest Update</h3>
           <textarea
             placeholder="Latest Update"
-            value={matchData.latestUpdate}
+            value={matchData.data.latestUpdate}
             onChange={(e) =>
-              setMatchData({ ...matchData, latestUpdate: e.target.value })
+              setMatchData(prevState => ({
+                ...prevState,
+                data: {
+                  ...prevState.data,
+                  latestUpdate: e.target.value
+                }
+              }))
             }
           />
         </div> 

@@ -124,7 +124,7 @@ h4
 {
     height: 100%;
     width: 70%;
-    background-color: rgb(66, 28, 28);
+    background:linear-gradient(45deg, aquamarine, wheat);
     border-radius: 20px;
 }
 .tname
