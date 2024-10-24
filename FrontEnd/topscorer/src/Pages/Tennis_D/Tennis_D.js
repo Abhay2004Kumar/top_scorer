@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
-import styles from "../Badminton_Doubles/Badminton_D.module.css";
+import styles from "../Tennis_D/Tennis_D.module.css";
 import Options from '../../Components/Live_Upcoming/Options';
 import { GiTennisRacket } from "react-icons/gi";
-import io from "socket.io-client";
+
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
-const socket = io.connect("http://localhost:5000");
-
-function Badminton_D() {
+function Tennis_D({ttd}) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
   const [wdth, setWidth] = useState(50);
-  const [matchData, setMatchData] = useState({
+  const matchData = ttd ? ttd : {
     teamA: {
       name: "NA", 
       player1: "NA",
@@ -25,45 +23,28 @@ function Badminton_D() {
     tmA_score: [],
     tmB_score: [],
     latestUpdate: "NA"
-  });
+  }
+  console.log("Match_Data",ttd)
 
   useEffect(() => {
-    // Socket event listener
-    socket.on("FullPayLoad", (payload) => {
-      console.log(payload.tennis_D.lastMessageBD);
-
-      if (payload.tennis_D && payload.tennis_D.lastMessageBD) {
-        setMatchData(payload.tennis_D.lastMessageBD);
-
-        let score1 = payload.tennis_D.lastMessageBD?.tmA_score.length > 0
-          ? parseInt(payload.tennis_D.lastMessageBD.tmA_score[payload.tennis_D.lastMessageBD.tmA_score.length - 1], 10) 
-        : 0;
+    let score1 = matchData?.tmA_score.length > 0
+      ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10) 
+      : 0;
   
-      let score2 = payload.tennis_D.lastMessageBD?.tmB_score.length > 0
-        ? parseInt(payload.tennis_D.lastMessageBD.tmB_score[payload.tennis_D.lastMessageBD.tmB_score.length - 1], 10) 
-        : 0;
+    let score2 = matchData?.tmB_score.length > 0
+      ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10) 
+      : 0;
 
-      console.log("Score", score1, score2);
-      // Calculate probability and set width
-      let prbabs = Badminton_Probability(score1, score2) || 0;  // Default to 0 if undefined
-      if (!isNaN(prbabs)) {
-        // Normalize to range 0-100
-        prbabs = Math.max(0, Math.min(prbabs, 100));
-        setWidth(prbabs);
-        console.log("Width set to:", prbabs); // Log the new width
-      }
-
+    console.log("Score", score1, score2);
+    // Calculate probability and set width
+    let prbabs = Badminton_Probability(score1, score2) || 0;  // Default to 0 if undefined
+    if (!isNaN(prbabs)) {
+      // Normalize to range 0-100
+      prbabs = Math.max(0, Math.min(prbabs, 100));
+      setWidth(prbabs);
+      console.log("Width set to:", prbabs); // Log the new width
     }
-  
-
-      
-    });
-
-    // Cleanup on unmount
-    return () => {
-      socket.off("FullPayLoad");
-    };
-  }, []);  // Empty dependency array to ensure socket listener is set up only once
+  }, [matchData]);
 
   useEffect(() => {
     console.log('Width updated to:', wdth); // Log width changes
@@ -161,4 +142,4 @@ function Badminton_D() {
   );
 }
 
-export default Badminton_D;
+export default Tennis_D;

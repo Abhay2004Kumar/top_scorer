@@ -4,7 +4,7 @@ import { TiThMenu } from "react-icons/ti";
 import { IoIosCloseCircle } from "react-icons/io";
 import Game from '../Games/game';
 import { Link } from 'react-router-dom';
-import { faFutbol, faTableTennis, faBaseballBall, faSpaceShuttle, faPersonRunning } from '@fortawesome/free-solid-svg-icons';
+import { faFutbol, faTableTennis, faBaseballBall, faSpaceShuttle, faPersonRunning , faNewspaper  } from '@fortawesome/free-solid-svg-icons';
 
 
 function Sidebar() {
@@ -15,13 +15,14 @@ function Sidebar() {
   };
 
   const games = [
-    { name: 'Cricket', icon: faBaseballBall, path: '/cricket' },
-    { name: 'Football', icon: faFutbol, path: '/football' },
     { name: 'Badminton', icon: faSpaceShuttle, path: '/badminton' },
+    { name: 'Blogs', icon: faNewspaper, path: '/blog' },
     { name: 'Badminton Doubles', icon: faSpaceShuttle, path: '/badminton_d' },
     { name: 'Tennis', icon: faTableTennis, path: '/tennis' },
     { name: 'Tennis Doubles', icon: faTableTennis, path: '/tennis_d' },
     { name: 'Kabaddi', icon: faPersonRunning, path: '/kabaddi' },
+    { name: 'Football', icon: faFutbol, path: '/football' },
+    { name: 'Cricket', icon: faBaseballBall, path: '/cricket' },
   ];
 
   return (

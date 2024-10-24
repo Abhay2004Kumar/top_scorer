@@ -27,10 +27,10 @@ let full_Payload = {
     "lastMessageBDouble" : false
   },
   tennis : {
-    "lastMessageBD": false
+    "TT": false
   },
   tennis_D: {
-    "lastMessageBD": false
+    "TTD": false
   }
 };
 
@@ -39,27 +39,30 @@ io.on("connection", (socket) => {
 
   // Send the full payload to the newly connected client
   socket.emit("FullPayLoad", full_Payload);
+  console.log("FICK",full_Payload.tennis_D);
 
+  console.log("ALL",full_Payload);
   // Listen for data from the client
   socket.on("data", (payload) => {
     // Check if payload has a name and update the corresponding game type
+    console.log("Payload: ", payload)
     if (payload.name === "Badminton") {
       // Update badminton data
       full_Payload.badminton.lastMessageBD = payload.data;
     } 
     else if (payload.name === "Badminton_D") {
-      // Update badminton_double data
+      // Update badminton_double datatennis_D
       full_Payload.badminton_double.lastMessageBDouble = payload.data;
     }
     else if (payload.name === "tennis") {
       // Update  data
       console.log("TEnnis");
-      full_Payload.tennis.lastMessageBD = payload.data;
+      full_Payload.tennis.TT = payload.data;
     }
-    else if (payload.name === "tennis_D") {
+    else if (payload.name === "Tennis_D") {
       // Update badminton_double data 
-      console.log("tennis_D");
-      full_Payload.tennis_D.lastMessageBD = payload.data;
+      console.log("Tennis_D");
+      full_Payload.tennis_D.TTD = payload.data;
     }
 
     io.emit("FullPayLoad", full_Payload);

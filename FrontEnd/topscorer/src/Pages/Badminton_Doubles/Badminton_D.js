@@ -7,72 +7,50 @@ import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
 const socket = io.connect("http://localhost:5000");
 
-function Badminton_D({bdoubles}) {
+function Badminton_D({ bdoubles }) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
- 
-  const [wdth, setWidth] = useState(50);
-  const matchData = bdoubles? bdoubles: {
-      teamA: {
-        name: "NA", 
-        player1: "NA",
-        player2: "NA",
-      },
-      teamB: {
-        name: "NA",
-        player1: "NA",
-        player2: "NA",
-      },
-      tmA_score: [],
-      tmB_score: [],
-      latestUpdate: "NA"
-    }
 
-  // const [matchData, setMatchData] = useState();
+  const [wdth, setWidth] = useState(50);
+  const matchData = bdoubles || {
+    teamA: { name: "NA", player1: "NA", player2: "NA" },
+    teamB: { name: "NA", player1: "NA", player2: "NA" },
+    tmA_score: [],
+    tmB_score: [],
+    latestUpdate: "NA"
+  };
+
+  console.log("bdoubles:", bdoubles);
+  console.log("matchData:", matchData);
 
   useEffect(() => {
-    // Socket event listener
-    socket.on("FullPayLoad", (payload) => {
-      console.log(payload.badminton_double.lastMessageBDouble);
+    if (matchData) {
+      console.log("MAT", matchData);
 
-      if (payload.badminton_double && payload.badminton_double.lastMessageBDouble) {
-        // setMatchData(payload.badminton_double.lastMessageBDouble);
-
-        let score1 = payload.badminton_double.lastMessageBDouble?.tmA_score.length > 0
-          ? parseInt(payload.badminton_double.lastMessageBDouble.tmA_score[payload.badminton_double.lastMessageBDouble.tmA_score.length - 1], 10) 
+      let score1 = matchData.tmA_score.length > 0
+        ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10)
         : 0;
-  
-      let score2 = payload.badminton_double.lastMessageBDouble?.tmB_score.length > 0
-        ? parseInt(payload.badminton_double.lastMessageBDouble.tmB_score[payload.badminton_double.lastMessageBDouble.tmB_score.length - 1], 10) 
+
+      let score2 = matchData.tmB_score.length > 0
+        ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10)
         : 0;
 
       console.log("Score", score1, score2);
-      // Calculate probability and set width
-      let prbabs = Badminton_Probability(score1, score2) || 0;  // Default to 0 if undefined
+
+      let prbabs = Badminton_Probability(score1, score2) || 0;
       if (!isNaN(prbabs)) {
-        // Normalize to range 0-100
         prbabs = Math.max(0, Math.min(prbabs, 100));
         setWidth(prbabs);
-        console.log("Width set to:", prbabs); // Log the new width
+        console.log("Width set to:", prbabs);
       }
-
     }
-  
-
-      
-    });
-
-    // Cleanup on unmount
-    return () => {
-      socket.off("FullPayLoad");
-    };
-  }, []);  // Empty dependency array to ensure socket listener is set up only once
+  }, [matchData]);  // Update when matchData changes
 
   useEffect(() => {
-    console.log('Width updated to:', wdth); // Log width changes
+    console.log('Width updated to:', wdth);
   }, [wdth]);
 
-  const { teamA, teamB, tmA_score, tmB_score, latestUpdate } = matchData; // Destructure for easier access
+  const { teamA, teamB, tmA_score, tmB_score, latestUpdate } = matchData;
 
   return (
     <div className={styles.MainDiv}>
@@ -83,7 +61,7 @@ function Badminton_D({bdoubles}) {
         </div>
         <div className={styles.FLZ}>
           <div className={styles.teamA}>
-            <p className={styles.tname}>{teamA.name}</p> 
+            <p className={styles.tname}>{teamA.name}</p>
             <div className={styles.teamA_Img}>
               <img className={styles.img1} alt="Team A" src={flag1_link} />
             </div>
@@ -91,7 +69,7 @@ function Badminton_D({bdoubles}) {
             <p>{teamA.player2}(P)</p>
           </div>
           <div className={styles.VS}>
-            <h1 style={{marginTop:"15px"}} className={styles.gols}> 
+            <h1 style={{ marginTop: "15px" }} className={styles.gols}>
               {tmA_score.length > 0 ? tmA_score.at(-1) : 0} - {tmB_score.length > 0 ? tmB_score.at(-1) : 0}
             </h1>
             <p className={styles.setInfo}>Set {tmA_score.length}</p>
@@ -109,7 +87,7 @@ function Badminton_D({bdoubles}) {
 
       <div className={styles.textUpdate}>
         <div className={styles.predictor}>
-          <div style={{ width: `${wdth}%`, transition: "1s" }} className={styles.bar}></div> {/* Display width as a percentage */}
+          <div style={{ width: `${wdth}%`, transition: "1s" }} className={styles.bar}></div>
         </div>
         <p>{latestUpdate}</p>
       </div>

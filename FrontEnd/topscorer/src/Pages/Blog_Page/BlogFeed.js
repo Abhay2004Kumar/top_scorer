@@ -88,7 +88,7 @@ const BlogFeed = () => {
 
       setBlogs(prevBlogs => [...prevBlogs, ...newBlogs]);
       setLoading(false);
-    }, 2000);
+    }, 1000);
   };
 
   // Intersection Observer to detect when to load more blogs

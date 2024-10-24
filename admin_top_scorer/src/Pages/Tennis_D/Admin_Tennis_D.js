@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import style from '../Tennis_D/tennis_d.module.css';
+import style from '../Badminton/Badminton.module.css';
 import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:5000");
 
-function AdminTennis_D() {
+function Tennis_D() {
   const [matchData, setMatchData] = useState({
-    "name": "tennis_D",
+    "name": "Tennis_D", 
     "data": {
       teamA: {
         name: "", 
@@ -166,4 +166,4 @@ function AdminTennis_D() {
   );
 }
 
-export default AdminTennis_D;
+export default Tennis_D;
