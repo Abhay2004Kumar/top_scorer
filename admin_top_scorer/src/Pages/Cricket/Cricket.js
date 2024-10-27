@@ -2,6 +2,30 @@ import React, { useState } from 'react';
 import style from '../Cricket/Cricket.module.css';
 
 function Cricket() {
+
+    // need element which will show the board view of user side
+    // Match Start Option-- > team Name and no of over
+    // variables
+    //  logo links
+    // extras
+    // over_count
+    // store over as array
+    // W 6 4 ..... extras
+    // team score 
+    // extras
+    // other info
+    // player score count
+    // bowler stats
+    // calculation on client side ??
+
+
+
+
+
+
+
+
+
     const [team1, setTeam1] = useState({
         name: '',
         logo: '',
