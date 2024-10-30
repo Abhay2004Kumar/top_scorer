@@ -1,6 +1,6 @@
 .MainDiv {
   width: 80%;
-  margin: 20px auto;
+  margin: 20px auto; 
   padding: 20px;
   background-color: #004D40; /* Background color */
   color: antiquewhite; /* Text color */
@@ -161,4 +161,44 @@ select:focus {
     }
 
   }
+}
+
+/* css for popup {conforming the submission of score card} */
+.cover{
+  height: 150vh;
+  width: 90vw;
+  backdrop-filter: blur(3px);
+  position: absolute;
+  top: 0px;
+}
+.pop{
+  height: 200px;
+  width: 300px;
+  border-radius: 7px  ;
+  background-color: rgba(17, 194, 222, 0.882);
+  text-align: center;
+  position: absolute;
+  top: 30%;
+  left:40%;
+ 
+}
+.yes{
+  margin-right: 40px;
+  border: none;
+  scale: 1.4;
+  border-radius: 8px;
+}
+.no{
+  border: none;
+  scale: 1.4;
+  border-radius: 8px;
+}
+.yes:hover{
+  background-color: green;
+}
+.no:hover{
+  background-color: red;
+}
+button{
+  cursor: pointer;
 }
