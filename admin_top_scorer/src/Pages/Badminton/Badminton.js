@@ -60,7 +60,7 @@ function AdminBadminton() {
 
   return (
     <>
-      {popup &&
+      {popup && 
        <div className={style.cover} onClick={handleMatchSubmit}>
         <div className={style.pop}
         onClick={(e) => e.stopPropagation()}>
