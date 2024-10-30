@@ -2,9 +2,15 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import connectDB from './DB/connectDB.js';
+import cookieParser from 'cookie-parser';
+import { routes } from './routes/sport.route.js';
 
 const app = express();
 const server = http.createServer(app);
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
 
 // CORS Configuration
 const io = new Server(server, {
@@ -20,7 +26,7 @@ let lastMessageBDouble = { matchData: false };  // Variable to store last Badmin
 
 // Full payload object to store all game data
 let full_Payload = {
-  badminton: {
+  badminton: { 
     "lastMessageBD" : false
   },
   badminton_double: {
@@ -69,13 +75,17 @@ io.on("connection", (socket) => {
   });
   
 
-  // Handle client disconnection
+  // Handle client disconnection 
   socket.on("disconnect", () => {
     console.log("A user disconnected");
   });
 });
 
+app.use('/api/v1',routes);
+
 // Start the server
 server.listen(5000, () => {
   console.log('Server is running on port: 5000');
 });
+
+connectDB();
