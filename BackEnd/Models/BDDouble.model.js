@@ -18,8 +18,8 @@ const BDDoubleSchema = new mongoose.Schema(
      },
      teamB: {
        name: {
-         type:String,
-         required:true,
+         type:String, 
+         required:true, 
        }, 
        player1: {
          type:String,

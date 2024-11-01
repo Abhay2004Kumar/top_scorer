@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import style from '../Badminton/Badminton.module.css';
 import io from "socket.io-client";
+import axios from 'axios'
 
 const socket = io.connect("http://localhost:5000");
 
 function AdminBadminton_D() {
+  const [popup, setPopup] = useState(false);
   const [matchData, setMatchData] = useState({
     "name": "Badminton_D", 
     "data": { 
@@ -58,7 +60,32 @@ function AdminBadminton_D() {
     socket.emit("data", payload);
   };
 
+   // to decide the state of popup
+   const handleMatchSubmit = () => {
+    setPopup(!popup);
+  };
+  //To submit match data as archieve in DB.
+  const submitMatchData = async()=>{
+    try{
+      await axios.post('http://localhost:5000/api/v1/bdDouble',{data:matchData.data});
+      handleMatchSubmit();
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   return (
+    <>
+     {popup && 
+       <div className={style.cover} onClick={handleMatchSubmit}>
+        <div className={style.pop}
+        onClick={(e) => e.stopPropagation()}>
+        <p style={{color:"blue",textAlign:"center",fontSize:"30px"}}>Are you sure to submit the score?</p>
+        <button className={style.yes} onClick={submitMatchData}>Yes</button>
+        <button className={style.no} onClick={handleMatchSubmit}>NO</button>
+        </div>
+      </div>
+      }
     <div className={style.MainDiv}>
       <h2>Badminton Doubles Admin Page</h2>
       <form onSubmit={handleFormSubmit} className={style.adminForm}>
@@ -162,7 +189,14 @@ function AdminBadminton_D() {
           Submit Match Details
         </button>
       </form>
+      <button
+          style={{ cursor: "pointer", height: "30px" }}
+          onClick={handleMatchSubmit}
+        >
+          Submit Match Details
+        </button>
     </div>
+    </>
   );
 }
 
