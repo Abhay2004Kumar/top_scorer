@@ -15,12 +15,12 @@ const createBDDoubles = async(req,res)=>{
             message:newMatch
          })
     }catch(err){
-        res.status(500).json({
+        res.status(500).json({ 
             message:err
         })
     }
 }
 
 export {
-    createBDDoubles
+    createBDDoubles 
 }
