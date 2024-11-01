@@ -7,7 +7,7 @@ const socket = io.connect("http://localhost:5000");
 function AdminBadminton_D() {
   const [matchData, setMatchData] = useState({
     "name": "Badminton_D", 
-    "data": {
+    "data": { 
       teamA: {
         name: "", 
         player1: "",

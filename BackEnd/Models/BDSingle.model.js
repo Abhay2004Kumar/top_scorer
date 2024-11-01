@@ -12,7 +12,7 @@ const BDSingleSchema = new mongoose.Schema(
         type:String,
         required:true,
       },
-    },
+    }, 
     teamB: {
       name: {
         type:String,
