@@ -45,13 +45,13 @@ io.on("connection", (socket) => {
 
   // Send the full payload to the newly connected client
   socket.emit("FullPayLoad", full_Payload);
-  console.log("FICK",full_Payload.tennis_D);
+  // console.log("FICK",full_Payload.tennis_D);
 
-  console.log("ALL",full_Payload);
+  // console.log("ALL",full_Payload);
   // Listen for data from the client
   socket.on("data", (payload) => {
     // Check if payload has a name and update the corresponding game type
-    console.log("Payload: ", payload)
+    // console.log("Payload: ", payload)
     if (payload.name === "Badminton") {
       // Update badminton data
       full_Payload.badminton.lastMessageBD = payload.data;

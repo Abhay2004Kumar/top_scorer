@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import style from "../Badminton/Badminton.module.css";
 import io from "socket.io-client";
+import axios from 'axios'
 
 const socket = io.connect("http://localhost:5000");
 
@@ -53,10 +54,19 @@ function AdminBadminton() {
     // console.log("Match Data Submitted:", matchData);
     socket.emit("data", matchData); // Emit the whole matchData object
   };
-
+  // to decide the state of popup
   const handleMatchSubmit = () => {
     setPopup(!popup);
   };
+  //TO submit match data as archieve in DB.
+  const submitMatchData = async()=>{
+    try{
+      await axios.post('http://localhost:5000/api/v1/bdsingle',{data:matchData.data});
+      handleMatchSubmit();
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -65,7 +75,7 @@ function AdminBadminton() {
         <div className={style.pop}
         onClick={(e) => e.stopPropagation()}>
         <p style={{color:"blue",textAlign:"center",fontSize:"30px"}}>Are you sure to submit the score?</p>
-        <button className={style.yes}>Yes</button>
+        <button className={style.yes} onClick={submitMatchData}>Yes</button>
         <button className={style.no} onClick={handleMatchSubmit}>NO</button>
         </div>
       </div>

@@ -38,7 +38,7 @@ function App() {
       // console.log(matchD.badminton);
     });
   },[])
-  console.log("***** ",matchD);
+  // console.log("***** ",matchD);
 
   return (
     <>
