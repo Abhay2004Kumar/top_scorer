@@ -41,5 +41,5 @@ Stay updated with the latest sports events in the college through the **Blog Pag
 
 ## Contributors
    - Prasoon Kushwaha
-   - Piysuh Yadav
+   - Piyush Yadav
    - Abhay Kumar
