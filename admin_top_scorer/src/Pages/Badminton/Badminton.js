@@ -58,7 +58,7 @@ function AdminBadminton() {
   const handleMatchSubmit = () => {
     setPopup(!popup);
   };
-  //TO submit match data as archieve in DB.
+  //To submit match data as archieve in DB.
   const submitMatchData = async()=>{
     try{
       await axios.post('http://localhost:5000/api/v1/bdsingle',{data:matchData.data});
