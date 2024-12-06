@@ -21,6 +21,17 @@ const createBDDoubles = async(req,res)=>{
     }
 }
 
+
+const getBDDoubles = async(req,res)=>{
+    try {
+        const data = await BDDouble.find();
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
 export {
-    createBDDoubles 
+    createBDDoubles ,
+    getBDDoubles
 }
