@@ -7,6 +7,7 @@ const routes = express.Router();
 routes.post('/bdsingle',createBDSingle);
 routes.post('/bdDouble',createBDDoubles);
 
+
 export{
     routes
 }

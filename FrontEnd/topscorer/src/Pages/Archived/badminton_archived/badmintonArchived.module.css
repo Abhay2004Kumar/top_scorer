@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --background-color: #0C2F3A; /* Soft Lavender background */
   --primary-text-color: #218141; /* Dark Gray Text */
@@ -166,3 +167,166 @@
   font-size: 14px;
   color: var(--secondary-text-color); /* Light gray for updates */
 }
+=======
+/* Global Settings */
+/* body {
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #0d1b2a;
+    color: #f5f5f5;
+  } */
+  
+  /* Main Container */
+  .MainDiv {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Match Detail View */
+  .MatchDetail {
+    background: linear-gradient(to right, #2a3b56, #1c2a41);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  .BackButton {
+    font-size: 1.2em;
+    color: #ecf0f1;
+    background-color: #e74c3c;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .BackButton:hover {
+    background-color: #c0392b;
+  }
+  
+    /* h2 {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #f39c12;
+      text-align: center;
+    } */
+  
+  .MatchUpdate {
+    font-size: 1.2em;
+    color: #bdc3c7;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .MatchTeams {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .TeamDetails {
+    text-align: center;
+    width: 45%;
+  }
+  
+  h3 {
+    font-size: 2.2em;
+    color: #f39c12;
+  }
+  
+  p {
+    font-size: 1.2em;
+    color: #ecf0f1;
+    font-weight: 600;
+  }
+  
+  .Scoreboard {
+    margin-top: 40px;
+  }
+  
+  .Scoreboard table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid #2c3e50;
+  }
+  
+  th {
+    background: #2d3a53;
+  }
+  
+  td {
+    background: #34495e;
+  }
+  
+  /* Match List */
+  .MatchList {
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #f39c12;
+    margin-bottom: 20px;
+  }
+  
+  /* Match Cards */
+  .CardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: 500px;
+    padding-right: 10px;
+    width: 100%;
+  }
+  
+  .MatchCard {
+    background: #1f2b44;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .MatchCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .MatchCard h3 {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #f39c12;
+  }
+  
+  .MatchUpdate {
+    font-size: 1.1em;
+    color: #bdc3c7;
+    margin-top: 10px;
+  }
+  
+  .CardScore {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .CardScore p {
+    font-weight: bold;
+    color: #e74c3c;
+  }
+  
+>>>>>>> ae95af2 (add user.controller nad user.model in backend)
