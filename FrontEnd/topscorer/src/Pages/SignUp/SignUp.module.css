@@ -1,0 +1,190 @@
+/* Root variables for global colors */
+:root {
+    --primary-color: #E0E0E0;
+    --secondary-color: #ffffff;
+    --background-color: #f4f4f4;
+    --input-border-color: #818181;
+    --button-bg-color: #FF5722;
+    --footer-link-color: #FFEB3D;
+    --header-background: #001d14;
+}
+
+/* Container styles */
+.header{
+    font-weight: 700;
+    font-size: 2.5em;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 90vh;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+
+}
+
+/* Form Section */
+.formSection {
+    flex: 1;
+    padding: 3rem;
+    color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--header-background);
+}
+
+/* Carousel Section */
+.carouselSection {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hide carousel on small screens */
+@media (max-width: 768px) {
+    .carouselSection {
+        display: none;
+    }
+}
+
+/* Carousel Images */
+.carouselImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Fade-in effect */
+.fadeIn {
+    opacity: 1;
+}
+
+/* Fade-out effect */
+.fadeOut {
+    opacity: 0;
+}
+
+/* Header */
+.header {
+    margin-bottom: 1rem;
+}
+
+/* Form Styles */
+.form {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 30px;
+    /* margin: 20px; */
+    background-color: #020f0b;
+    border-radius: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid wheat;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for form */
+.form:hover {
+    transform: scale(1.05);
+}
+
+/* Input Fields */
+.input {
+    width: 90%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #1E1E2D;
+    color: rgb(232, 226, 226);
+    font-family: monospace;
+    border-radius: 50px;
+    border: 1px solid var(--input-border-color);
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for input fields */
+.input:hover {
+    background-color: #252525;
+}
+
+/* Button */
+.button {
+    width: 50%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1rem;
+    font-weight: 600;
+    background-color: var(--button-bg-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for button */
+.button:hover {
+    background-color: #e64a19;
+}
+
+/* Footer Text */
+.footerText {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Footer Link */
+.footerLink {
+    color: var(--footer-link-color);
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for footer link */
+.footerLink:hover {
+    color: #ffeb3d;
+}
+
+/* Hide the carousel on small screens */
+.hideCarousel {
+    display: none;
+}
+
+/* Animation Effects */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeIn {
+    animation: fadeIn 1s ease-in;
+}
+
+.fadeOut {
+    animation: fadeOut 1s ease-out;
+}

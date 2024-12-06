@@ -22,6 +22,7 @@ import Chat from './Components/Chat/Chat'
 import io from "socket.io-client";
 import BlogFeed from './Pages/Blog_Page/BlogFeed'
 import BadmintonArchived from './Pages/Archived/badminton_archived/badmintonArchived'
+import SignupPage from "./Pages/SignUp/SignUp";
 // import './index.css';
 const socket = io.connect("http://localhost:5000");
 
@@ -73,6 +74,8 @@ function App() {
             <Route path='/chat' element={<Chat/>} ></Route>
             <Route path='/Blog' element={<BlogFeed/>} ></Route>
             <Route path='/badminton_archived' element={<BadmintonArchived/>}></Route>
+
+            <Route path='/sign_up' element={<SignupPage/>}></Route>
 
 
 
