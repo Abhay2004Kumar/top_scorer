@@ -12,6 +12,7 @@ import Cricket from './Pages/Cricket/Cricket';
 import AdminBadminton_D from './Pages/Badminton_D/Badminton_D';
 import AdminTennis from './Pages/Tennis/Tennis';
 import AdminTennis_D from './Pages/Tennis_D/Admin_Tennis_D';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 
@@ -19,7 +20,9 @@ function App() {
 
 
   return (
+    <>
     <Router>
+    <div><Toaster/></div>
       <div className='main_div'>
         <Header />
         
@@ -39,6 +42,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </>
   );
 }
 
