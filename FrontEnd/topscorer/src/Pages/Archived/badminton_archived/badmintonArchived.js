@@ -5,8 +5,16 @@ function BadmintonArchived({ matches }) {
   const defaultMatches = matches || [
     {
       id: 1,
-      teamA: { name: "India", player: "PV Sindhu", details: "Ranked #7 in the world" },
-      teamB: { name: "China", player: "Chen Long", details: "Former World Champion" },
+      teamA: {
+        name: "India",
+        player: "PV Sindhu",
+        details: "Ranked #7 in the world",
+      },
+      teamB: {
+        name: "China",
+        player: "Chen Long",
+        details: "Former World Champion",
+      },
       tmA_score: [21, 18, 21],
       tmB_score: [15, 21, 18],
       latestUpdate: "India won the match!",
@@ -14,8 +22,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 2,
-      teamA: { name: "Indonesia", player: "Jonatan Christie", details: "Top 10 in the World Rankings" },
-      teamB: { name: "Malaysia", player: "Lee Zii Jia", details: "Olympic Silver Medalist" },
+      teamA: {
+        name: "Indonesia",
+        player: "Jonatan Christie",
+        details: "Top 10 in the World Rankings",
+      },
+      teamB: {
+        name: "Malaysia",
+        player: "Lee Zii Jia",
+        details: "Olympic Silver Medalist",
+      },
       tmA_score: [19, 21, 20],
       tmB_score: [21, 15, 22],
       latestUpdate: "Malaysia won the match!",
@@ -23,8 +39,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 3,
-      teamA: { name: "Denmark", player: "Viktor Axelsen", details: "Olympic Gold Medalist" },
-      teamB: { name: "Japan", player: "Kento Momota", details: "Former World Champion" },
+      teamA: {
+        name: "Denmark",
+        player: "Viktor Axelsen",
+        details: "Olympic Gold Medalist",
+      },
+      teamB: {
+        name: "Japan",
+        player: "Kento Momota",
+        details: "Former World Champion",
+      },
       tmA_score: [21, 18, 19],
       tmB_score: [15, 21, 17],
       latestUpdate: "Denmark won the match!",
@@ -32,7 +56,11 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 4,
-      teamA: { name: "Thailand", player: "Ratchanok Intanon", details: "Former World Champion" },
+      teamA: {
+        name: "Thailand",
+        player: "Ratchanok Intanon",
+        details: "Former World Champion",
+      },
       teamB: { name: "Korea", player: "An Se-young", details: "Rising Star" },
       tmA_score: [19, 21, 21],
       tmB_score: [21, 15, 17],
@@ -41,8 +69,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 5,
-      teamA: { name: "France", player: "Christo Popov", details: "Young and Talented Player" },
-      teamB: { name: "Malaysia", player: "Lee Chong Wei", details: "One of the best in the sport" },
+      teamA: {
+        name: "France",
+        player: "Christo Popov",
+        details: "Young and Talented Player",
+      },
+      teamB: {
+        name: "Malaysia",
+        player: "Lee Chong Wei",
+        details: "One of the best in the sport",
+      },
       tmA_score: [18, 21, 20],
       tmB_score: [21, 19, 22],
       latestUpdate: "Malaysia won the match!",
@@ -50,8 +86,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 6,
-      teamA: { name: "China", player: "Chen Long", details: "Experienced Veteran" },
-      teamB: { name: "India", player: "Srikanth Kidambi", details: "Olympic Medalist" },
+      teamA: {
+        name: "China",
+        player: "Chen Long",
+        details: "Experienced Veteran",
+      },
+      teamB: {
+        name: "India",
+        player: "Srikanth Kidambi",
+        details: "Olympic Medalist",
+      },
       tmA_score: [21, 19, 21],
       tmB_score: [18, 21, 15],
       latestUpdate: "China won the match!",
@@ -59,8 +103,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 7,
-      teamA: { name: "Indonesia", player: "Jonatan Christie", details: "Top 10 Player" },
-      teamB: { name: "Japan", player: "Kento Momota", details: "World Champion" },
+      teamA: {
+        name: "Indonesia",
+        player: "Jonatan Christie",
+        details: "Top 10 Player",
+      },
+      teamB: {
+        name: "Japan",
+        player: "Kento Momota",
+        details: "World Champion",
+      },
       tmA_score: [21, 20, 21],
       tmB_score: [19, 22, 19],
       latestUpdate: "Indonesia won the match!",
@@ -68,8 +120,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 8,
-      teamA: { name: "Thailand", player: "Ratchanok Intanon", details: "Top Female Player" },
-      teamB: { name: "China", player: "He Bingjiao", details: "Strong Contender" },
+      teamA: {
+        name: "Thailand",
+        player: "Ratchanok Intanon",
+        details: "Top Female Player",
+      },
+      teamB: {
+        name: "China",
+        player: "He Bingjiao",
+        details: "Strong Contender",
+      },
       tmA_score: [22, 21],
       tmB_score: [20, 19],
       latestUpdate: "Thailand won the match!",
@@ -77,8 +137,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 9,
-      teamA: { name: "Malaysia", player: "Lee Zii Jia", details: "Olympic Silver Medalist" },
-      teamB: { name: "South Korea", player: "Son Wan-ho", details: "Veteran Player" },
+      teamA: {
+        name: "Malaysia",
+        player: "Lee Zii Jia",
+        details: "Olympic Silver Medalist",
+      },
+      teamB: {
+        name: "South Korea",
+        player: "Son Wan-ho",
+        details: "Veteran Player",
+      },
       tmA_score: [19, 21, 20],
       tmB_score: [21, 19, 22],
       latestUpdate: "South Korea won the match!",
@@ -86,8 +154,16 @@ function BadmintonArchived({ matches }) {
     },
     {
       id: 10,
-      teamA: { name: "India", player: "Saina Nehwal", details: "Former World Number 1" },
-      teamB: { name: "Denmark", player: "Carolina Marin", details: "Olympic Champion" },
+      teamA: {
+        name: "India",
+        player: "Saina Nehwal",
+        details: "Former World Number 1",
+      },
+      teamB: {
+        name: "Denmark",
+        player: "Carolina Marin",
+        details: "Olympic Champion",
+      },
       tmA_score: [21, 19, 21],
       tmB_score: [19, 21, 19],
       latestUpdate: "India won the match!",
@@ -98,12 +174,12 @@ function BadmintonArchived({ matches }) {
   const [selectedMatch, setSelectedMatch] = useState(null);
 
   const handleCardClick = (matchId) => {
-    setSelectedMatch(defaultMatches.find((match) => match.id === matchId));
+    const match = defaultMatches.find((m) => m.id === matchId);
+    if (match) setSelectedMatch(match);
   };
 
   return (
     <div className={styles.MainDiv}>
-      {/* Match Detail View */}
       {selectedMatch ? (
         <div className={styles.MatchDetail}>
           <button
@@ -112,21 +188,24 @@ function BadmintonArchived({ matches }) {
           >
             Back to Matches
           </button>
-          <div className={styles.MatchTeams}>
-            <div className={styles.TeamDetails}>
-              <h3>{selectedMatch.teamA.name}</h3>
-              <p>{selectedMatch.teamA.player}</p>
-            </div>
-            <h2>VS</h2>
-            <div className={styles.TeamDetails}>
-              <h3>{selectedMatch.teamB.name}</h3>
-              <p>{selectedMatch.teamB.player}</p>
+          <div className={styles.math_info}>
+            <div className={styles.MatchTeams}>
+              <div className={styles.TeamDetails}>
+                <h3>{selectedMatch.teamA.name}</h3>
+                <p>{selectedMatch.teamA.player}</p>
+              </div>
+              <div className={styles.TeamDetails}>
+                <h3>Vs</h3>
+              </div>
+              <div className={styles.TeamDetails}>
+                <h3>{selectedMatch.teamB.name}</h3>
+                <p>{selectedMatch.teamB.player}</p>
+              </div>
             </div>
           </div>
 
           <p className={styles.MatchUpdate}>{selectedMatch.latestUpdate}</p>
 
-          {/* Scoreboard Table */}
           <div className={styles.Scoreboard}>
             <h3>Scoreboard</h3>
             <table>
@@ -151,7 +230,7 @@ function BadmintonArchived({ matches }) {
         </div>
       ) : (
         <div className={styles.MatchList}>
-          <h2>Archived Matches</h2>
+          <span className={styles.Heading2}>Archived Matches</span>
           <div className={styles.CardContainer}>
             {defaultMatches.map((match) => (
               <div
@@ -159,11 +238,16 @@ function BadmintonArchived({ matches }) {
                 className={styles.MatchCard}
                 onClick={() => handleCardClick(match.id)}
               >
-                <h3>{match.teamA.name} vs {match.teamB.name}</h3>
+                <h3>
+                  {match.teamA.name} vs {match.teamB.name}
+                </h3>
                 <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
                 <div className={styles.CardScore}>
-                  <p>{match.tmA_score.at(-1)} - {match.tmB_score.at(-1)}</p>
-                  <p>Set {match.currentSet}</p>
+                  <p>
+                    Last Set: {match.tmA_score.at(-1)} -{" "}
+                    {match.tmB_score.at(-1)}
+                  </p>
+                  <p>Current Set: {match.currentSet}</p>
                 </div>
               </div>
             ))}

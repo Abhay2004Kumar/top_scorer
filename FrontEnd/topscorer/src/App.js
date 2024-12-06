@@ -22,7 +22,7 @@ import Chat from './Components/Chat/Chat'
 import io from "socket.io-client";
 import BlogFeed from './Pages/Blog_Page/BlogFeed'
 import BadmintonArchived from './Pages/Archived/badminton_archived/badmintonArchived'
-
+// import './index.css';
 const socket = io.connect("http://localhost:5000");
 
 function App() {

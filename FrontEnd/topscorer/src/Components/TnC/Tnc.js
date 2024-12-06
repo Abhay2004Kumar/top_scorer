@@ -16,7 +16,7 @@ function TermsAndConditions() {
       <div className={styles.cards}>
         <section className={styles.card}>
           <h2 className={styles.subheading}>1. General</h2>
-          <p>
+          <p className={styles.para}>
             Welcome to Top Scorer. By accessing and using this website, you agree to be bound by these terms and conditions. 
             If you do not agree with any part of these terms, you should not use our website.
           </p>
