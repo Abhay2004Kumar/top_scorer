@@ -54,7 +54,7 @@ function Badminton_D({ bdoubles }) {
 
   return (
     <div className={styles.MainDiv}>
-      <Options />
+      <Options cur_link="/badminton_d" archived="/dbadminton_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>
           <p><GiTennisRacket /> <GiTennisRacket /> Badminton Doubles</p>

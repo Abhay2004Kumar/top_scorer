@@ -54,7 +54,7 @@ function Tennis_D({ttd}) {
 
   return (
     <div className={styles.MainDiv}>
-      <Options />
+      <Options cur_link="/tennis_d" archived="/dbtennis_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>
           <p><GiTennisRacket /> <GiTennisRacket /> Tennis Doubles</p>
