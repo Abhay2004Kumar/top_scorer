@@ -59,7 +59,10 @@ function Cricket() {
     return (
         <>
             <div className={style.maindiv}>
-                <Options />
+                <Options
+            cur_link="/cricket"
+            archived="/cricket_archived"
+                />
                 <div className={style.teamslogo}>
                     <div className={style.tone}>
                         <div className={style.img1}>

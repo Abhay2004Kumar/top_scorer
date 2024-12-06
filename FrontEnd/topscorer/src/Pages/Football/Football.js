@@ -34,7 +34,10 @@ function Football() {
   return (
     <>
       <div className={styles.MainDiv}>
-      <Options />
+      <Options
+          cur_link="/football"
+          archived="/football_archived"
+        />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
             <p><IoMdFootball /> {matchData.sport}</p>

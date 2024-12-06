@@ -44,7 +44,10 @@ function Tennis({ tt }) {
   return (
     <>
       <div className={styles.MainDiv}>
-        <Options />
+          <Options 
+            cur_link="/tennis"
+            archived="/tennis_archived"
+          />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
             <p><MdOutlineSportsTennis /> Tennis Singles</p>

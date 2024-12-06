@@ -47,7 +47,10 @@ function Kabaddi() {
   return (
     <>
       <div className={styles.MainDiv}>
-        <Options />
+      <Options
+          cur_link="/kabaddi"
+          archived="/kabbadi_archived"
+        />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
             <p><MdSportsKabaddi /> Kabaddi</p>
