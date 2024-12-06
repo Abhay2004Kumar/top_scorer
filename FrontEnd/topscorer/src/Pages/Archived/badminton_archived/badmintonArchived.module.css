@@ -23,11 +23,19 @@
   color: var(--primary-text-color); /* Light text */
   align-items: center;
   font-family: Arial, sans-serif;
+  justify-content: center;
+  /* border: 5px solid red; */
 }
+.opn{
+  /* border: 5px sold yellow; */
+  display: flex;
+  justify-content: center;
+  
 
+}
 /* Heading */
 .Heading2 {
-  color: var(--heading-text-color); /* White text */
+  color: #FFF; /* White text */
   font-weight: 600;
   font-size: 1.2em;
   border: 1px solid var(--box-border-color); /* Light border */

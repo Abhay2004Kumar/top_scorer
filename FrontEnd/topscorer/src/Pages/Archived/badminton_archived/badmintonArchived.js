@@ -1,3 +1,4 @@
+import Options from "../../../Components/Live_Upcoming/Options";
 import styles from "./badmintonArchived.module.css";
 import { useState } from "react";
 
@@ -180,6 +181,14 @@ function BadmintonArchived({ matches }) {
 
   return (
     <div className={styles.MainDiv}>
+      <div className={styles.opn}>
+          <Options 
+            cur_link="/badminton"
+            // archived="/sports/archived"
+            archived="/badminton_archived"
+          />
+      </div>
+     
       {selectedMatch ? (
         <div className={styles.MatchDetail}>
           <button

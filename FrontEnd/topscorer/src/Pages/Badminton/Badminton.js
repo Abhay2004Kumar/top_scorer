@@ -54,7 +54,12 @@ function Badminton({ bd }) {
   return (
     <>
       <div className={styles.MainDiv}>
-        <Options />
+      <Options 
+        cur_link="/badminton"
+        // archived="/sports/archived"
+        archived="/badminton_archived"
+      />
+
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
             <p><GiTennisRacket /> Badminton</p>
