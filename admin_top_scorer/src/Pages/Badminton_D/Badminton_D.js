@@ -67,11 +67,11 @@ function AdminBadminton_D() {
   //To submit match data as archieve in DB.
   const submitMatchData = async()=>{
     try{
-      await axios.post('http://localhost:5000/api/v1/bdDouble',{data:matchData.data});
-      handleMatchSubmit();
+      await axios.post('http://localhost:5000/api/v1/sports/bdDouble',{data:matchData.data});
     }catch(err){
       console.log(err);
     }
+    handleMatchSubmit();
   }
 
   return (

@@ -25,7 +25,20 @@ const createBDSingle = async (req, res) => {
     }
 };
 
+const getBDSingle = async(req,res) => {
+    try {
+        const data = await BDSingle.find();
+         console.log("dddd" , data);
+         res.status(200).json(data);
+
+    } catch (error) {
+        res.status(500).json(error);
+        // console.log(error);
+    }
+}
+
 
 export {
-    createBDSingle
+    createBDSingle,
+    getBDSingle
 }
