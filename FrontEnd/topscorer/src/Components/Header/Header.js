@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
 import icons from '../../Project_Icon/Dark.png';
 import { IoExitOutline } from "react-icons/io5";
+import toast from 'react-hot-toast';
 
-function Header({ islogin }) {
+function Header({ islogin ,setislogin}) {
   const navigate = useNavigate();
   const [isUser, setIsUser] = useState('');
 
@@ -13,10 +14,24 @@ function Header({ islogin }) {
   };
 
   const handleLogout = () => {
-    // You should clear the access token and other user data on logout
+    // Clear the access token and other user data on logout
     localStorage.removeItem('accessToken');
     setIsUser('');
-    navigate('/login');
+    setislogin(false);
+
+    // Trigger a toast notification for logout process
+    toast.promise(
+      // Here, we'll simulate a promise (you can replace this with actual logout logic)
+      Promise.resolve(),
+      {
+        loading: 'Logging Out...',
+        success: <b>See you soon!</b>,
+        error: <b>Logout failed. Please try again.</b> // In case of error
+      }
+    );
+
+    // Navigate to the home page after logout
+    navigate('/');
   };
 
   useEffect(() => {

@@ -55,7 +55,7 @@ function App() {
     <>
     <div><Toaster/></div>
     <Router>
-     <Header islogin={islogin}/>
+     <Header islogin={islogin} setislogin={setislogin}/>
      <div style={{backgroundColor:"#080A1F"}}>
 
      <div style={{display:"flex",backgroundColor:"#080A1F"}}>

@@ -17,7 +17,7 @@ function Login({setislogin}) {
 
     try {
       const response = await axios.post(`http://localhost:5000/api/v1/users/loginUser`, { 
-        email:emailOrUsername, 
+        login:emailOrUsername, 
         password:password 
       });
       console.log(response) /// doubt full how is it showing password????
