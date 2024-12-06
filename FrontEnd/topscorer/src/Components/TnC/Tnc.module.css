@@ -11,9 +11,10 @@
 
 .heading {
     font-size: 36px;
+    color: #001A1E;
     background: linear-gradient(45deg, aquamarine, wheat);
-    /* -webkit-background-clip: text; */
-    -webkit-text-fill-color: transparent;
+    padding: 5px;
+    border-radius: 5px;
     margin-bottom: 20px;
 }
 

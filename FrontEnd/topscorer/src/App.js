@@ -30,6 +30,7 @@ import CricketArchived from "./Pages/Archived/cricket_archived/cricketArchived";
 import DBadmintonArchived from "./Pages/Archived/dbadminton_archived/dbadmintonArchived";
 import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived";
 // import './index.css';
+import toast, { Toaster} from 'react-hot-toast'
 const socket = io.connect("http://localhost:5000");
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
     tennis:false,
     tennis_D: false,
   });
+  
+  const [islogin,setislogin] = useState(false);
   
   useEffect(()=>{
     socket.on("FullPayLoad",(payload)=>{
@@ -50,8 +53,9 @@ function App() {
 
   return (
     <>
+    <div><Toaster/></div>
     <Router>
-     <Header/>
+     <Header islogin={islogin}/>
      <div style={{backgroundColor:"#080A1F"}}>
 
      <div style={{display:"flex",backgroundColor:"#080A1F"}}>
@@ -76,7 +80,7 @@ function App() {
             <Route path='/kabaddi' element={<Kabaddi/>} ></Route>
             <Route path='/tnc' element={<TermsAndConditions/>} ></Route>
             <Route path='/dev++' element={<DevelopmentTeam/>} ></Route>
-            <Route path='/login' element={<Login/>} ></Route>
+            <Route path='/login' element={<Login setislogin={setislogin} />} ></Route>
             <Route path='/chat' element={<Chat/>} ></Route>
             <Route path='/Blog' element={<BlogFeed/>} ></Route>
             <Route path='/badminton_archived' element={<BadmintonArchived/>}></Route>

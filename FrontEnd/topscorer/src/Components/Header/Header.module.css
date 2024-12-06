@@ -2,66 +2,103 @@
     margin: 0;
     padding: 0;
 }
-
+/* Header.module.css */
 .header {
-    height: 80px;
-    width: 100vw;
-    background-color: #080A1F;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    border-bottom: 1px solid #90F0FD;
-    box-sizing: border-box;
-}
-
-.logoContainer {
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #080A1F;
+    color: white;
+  }
+  
+  .logoContainer {
     display: flex;
     align-items: center;
-    width: 200px;
-}
-
-.logo {
-    height: 65px; /* Ensure the logo fits within the header height */
-    width: auto;  /* Maintain aspect ratio */
-    margin-right: 15px;
-}
-
-.title {
-    color: #fff;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.nav {
+  }
+  
+  .logo {
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .nav {
     display: flex;
     align-items: center;
-    gap: 20px;
-}
-
-.navLink {
-    color: #fff;
+  }
+  
+  .navLink {
+    margin: 0 15px;
     text-decoration: none;
+    color: white;
     font-size: 16px;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.navLink:hover {
-    color: #90F0FD;
-}
-
-.login {
-    background-color: floralwhite;
+  }
+  
+  .login {
+    padding: 8px 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    font-size: 1.2em;
+    background-color: #007BFF;
+    color: white;
     border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-weight: bold;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.login:hover {
-    background-color: orange;
-    transform: scale(1.1);
-}
+  }
+  
+  .login:hover {
+    background-color: #0056b3;
+  }
+  
+  .userContainer {
+    display: flex;
+    align-items: center;
+    background-color: #1d391a;
+    padding: 5px 15px;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .username {
+    color: yellow; /* Username is now yellow */
+    font-weight: 600;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  .logoutButton {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: rgb(254, 129, 129);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px 10px;
+    margin-left: 10px;
+  }
+  
+  .logoutButton:hover {
+    color: rgb(255, 255, 255);
+  }
+  
+  .logoutIcon {
+    font-size: 30px; /* Increased icon size */
+  }
+  
+  .logoutButton:hover .logoutText {
+    display: inline;
+  }
+  
+  /* Ensure mobile responsiveness */
+  @media (max-width: 768px) {
+    .navLink {
+      margin: 0 10px;
+      font-size: 14px;
+    }
+  
+    .logoutButton {
+      font-size: 18px;
+    }
+  }
+  
