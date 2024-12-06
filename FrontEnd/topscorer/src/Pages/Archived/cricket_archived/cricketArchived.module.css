@@ -1,0 +1,183 @@
+:root {
+    --background-color: #0C2F3A; /* Soft Lavender background */
+    --primary-text-color: #218141; /* Dark Gray Text */
+    --heading-text-color: hwb(207 11% 55%); /* Soft Mint Green for headings */
+    --secondary-text-color: #1e9012; /* Light Lavender for secondary text */
+    --button-background: #C1D3B3; /* Soft Mint Green Button */
+    --button-hover-background: #A9C9A2; /* Slightly darker mint green on hover */
+    --box-background-color: #E9E7F3; /* Light Lavender Box */
+    --box-border-color: #C1D3B3; /* Soft Mint Green Border */
+    --highlight-color: #C1D3B3; /* Soft Mint Green highlights */
+    --card-background: #F2F2F7; /* Off-White for cards */
+    --card-hover-background: #D0D8E3; /* Slightly darker gray on hover */
+    --card-shadow: rgba(158, 57, 57, 0.1); /* Subtle shadow */
+    --score-color: #0e3a78; /* Soft Mint Green for scores */
+  }
+  
+  
+  
+  /* Main container */
+  .MainDiv {
+    padding: 20px;
+    background-color: var(--background-color); /* Black background */
+    color: var(--primary-text-color); /* Light text */
+    align-items: center;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    /* border: 5px solid red; */
+  }
+  .opn{
+    /* border: 5px sold yellow; */
+    display: flex;
+    justify-content: center;
+    
+  
+  }
+  /* Heading */
+  .Heading2 {
+    color: #FFF; /* White text */
+    font-weight: 600;
+    font-size: 1.2em;
+    border: 1px solid var(--box-border-color); /* Light border */
+    padding: 7px;
+    align-self: center;
+    border-radius: 6px;
+  }
+  
+  /* Match Detail View */
+  .MatchDetail {
+    padding: 20px;
+    background-color: var(--box-background-color); /* Light background */
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 900px;
+    margin: auto;
+  
+  }
+  
+  /* Back Button */
+  .BackButton {
+    background-color: var(--highlight-color); /* Orange button color */
+    color: var(--primary-text-color); /* Light text */
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background 0.3s ease;
+  }
+  
+  .BackButton:hover {
+    background: var(--button-hover-background); /* Darker blue on hover */
+  }
+  
+  /* Team Details */
+  .TeamDetails {
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .TeamDetails h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--heading-text-color); /* White */
+  }
+  
+  /* Match Update */
+  .MatchUpdate {
+    text-align: center;
+    font-style: italic;
+    color: var(--highlight-color); /* Orange */
+    padding: 10px 0;
+  }
+  
+  /* Scoreboard */
+  .Scoreboard table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .Scoreboard th, .Scoreboard td {
+    padding: 12px;
+    text-align: center;
+    color: var(--primary-text-color); /* Light text */
+  }
+  
+  .Scoreboard th {
+    background-color:var(--button-background); /* Dark background for table header */
+    font-weight: bold;
+  }
+  
+  .Scoreboard tr:nth-child(even) {
+    background-color: #f1f1f1; /* Light gray for even rows */
+  }
+  
+  .Scoreboard tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Slightly lighter gray for odd rows */
+  }
+  
+  /* Match List */
+  .MatchList {
+    padding: 20px;
+  }
+  
+  .CardContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .MatchCard {
+    background: var(--card-background); /* Light background for match cards */
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px var(--card-shadow); /* Soft shadow for cards */
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .MatchTeams{
+    display: flex;
+    justify-content: center;
+  
+  }
+  .MatchCard:hover {
+    transform: scale(1.05);
+    background: var(--card-hover-background); /* Light blue on hover */
+  }
+  
+  .MatchCard h3 {
+    font-weight: bold;
+    color: #151515; /* Dark text for the match title */
+  }
+  
+  .CardScore p {
+    font-weight: bold;
+    color: var(--score-color); /* Blue for score highlights */
+  }
+  
+  .MatchUpdate {
+    font-size: 14px;
+    color: var(--secondary-text-color); /* Light gray for updates */
+  }
+  
+  .CenteredDetails {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .MatchDuration, .ManOfTheMatch {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .ManOfTheMatch h3 {
+    margin-bottom: 5px;
+  }

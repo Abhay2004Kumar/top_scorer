@@ -22,6 +22,12 @@ import Chat from './Components/Chat/Chat'
 import io from "socket.io-client";
 import BlogFeed from './Pages/Blog_Page/BlogFeed'
 import BadmintonArchived from './Pages/Archived/badminton_archived/badmintonArchived'
+import TennisArchived from "./Pages/Archived/tennis_archived/tennisArchived";
+import KabaddiArchived from "./Pages/Archived/kabbadi_archived/kabbadiArchived";
+import FootballArchived from "./Pages/Archived/football_archived/footballArchived";
+import CricketArchived from "./Pages/Archived/cricket_archived/cricketArchived";
+import DBadmintonArchived from "./Pages/Archived/dbadminton_archived/dbadmintonArchived";
+import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived";
 // import './index.css';
 const socket = io.connect("http://localhost:5000");
 
@@ -73,7 +79,12 @@ function App() {
             <Route path='/chat' element={<Chat/>} ></Route>
             <Route path='/Blog' element={<BlogFeed/>} ></Route>
             <Route path='/badminton_archived' element={<BadmintonArchived/>}></Route>
-
+            <Route path='/tennis_archived' element={<TennisArchived/>}></Route>
+            <Route path='/kabbadi_archived' element={<KabaddiArchived/>}></Route>
+            <Route path='/football_archived' element={<FootballArchived/>}></Route>
+            <Route path='/cricket_archived' element={<CricketArchived/>}></Route>
+            <Route path='/dbadminton_archived' element={<DBadmintonArchived/>}></Route>
+            <Route path='/dbtennis_archived' element={<DBTennisArchived/>}></Route>
 
 
       </Routes>
