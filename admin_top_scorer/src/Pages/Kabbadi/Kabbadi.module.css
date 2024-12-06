@@ -1,4 +1,4 @@
-.Main_Div {
+/* .Main_Div {
     width: 100%;
     min-height: 100vh;
     background-color: #004D40;
@@ -95,4 +95,176 @@
       padding: 8px 15px;
     }
   }
-      
+       */
+
+
+
+/* Scoped styles for the Admin Kabaddi page */
+.kabaddiMainDiv {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #004D40;
+  color: antiquewhite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.kabaddiHeader {
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: #26A69A;
+}
+
+.kabaddiTeamsContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.kabaddiAdminSection {
+  flex: 1;
+  background-color: #013A33;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.kabaddiInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kabaddiInput, .kabaddiSelect, .kabaddiTextArea {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #F5F5F5;
+}
+
+.kabaddiTextArea {
+  resize: vertical;
+}
+
+.kabaddiSubmitButton {
+  padding: 10px 20px;
+  background-color: #26A69A;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.kabaddiSubmitButton:hover {
+  background-color: #1B8072;
+}
+
+.kabaddiCover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kabaddiPop {
+  background-color: #fff;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.kabaddiYes, .kabaddiNo {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.kabaddiYes {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.kabaddiYes:hover {
+  background-color: #388E3C;
+}
+
+.kabaddiNo {
+  background-color: #F44336;
+  color: white;
+}
+
+.kabaddiNo:hover {
+  background-color: #D32F2F;
+}
+
+.kabaddiTeamBlock {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.kabaddiBlockHeader {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.kabaddiInfoBlock,
+.kabaddiPointsBlock {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.kabaddiLabel {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.kabaddiInput {
+  font-size: 14px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.kabaddiPointsSection {
+  margin-bottom: 15px;
+}
+
+.kabaddiSubmitButton {
+  font-size: 16px;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.kabaddiSubmitButton:hover {
+  background-color: #0056b3;
+}
