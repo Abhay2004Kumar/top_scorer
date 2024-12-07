@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser';
 import { routes } from './routes/sport.route.js';
 import UserRouter from './routes/user.route.js';
 
+const PORT = process.env.PORT
+
+
 const app = express();
 const server = http.createServer(app);
 app.use(cors());
@@ -40,7 +43,7 @@ let full_Payload = {
     "TTD": false
   }
 };
-
+ 
 io.on("connection", (socket) => {
   console.log("A user connected");
 
@@ -87,8 +90,8 @@ app.use('/api/v1/users',UserRouter)
 
 
 // Start the server
-server.listen(5000, () => {
-  console.log('Server is running on port: 5000');
+server.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`); 
 });
 
 connectDB();

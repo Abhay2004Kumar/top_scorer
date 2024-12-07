@@ -32,7 +32,7 @@ const getBDSingle = async(req,res) => {
          res.status(200).json(data);
 
     } catch (error) {
-        res.status(500).json(error);
+        res.status(500).json(error); // interval server error
         // console.log(error);
     }
 }

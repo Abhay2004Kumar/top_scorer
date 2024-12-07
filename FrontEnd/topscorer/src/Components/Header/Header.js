@@ -54,7 +54,7 @@ function Header({ islogin ,setislogin}) {
       </div>
       <nav className={styles.nav}>
         <a href="/" className={styles.navLink}>Home</a>
-        <a href="/chat" className={styles.navLink}>Chat</a>
+        {/* <a href="/chat" className={styles.navLink}>Chat</a> */}
         
         {isUser !== '' ? (
           <div className={styles.userContainer}>
