@@ -28,7 +28,7 @@ const createBDSingle = async (req, res) => {
 const getBDSingle = async(req,res) => {
     try {
         const data = await BDSingle.find();
-         console.log("dddd" , data);
+        //  console.log("dddd" , data);
          res.status(200).json(data);
 
     } catch (error) {
