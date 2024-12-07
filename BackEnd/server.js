@@ -6,6 +6,8 @@ import connectDB from './DB/connectDB.js';
 import cookieParser from 'cookie-parser';
 import { routes } from './routes/sport.route.js';
 import UserRouter from './routes/user.route.js';
+import PlayerRouter from './routes/player.route.js';
+
 
 const app = express();
 const server = http.createServer(app);
@@ -84,6 +86,7 @@ io.on("connection", (socket) => {
 
 app.use('/api/v1/sports',routes);
 app.use('/api/v1/users',UserRouter)
+app.use('/api/v1/players',PlayerRouter)
 
 
 // Start the server
