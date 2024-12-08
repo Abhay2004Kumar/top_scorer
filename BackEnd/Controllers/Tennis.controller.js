@@ -1,5 +1,7 @@
 import { TennisSingle } from "../Models/TennisSingle.model.js";
 
+
+// Create a new Tennis Single match
 const createTennisSingle = async (req, res) => {
     try {
         const { data } = req.body;  // Extracting 'data' from request body
@@ -7,24 +9,18 @@ const createTennisSingle = async (req, res) => {
 
         // Create a new tennis match with the provided data
         const newMatch = await TennisSingle.create({
-            player1: data.player1,
-            player2: data.player2,
+            teamA: {
+                name: data.teamA.name,
+                player: data.teamA.player,
+            },
+            teamB: {
+                name: data.teamB.name,
+                player: data.teamB.player,
+            },
+            latestUpdate: data.latestUpdate || "match started",  // Default to "match started" if not provided
         });
 
-        // Calculate the total scores for each player after creating the match
-        let player1Total = newMatch.player1.s1score + newMatch.player1.s2score + newMatch.player1.s3score;
-        let player2Total = newMatch.player2.s1score + newMatch.player2.s2score + newMatch.player2.s3score;
-
-        // Determine the winner based on total score
-        if (player1Total > player2Total) {
-            console.log(`${newMatch.player1.name} has won`);
-            newMatch.winner = "player1";
-        } else if (player2Total > player1Total) {
-            console.log(`${newMatch.player2.name} has won`);
-            newMatch.winner = "player2";
-        }
-
-        // Save the match with the winner
+        // Save the match with the current state
         await newMatch.save();
         res.status(201).json(newMatch);  // Return the created match data
     } catch (err) {
@@ -35,7 +31,7 @@ const createTennisSingle = async (req, res) => {
 // Update scores for the sets
 const updateTennisSingleScore = async (req, res) => {
     try {
-        const { matchId, player, setNumber, score } = req.body;
+        const { matchId, team, score, setNumber, latestUpdate } = req.body;
 
         // Validate the score does not exceed 21
         if (score > 21) {
@@ -49,26 +45,31 @@ const updateTennisSingleScore = async (req, res) => {
             return res.status(404).json({ message: "Match not found" });
         }
 
-        // Update the set score for the player
-        if (player === "player1") {
-            match.player1[`s${setNumber}score`] = score;
-        } else if (player === "player2") {
-            match.player2[`s${setNumber}score`] = score;
-        } else {
-            return res.status(400).json({ message: "Invalid player" });
+        // If 'latestUpdate' is provided, update it. Otherwise, keep the previous value
+        if (latestUpdate) {
+            match.latestUpdate = latestUpdate;
         }
 
-        // Check if the match is completed (both players have completed all sets)
-        const player1Total = match.player1.s1score + match.player1.s2score + match.player1.s3score;
-        const player2Total = match.player2.s1score + match.player2.s2score + match.player2.s3score;
+        // Update the set score for the team
+        if (team === "teamA") {
+            match.tmA_score[setNumber - 1] = score;  // Set the score for the current set in teamA's score array
+        } else if (team === "teamB") {
+            match.tmB_score[setNumber - 1] = score;  // Set the score for the current set in teamB's score array
+        } else {
+            return res.status(400).json({ message: "Invalid team" });
+        }
 
-        if (player1Total >= 0 && player2Total >= 0) {
-            if (player1Total > player2Total) {
-                match.winner = "player1";
-                match.matchStatus = "completed";
-            } else if (player2Total > player1Total) {
-                match.winner = "player2";
-                match.matchStatus = "completed";
+        // Check if the match is completed (both teams have completed all sets)
+        const teamATotal = match.tmA_score.reduce((sum, score) => sum + score, 0);
+        const teamBTotal = match.tmB_score.reduce((sum, score) => sum + score, 0);
+
+        if (teamATotal >= 0 && teamBTotal >= 0) {
+            if (teamATotal > teamBTotal) {
+                match.winner = "teamA";
+                match.latestUpdate = "completed";  // Optionally update latestUpdate to "completed"
+            } else if (teamBTotal > teamATotal) {
+                match.winner = "teamB";
+                match.latestUpdate = "completed";  // Optionally update latestUpdate to "completed"
             }
         }
 
@@ -95,4 +96,3 @@ export {
     updateTennisSingleScore,
     getTennisSingles,
 };
-
