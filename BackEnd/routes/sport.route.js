@@ -10,7 +10,7 @@ routes.post('/bdDouble',createBDDoubles);
 routes.post('/Createkabaddi',createKabaddiMatch)
 routes.get('/getbdsingle',getBDSingle);
 routes.get('/getBDDouble',getBDDoubles);
-routes.get('/getKabaddi', getKabaddiMatches)
+routes.get('/getKabaddi', getKabaddiMatches) 
 
 
 
