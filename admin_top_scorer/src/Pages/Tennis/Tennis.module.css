@@ -85,3 +85,86 @@
     }
   }
   
+
+
+/* Main container for the popup */
+.cover {
+  height: 100vh; /* Adjusted for better viewport coverage */
+  width: 100vw; /* Full width of the viewport */
+  backdrop-filter: blur(6px); /* A bit stronger blur effect */
+  position: fixed; /* Make the popup cover the entire screen */
+  top: 0;
+  left: 0;
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+/* Popup box styling */
+.pop {
+  width: 350px; /* Increased width for a more comfortable design */
+  padding: 20px;
+  background-color: rgba(17, 194, 222, 0.9); /* Slightly darker background for better contrast */
+  border-radius: 10px; /* Rounded corners for a modern look */
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Added a subtle shadow for better separation */
+}
+
+/* Title inside popup */
+.popup-title {
+  font-size: 20px; /* Larger title font */
+  color: #004D40; /* Darker text for better readability */
+  margin-bottom: 15px; /* Space below title */
+}
+
+/* Popup message */
+.popup-message {
+  font-size: 16px;
+  color: #333; /* Darker text color for readability */
+  margin-bottom: 20px; /* Space between message and buttons */
+}
+
+/* Container for action buttons */
+.popup-actions {
+  display: flex; /* Use flexbox for buttons alignment */
+  justify-content: space-around; /* Space out buttons evenly */
+}
+
+/* Common button styling */
+.popup-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 120px; /* Ensure buttons are wide enough */
+}
+
+/* Yes button styles */
+.popup-yes {
+  background-color: green;
+  color: white;
+}
+
+.popup-yes:hover {
+  background-color: #006400; /* Darker green for hover effect */
+}
+
+/* No button styles */
+.popup-no {
+  background-color: red;
+  color: white;
+}
+
+.popup-no:hover {
+  background-color: #8B0000; /* Darker red for hover effect */
+}
+
+/* Close popup when clicking outside the box */
+.pop, .popup-actions {
+  z-index: 10;
+}
