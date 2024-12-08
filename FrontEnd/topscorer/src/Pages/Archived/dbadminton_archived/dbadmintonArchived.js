@@ -1,92 +1,66 @@
 import Options from "../../../Components/Live_Upcoming/Options";
 import styles from "./badmintonArchived.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function DBadmintonArchived({ matches }) {
-  const defaultMatches = matches || [
-    {
-      id: 1,
-      teamA: {
-        name: "India",
-        players: ["PV Sindhu", "Srikanth Kidambi"],
-      },
-      teamB: {
-        name: "China",
-        players: ["Chen Long", "Li Xuerui"],
-      },
-      tmA_score: [21, 18, 21],
-      tmB_score: [15, 21, 18],
-      latestUpdate: "India won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 2,
-      teamA: {
-        name: "Indonesia",
-        players: ["Jonatan Christie", "Marcus Fernaldi Gideon"],
-      },
-      teamB: {
-        name: "Malaysia",
-        players: ["Lee Zii Jia", "Aaron Chia"],
-      },
-      tmA_score: [19, 21, 20],
-      tmB_score: [21, 15, 22],
-      latestUpdate: "Malaysia won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 3,
-      teamA: {
-        name: "Denmark",
-        players: ["Viktor Axelsen", "Mathias Boe"],
-      },
-      teamB: {
-        name: "Japan",
-        players: ["Kento Momota", "Takeshi Kamura"],
-      },
-      tmA_score: [21, 18, 19],
-      tmB_score: [15, 21, 17],
-      latestUpdate: "Denmark won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 4,
-      teamA: {
-        name: "Thailand",
-        players: ["Ratchanok Intanon", "Dechapol Puavaranukroh"],
-      },
-      teamB: {
-        name: "Korea",
-        players: ["An Se-young", "Seo Seung-jae"],
-      },
-      tmA_score: [19, 21, 21],
-      tmB_score: [21, 15, 17],
-      latestUpdate: "Thailand won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 5,
-      teamA: {
-        name: "France",
-        players: ["Christo Popov", "Toma Junior Popov"],
-      },
-      teamB: {
-        name: "Malaysia",
-        players: ["Lee Chong Wei", "Goh V Shem"],
-      },
-      tmA_score: [18, 21, 20],
-      tmB_score: [21, 19, 22],
-      latestUpdate: "Malaysia won the match!",
-      currentSet: 3,
-    },
-    // Add more matches here...
-  ];
-
+function DBadmintonArchived() {
+  const [matches, setMatches] = useState([]); // Store match data from API
   const [selectedMatch, setSelectedMatch] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state to manage fetch state
+  const [error, setError] = useState(null); // Error state to handle API errors
+
+  // Fetch matches from API
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/sports/getBDDouble");
+        if (!response.ok) {
+          throw new Error("Failed to fetch matches");
+        }
+        const data = await response.json();
+        setMatches(data); // Assuming the response is an array of match objects
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    
+    fetchMatches();
+  }, []); // Empty dependency array to run the effect only once
 
   const handleCardClick = (matchId) => {
-    const match = defaultMatches.find((m) => m.id === matchId);
+    const match = matches.find((m) => m._id === matchId);
     if (match) setSelectedMatch(match);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  // Reverse the matches array to show the most recent match last
+  const reversedMatches = [...matches].reverse();
+
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+    });
+  };
+  const formatDate2 = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0'); // Get day (01-31)
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Get month (01-12)
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year (YY)
+
+    return `${day}/${month}/${year}`; // Return in DD/MM/YY format
   };
 
   return (
@@ -103,18 +77,19 @@ function DBadmintonArchived({ matches }) {
           >
             Back to Matches
           </button>
+
           <div className={styles.math_info}>
             <div className={styles.MatchTeams}>
               <div className={styles.TeamDetails}>
                 <h3>{selectedMatch.teamA.name}</h3>
-                <p>{selectedMatch.teamA.players.join(" & ")}</p>
+                <p>{selectedMatch.teamA.player1} & {selectedMatch.teamA.player2}</p>
               </div>
               <div className={styles.TeamDetails}>
                 <h3>Vs</h3>
               </div>
               <div className={styles.TeamDetails}>
                 <h3>{selectedMatch.teamB.name}</h3>
-                <p>{selectedMatch.teamB.players.join(" & ")}</p>
+                <p>{selectedMatch.teamB.player1} & {selectedMatch.teamB.player2}</p>
               </div>
             </div>
           </div>
@@ -142,27 +117,41 @@ function DBadmintonArchived({ matches }) {
               </tbody>
             </table>
           </div>
+
+          <div className={styles.MatchSummary}>
+            {/* <h4>Match Summary:</h4>
+            <p><strong>Current Set: </strong>{selectedMatch.currentSet}</p>
+            <p><strong>Last Set Score: </strong>{selectedMatch.tmA_score.at(-1)} - {selectedMatch.tmB_score.at(-1)}</p>
+            <p><strong>Latest Update: </strong>{selectedMatch.latestUpdate}</p> */}
+            <br></br>
+            <p><strong>Match Date: </strong>{formatDate(selectedMatch.createdAt)}</p>
+          </div>
         </div>
       ) : (
         <div className={styles.MatchList}>
           <span className={styles.Heading2}>Archived Badminton Doubles Matches</span>
           <div className={styles.CardContainer}>
-            {defaultMatches.map((match) => (
+            {reversedMatches.map((match) => (
               <div
-                key={match.id}
+                key={match._id}
                 className={styles.MatchCard}
-                onClick={() => handleCardClick(match.id)}
+                onClick={() => handleCardClick(match._id)}
               >
                 <h3>
                   {match.teamA.name} vs {match.teamB.name}
                 </h3>
                 <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
+                
                 <div className={styles.CardScore}>
                   <p>
                     Last Set: {match.tmA_score.at(-1)} - {match.tmB_score.at(-1)}
                   </p>
-                  <p>Current Set: {match.currentSet}</p>
+                  
+                  {/* <p>Current Set: {match.currentSet}</p> */}
                 </div>
+                <p className={styles.date_st} style={{color:'grey'}}>
+                  Date: {formatDate2(match.createdAt)}
+                </p>
               </div>
             ))}
           </div>

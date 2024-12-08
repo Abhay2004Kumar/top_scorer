@@ -31,7 +31,9 @@
   display: flex;
   justify-content: center;
   
-
+}
+.date_st{
+  border: 5px sold red;
 }
 /* Heading */
 .Heading2 {

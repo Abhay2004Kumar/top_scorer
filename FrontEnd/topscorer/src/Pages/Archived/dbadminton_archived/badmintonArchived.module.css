@@ -43,7 +43,10 @@
   align-self: center;
   border-radius: 6px;
 }
-
+.MatchCreatedAt{
+  font-family: monospace;
+  border: 5px sold red;
+}
 /* Match Detail View */
 .MatchDetail {
   padding: 20px;

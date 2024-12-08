@@ -1,194 +1,81 @@
 import Options from "../../../Components/Live_Upcoming/Options";
 import styles from "./badmintonArchived.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function BadmintonArchived({ matches }) {
-  const defaultMatches = matches || [
-    {
-      id: 1,
-      teamA: {
-        name: "India",
-        player: "PV Sindhu",
-        details: "Ranked #7 in the world",
-      },
-      teamB: {
-        name: "China",
-        player: "Chen Long",
-        details: "Former World Champion",
-      },
-      tmA_score: [21, 18, 21],
-      tmB_score: [15, 21, 18],
-      latestUpdate: "India won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 2,
-      teamA: {
-        name: "Indonesia",
-        player: "Jonatan Christie",
-        details: "Top 10 in the World Rankings",
-      },
-      teamB: {
-        name: "Malaysia",
-        player: "Lee Zii Jia",
-        details: "Olympic Silver Medalist",
-      },
-      tmA_score: [19, 21, 20],
-      tmB_score: [21, 15, 22],
-      latestUpdate: "Malaysia won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 3,
-      teamA: {
-        name: "Denmark",
-        player: "Viktor Axelsen",
-        details: "Olympic Gold Medalist",
-      },
-      teamB: {
-        name: "Japan",
-        player: "Kento Momota",
-        details: "Former World Champion",
-      },
-      tmA_score: [21, 18, 19],
-      tmB_score: [15, 21, 17],
-      latestUpdate: "Denmark won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 4,
-      teamA: {
-        name: "Thailand",
-        player: "Ratchanok Intanon",
-        details: "Former World Champion",
-      },
-      teamB: { name: "Korea", player: "An Se-young", details: "Rising Star" },
-      tmA_score: [19, 21, 21],
-      tmB_score: [21, 15, 17],
-      latestUpdate: "Thailand won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 5,
-      teamA: {
-        name: "France",
-        player: "Christo Popov",
-        details: "Young and Talented Player",
-      },
-      teamB: {
-        name: "Malaysia",
-        player: "Lee Chong Wei",
-        details: "One of the best in the sport",
-      },
-      tmA_score: [18, 21, 20],
-      tmB_score: [21, 19, 22],
-      latestUpdate: "Malaysia won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 6,
-      teamA: {
-        name: "China",
-        player: "Chen Long",
-        details: "Experienced Veteran",
-      },
-      teamB: {
-        name: "India",
-        player: "Srikanth Kidambi",
-        details: "Olympic Medalist",
-      },
-      tmA_score: [21, 19, 21],
-      tmB_score: [18, 21, 15],
-      latestUpdate: "China won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 7,
-      teamA: {
-        name: "Indonesia",
-        player: "Jonatan Christie",
-        details: "Top 10 Player",
-      },
-      teamB: {
-        name: "Japan",
-        player: "Kento Momota",
-        details: "World Champion",
-      },
-      tmA_score: [21, 20, 21],
-      tmB_score: [19, 22, 19],
-      latestUpdate: "Indonesia won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 8,
-      teamA: {
-        name: "Thailand",
-        player: "Ratchanok Intanon",
-        details: "Top Female Player",
-      },
-      teamB: {
-        name: "China",
-        player: "He Bingjiao",
-        details: "Strong Contender",
-      },
-      tmA_score: [22, 21],
-      tmB_score: [20, 19],
-      latestUpdate: "Thailand won the match!",
-      currentSet: 2,
-    },
-    {
-      id: 9,
-      teamA: {
-        name: "Malaysia",
-        player: "Lee Zii Jia",
-        details: "Olympic Silver Medalist",
-      },
-      teamB: {
-        name: "South Korea",
-        player: "Son Wan-ho",
-        details: "Veteran Player",
-      },
-      tmA_score: [19, 21, 20],
-      tmB_score: [21, 19, 22],
-      latestUpdate: "South Korea won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 10,
-      teamA: {
-        name: "India",
-        player: "Saina Nehwal",
-        details: "Former World Number 1",
-      },
-      teamB: {
-        name: "Denmark",
-        player: "Carolina Marin",
-        details: "Olympic Champion",
-      },
-      tmA_score: [21, 19, 21],
-      tmB_score: [19, 21, 19],
-      latestUpdate: "India won the match!",
-      currentSet: 3,
-    },
-  ];
-
+function BadmintonArchived() {
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedMatch, setSelectedMatch] = useState(null);
 
+  // Fetching match data from the API
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/sports/getbdsingle");
+        if (!response.ok) {
+          throw new Error("Failed to fetch matches");
+        }
+        const data = await response.json();
+        
+        // Sorting matches in reverse order (newest match first)
+        const sortedMatches = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        setMatches(sortedMatches);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
+  // Function to handle card click and display match details
   const handleCardClick = (matchId) => {
-    const match = defaultMatches.find((m) => m.id === matchId);
+    const match = matches.find((m) => m._id === matchId);
     if (match) setSelectedMatch(match);
   };
+
+  // Function to format the date into a readable format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+    });
+  };
+  // Function to format the date in DD/MM/YY format
+  const formatDate2 = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0'); // Get day (01-31)
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Get month (01-12)
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year (YY)
+
+    return `${day}/${month}/${year}`; // Return in DD/MM/YY format
+  };
+
+  // Loading and error states
+  if (loading) {
+    return <p>Loading matches...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
-          <Options 
-            cur_link="/badminton"
-            // archived="/sports/archived"
-            archived="/badminton_archived"
-          />
+        <Options 
+          cur_link="/badminton"
+          archived="/badminton_archived"
+        />
       </div>
-     
+      
       {selectedMatch ? (
         <div className={styles.MatchDetail}>
           <button
@@ -197,6 +84,7 @@ function BadmintonArchived({ matches }) {
           >
             Back to Matches
           </button>
+          
           <div className={styles.math_info}>
             <div className={styles.MatchTeams}>
               <div className={styles.TeamDetails}>
@@ -236,28 +124,41 @@ function BadmintonArchived({ matches }) {
               </tbody>
             </table>
           </div>
+
+          <div className={styles.MatchSummary}>
+            {/* <h4>Match Summary:</h4>
+            <p><strong>Current Set: </strong>{selectedMatch.currentSet}</p>
+            <p><strong>Last Set Score: </strong>{selectedMatch.tmA_score.at(-1)} - {selectedMatch.tmB_score.at(-1)}</p>
+            <p><strong>Latest Update: </strong>{selectedMatch.latestUpdate}</p> */}
+            <br></br>
+            <p><strong>Match Date : </strong>{formatDate(selectedMatch.createdAt)}</p>
+          </div>
         </div>
       ) : (
         <div className={styles.MatchList}>
           <span className={styles.Heading2}>Archived Matches</span>
           <div className={styles.CardContainer}>
-            {defaultMatches.map((match) => (
+            {matches.map((match) => (
               <div
-                key={match.id}
+                key={match._id}
                 className={styles.MatchCard}
-                onClick={() => handleCardClick(match.id)}
+                onClick={() => handleCardClick(match._id)}
               >
                 <h3>
                   {match.teamA.name} vs {match.teamB.name}
                 </h3>
                 <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
+                
                 <div className={styles.CardScore}>
                   <p>
-                    Last Set: {match.tmA_score.at(-1)} -{" "}
-                    {match.tmB_score.at(-1)}
+                    Last Set: {match.tmA_score.at(-1)} - {match.tmB_score.at(-1)}
                   </p>
-                  <p>Current Set: {match.currentSet}</p>
+                  {/* <p>Current Set: {match.currentSet}</p> */}
+                  
                 </div>
+                <p className={styles.MatchCreatedAt} style={{color:"grey"}}>
+                  Date: {formatDate2(match.createdAt)}
+                </p>
               </div>
             ))}
           </div>

@@ -20,6 +20,7 @@ function Kabaddi() {
     latestUpdate: "India won the final set 22-20!",
     sets: [
       {
+        setNumber: 1,
         events: [
           {
             player: "PV Sindhu",
@@ -40,6 +41,52 @@ function Kabaddi() {
             flag: "https://cdn.britannica.com/67/6267-004-10A21DF0/Flag-Bangladesh.jpg"
           }
         ]
+      },
+      {
+        setNumber: 2,
+        events: [
+          {
+            player: "PV Sindhu",
+            touchPoints: "6",
+            tacklePoints: "4",
+            raidPoints: "8",
+            bonusPoints: "3",
+            totalScore: "21",
+            flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg"
+          },
+          {
+            player: "Chini Bsk",
+            touchPoints: "5",
+            tacklePoints: "3",
+            raidPoints: "7",
+            bonusPoints: "2",
+            totalScore: "17",
+            flag: "https://cdn.britannica.com/67/6267-004-10A21DF0/Flag-Bangladesh.jpg"
+          }
+        ]
+      },
+      {
+        setNumber: 3,
+        events: [
+          {
+            player: "PV Sindhu",
+            touchPoints: "7",
+            tacklePoints: "5",
+            raidPoints: "9",
+            bonusPoints: "4",
+            totalScore: "25",
+            flag: "https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg"
+          },
+          {
+            player: "Chini Bsk",
+            touchPoints: "6",
+            tacklePoints: "4",
+            raidPoints: "8",
+            bonusPoints: "3",
+            totalScore: "21",
+            flag: "https://cdn.britannica.com/67/6267-004-10A21DF0/Flag-Bangladesh.jpg"
+          }
+        ]
       }
     ]
   };
@@ -47,7 +94,7 @@ function Kabaddi() {
   return (
     <>
       <div className={styles.MainDiv}>
-      <Options
+        <Options
           cur_link="/kabaddi"
           archived="/kabbadi_archived"
         />
@@ -64,7 +111,7 @@ function Kabaddi() {
               <p>{matchData.teamA.player} (P)</p>
             </div>
             <div className={styles.VS}>
-              <h1 className={styles.gols}> {matchData.setScore} </h1>
+              <h1 className={styles.gols}>{matchData.setScore}</h1>
               <p className={styles.setInfo}>Set {matchData.currentSet}</p>
             </div>
             <div className={styles.teamB}>
@@ -88,42 +135,7 @@ function Kabaddi() {
         <div className={styles.table}>
           {matchData.sets.map((set, index) => (
             <div key={index} className={styles.sets}>
-              <h4>Set {index + 1}</h4>
-              <table>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Player Name</th>
-                    <th>Set1</th>
-                    <th>Set2</th>
-                    <th>Set3</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {set.events.map((event, eventIndex) => (
-                    <tr key={eventIndex}>
-                      <td><span className={styles.flg}>
-                        <img className={styles.tableimg} src={event.flag}></img>
-                        </span></td>
-                      <td>{event.player}</td>
-                      <td>{event.set1}</td>
-                      <td>{event.set2}</td>
-                      <td>{event.set3}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
-        </div>
-        <div className={styles.Sumry}>
-          <h2>Statistic</h2>
-        </div>
-
-        <div className={styles.table}>
-          {matchData.sets.map((set, index) => (
-            <div key={index} className={styles.sets}>
-              <h4>Set {index + 1}</h4>
+              <h4>Set {set.setNumber}</h4>
               <table>
                 <thead>
                   <tr>

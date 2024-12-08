@@ -1,153 +1,61 @@
 import Options from "../../../Components/Live_Upcoming/Options";
 import styles from "./kabaddiArchived.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function KabaddiArchived({ matches }) {
-  const defaultMatches = matches || [
-    {
-      id: 1,
-      teamA: {
-        name: "India",
-        player: "Anup Kumar",
-        details: "Pro Kabaddi League Legend",
-      },
-      teamB: {
-        name: "Pakistan",
-        player: "Sohail Abbass",
-        details: "Captain of Pakistan Kabaddi",
-      },
-      tmA_score: [32, 28, 30],
-      tmB_score: [28, 30, 22],
-      latestUpdate: "India won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 2,
-      teamA: {
-        name: "Iran",
-        player: "Mohammad Esmaeil",
-        details: "Asian Games Medalist",
-      },
-      teamB: {
-        name: "South Korea",
-        player: "Kim Ki-soo",
-        details: "Experienced All-Rounder",
-      },
-      tmA_score: [29, 24, 22],
-      tmB_score: [23, 28, 21],
-      latestUpdate: "Iran won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 3,
-      teamA: {
-        name: "Bangladesh",
-        player: "Shakil Ahmed",
-        details: "Rising Star in Kabaddi",
-      },
-      teamB: {
-        name: "Nepal",
-        player: "Manoj Kumar",
-        details: "Defensive Specialist",
-      },
-      tmA_score: [25, 20, 22],
-      tmB_score: [22, 23, 19],
-      latestUpdate: "Bangladesh won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 4,
-      teamA: {
-        name: "Sri Lanka",
-        player: "Nadeem Ashraf",
-        details: "Aggressive Raider",
-      },
-      teamB: {
-        name: "Thailand",
-        player: "Sirikwan Kongsang",
-        details: "Top Defender",
-      },
-      tmA_score: [22, 27, 29],
-      tmB_score: [20, 24, 21],
-      latestUpdate: "Sri Lanka won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 5,
-      teamA: {
-        name: "India",
-        player: "Pardeep Narwal",
-        details: "Pro Kabaddi Star",
-      },
-      teamB: {
-        name: "Pakistan",
-        player: "Rana Muhammad",
-        details: "Strong Raider",
-      },
-      tmA_score: [30, 28, 34],
-      tmB_score: [26, 22, 25],
-      latestUpdate: "India won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 6,
-      teamA: {
-        name: "Iran",
-        player: "Ali Asghar",
-        details: "Veteran Raider",
-      },
-      teamB: {
-        name: "Nepal",
-        player: "Suman Koirala",
-        details: "Sharp Defender",
-      },
-      tmA_score: [31, 29, 28],
-      tmB_score: [24, 22, 27],
-      latestUpdate: "Iran won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 7,
-      teamA: {
-        name: "Sri Lanka",
-        player: "Ruwan Yatawara",
-        details: "Raiding Specialist",
-      },
-      teamB: {
-        name: "Bangladesh",
-        player: "Mohammad Rizwan",
-        details: "All-Rounder",
-      },
-      tmA_score: [26, 30, 32],
-      tmB_score: [22, 25, 30],
-      latestUpdate: "Sri Lanka won the match!",
-      currentSet: 3,
-    },
-    {
-      id: 8,
-      teamA: {
-        name: "Thailand",
-        player: "Chatchai Kongsang",
-        details: "Pro Defender",
-      },
-      teamB: {
-        name: "Pakistan",
-        player: "Asim Raza",
-        details: "Star Raider",
-      },
-      tmA_score: [29, 30],
-      tmB_score: [25, 28],
-      latestUpdate: "Thailand won the match!",
-      currentSet: 2,
-    },
-  ];
-
+function KabaddiArchived() {
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedMatch, setSelectedMatch] = useState(null);
 
+  // Fetch match data from the API
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/sports/getKabaddi");
+        if (!response.ok) {
+          throw new Error("Failed to fetch matches");
+        }
+        const data = await response.json();
+
+        // Sort matches in reverse order (newest match first)
+        const sortedMatches = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        setMatches(sortedMatches);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
+  // Function to handle card click and display match details
   const handleCardClick = (matchId) => {
-    const match = defaultMatches.find((m) => m.id === matchId);
+    const match = matches.find((m) => m._id === matchId);
     if (match) setSelectedMatch(match);
   };
+
+  // Function to format the date in DD/MM/YY format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0'); // Get day (01-31)
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Get month (01-12)
+    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year (YY)
+
+    return `${day}/${month}/${year}`; // Return in DD/MM/YY format
+  };
+
+  // Loading and error states
+  if (loading) {
+    return <p>Loading matches...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <div className={styles.MainDiv}>
@@ -189,43 +97,65 @@ function KabaddiArchived({ matches }) {
             <table>
               <thead>
                 <tr>
-                  <th>Set</th>
-                  <th>{selectedMatch.teamA.name}</th>
-                  <th>{selectedMatch.teamB.name}</th>
+                  <th>Team</th>
+                  <th>Raid Points</th>
+                  <th>Tackle Points</th>
+                  <th>Touch Points</th>
+                  <th>Bonus Points</th>
+                  <th>Total Points</th>
                 </tr>
               </thead>
               <tbody>
-                {selectedMatch.tmA_score.map((score, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{score}</td>
-                    <td>{selectedMatch.tmB_score[index]}</td>
-                  </tr>
-                ))}
+                <tr>
+                  <td>{selectedMatch.teamA.name}</td>
+                  <td>{selectedMatch.teamA.raidPoints.join(", ")}</td>
+                  <td>{selectedMatch.teamA.tacklePoints.join(", ")}</td>
+                  <td>{selectedMatch.teamA.touchPoints.join(", ")}</td>
+                  <td>{selectedMatch.teamA.bonusPoints.join(", ")}</td>
+                  <td>{selectedMatch.teamA.totalPoints}</td>
+                </tr>
+                <tr>
+                  <td>{selectedMatch.teamB.name}</td>
+                  <td>{selectedMatch.teamB.raidPoints.join(", ")}</td>
+                  <td>{selectedMatch.teamB.tacklePoints.join(", ")}</td>
+                  <td>{selectedMatch.teamB.touchPoints.join(", ")}</td>
+                  <td>{selectedMatch.teamB.bonusPoints.join(", ")}</td>
+                  <td>{selectedMatch.teamB.totalPoints}</td>
+                </tr>
               </tbody>
             </table>
+          </div>
+
+          <div className={styles.MatchSummary}>
+            {/* <h4>Match Summary:</h4> */}
+            <br></br>
+            <p><strong>Current Half: </strong>{selectedMatch.currentHalf}</p>
+            <p><strong>Latest Update: </strong>{selectedMatch.latestUpdate}</p>
+            <p><strong>Match Date : </strong>{formatDate(selectedMatch.createdAt)}</p>
           </div>
         </div>
       ) : (
         <div className={styles.MatchList}>
           <span className={styles.Heading2}>Archived Matches</span>
           <div className={styles.CardContainer}>
-            {defaultMatches.map((match) => (
+            {matches.map((match) => (
               <div
-                key={match.id}
+                key={match._id}
                 className={styles.MatchCard}
-                onClick={() => handleCardClick(match.id)}
+                onClick={() => handleCardClick(match._id)}
               >
                 <h3>
                   {match.teamA.name} vs {match.teamB.name}
                 </h3>
                 <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
+                <p className={styles.MatchCreatedAt}>
+                  Created At: {formatDate(match.createdAt)}
+                </p>
                 <div className={styles.CardScore}>
                   <p>
-                    Last Set: {match.tmA_score.at(-1)} -{" "}
-                    {match.tmB_score.at(-1)}
+                    Last Raid Points: {match.teamA.raidPoints.at(-1)} - {match.teamB.raidPoints.at(-1)}
                   </p>
-                  <p>Current Set: {match.currentSet}</p>
+                  {/* <p>Current Half: {match.currentHalf}</p> */}
                 </div>
               </div>
             ))}
