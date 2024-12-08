@@ -37,7 +37,7 @@ function DBadmintonArchived() {
     return <div>Loading...</div>;
   }
 
-  if (error) {
+  if (error) { 
     return <div>Error: {error}</div>;
   }
 
