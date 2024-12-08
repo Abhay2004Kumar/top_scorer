@@ -1,1 +1,1 @@
-export const DB_NAME = "topScorer_backend"
+export const DB_NAME = "topScorer_backend" 
