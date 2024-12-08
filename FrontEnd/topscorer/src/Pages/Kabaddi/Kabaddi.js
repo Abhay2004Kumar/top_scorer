@@ -135,7 +135,7 @@ function Kabaddi() {
         <div className={styles.table}>
           {matchData.sets.map((set, index) => (
             <div key={index} className={styles.sets}>
-              <h4>Set {set.setNumber} Wise </h4>
+              <h4>Set {set.setNumber}</h4>
               <table>
                 <thead>
                   <tr>
