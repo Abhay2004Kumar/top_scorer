@@ -1,39 +1,28 @@
-import { TennisDoubles } from "../Models/TennisDouble.model.js";
+import { TennisDouble } from "../Models/TennisDouble.model.js";
 
+
+// Create a new Tennis Doubles match
 const createTennisDoubles = async (req, res) => {
     try {
         const { data } = req.body;  // Extracting 'data' from request body
         console.log(data);
 
         // Create a new tennis doubles match with the provided data
-        const newMatch = await TennisDoubles.create({
-            team1: {
-                player1: data.team1.player1,
-                player2: data.team1.player2,
+        const newMatch = await TennisDouble.create({
+            teamA: {
+                name: data.teamA.name,
+                player1: data.teamA.player1,
+                player2: data.teamA.player2,
             },
-            team2: {
-                player1: data.team2.player1,
-                player2: data.team2.player2,
+            teamB: {
+                name: data.teamB.name,
+                player1: data.teamB.player1,
+                player2: data.teamB.player2,
             },
+            latestUpdate: data.latestUpdate,  
         });
 
-        // Calculate the total scores for each team after creating the match
-        let team1Total = newMatch.team1.player1.s1score + newMatch.team1.player1.s2score + newMatch.team1.player1.s3score
-                        + newMatch.team1.player2.s1score + newMatch.team1.player2.s2score + newMatch.team1.player2.s3score;
-
-        let team2Total = newMatch.team2.player1.s1score + newMatch.team2.player1.s2score + newMatch.team2.player1.s3score
-                        + newMatch.team2.player2.s1score + newMatch.team2.player2.s2score + newMatch.team2.player2.s3score;
-
-        // Determine the winner based on total score
-        if (team1Total > team2Total) {
-            console.log(`${newMatch.team1.player1.teamname} and ${newMatch.team1.player2.teamname} have won`);
-            newMatch.winner = "team1";
-        } else if (team2Total > team1Total) {
-            console.log(`${newMatch.team2.player1.teamname} and ${newMatch.team2.player2.teamname} have won`);
-            newMatch.winner = "team2";
-        }
-
-        // Save the match with the winner
+        // Save the match with the current state
         await newMatch.save();
         res.status(201).json(newMatch);  // Return the created match data
     } catch (err) {
@@ -44,7 +33,7 @@ const createTennisDoubles = async (req, res) => {
 // Update scores for the sets
 const updateTennisDoublesScore = async (req, res) => {
     try {
-        const { matchId, team, player, setNumber, score } = req.body;
+        const { matchId, team, player, setNumber, score, latestUpdate } = req.body;
 
         // Validate the score does not exceed 21
         if (score > 21) {
@@ -52,48 +41,52 @@ const updateTennisDoublesScore = async (req, res) => {
         }
 
         // Find the match by matchId
-        const match = await TennisDoubles.findById(matchId);
+        const match = await TennisDouble.findById(matchId);
 
         if (!match) {
             return res.status(404).json({ message: "Match not found" });
         }
 
         // Update the set score for the player
-        if (team === "team1") {
+        if (team === "teamA") {
             if (player === "player1") {
-                match.team1.player1[`s${setNumber}score`] = score;
+                match.teamA[`player1_s${setNumber}score`] = score;
             } else if (player === "player2") {
-                match.team1.player2[`s${setNumber}score`] = score;
+                match.teamA[`player2_s${setNumber}score`] = score;
             } else {
-                return res.status(400).json({ message: "Invalid player for team1" });
+                return res.status(400).json({ message: "Invalid player for teamA" });
             }
-        } else if (team === "team2") {
+        } else if (team === "teamB") {
             if (player === "player1") {
-                match.team2.player1[`s${setNumber}score`] = score;
+                match.teamB[`player1_s${setNumber}score`] = score;
             } else if (player === "player2") {
-                match.team2.player2[`s${setNumber}score`] = score;
+                match.teamB[`player2_s${setNumber}score`] = score;
             } else {
-                return res.status(400).json({ message: "Invalid player for team2" });
+                return res.status(400).json({ message: "Invalid player for teamB" });
             }
         } else {
             return res.status(400).json({ message: "Invalid team" });
         }
 
-        // Check if the match is completed (both teams have completed all sets)
-        const team1Total = match.team1.player1.s1score + match.team1.player1.s2score + match.team1.player1.s3score
-                          + match.team1.player2.s1score + match.team1.player2.s2score + match.team1.player2.s3score;
+        // If 'latestUpdate' is provided, update it
+        if (latestUpdate) {
+            match.latestUpdate = latestUpdate;
+        }
 
-        const team2Total = match.team2.player1.s1score + match.team2.player1.s2score + match.team2.player1.s3score
-                          + match.team2.player2.s1score + match.team2.player2.s2score + match.team2.player2.s3score;
+        // Calculate total scores for both teams
+        const teamATotal = match.teamA.player1.s1score + match.teamA.player1.s2score + match.teamA.player1.s3score
+                          + match.teamA.player2.s1score + match.teamA.player2.s2score + match.teamA.player2.s3score;
 
-        if (team1Total >= 0 && team2Total >= 0) {
-            if (team1Total > team2Total) {
-                match.winner = "team1";
-                match.matchStatus = "completed";
-            } else if (team2Total > team1Total) {
-                match.winner = "team2";
-                match.matchStatus = "completed";
-            }
+        const teamBTotal = match.teamB.player1.s1score + match.teamB.player1.s2score + match.teamB.player1.s3score
+                          + match.teamB.player2.s1score + match.teamB.player2.s2score + match.teamB.player2.s3score;
+
+        // Determine winner if match is completed
+        if (teamATotal > teamBTotal) {
+            match.winner = "teamA";
+            match.latestUpdate = "completed";
+        } else if (teamBTotal > teamATotal) {
+            match.winner = "teamB";
+            match.latestUpdate = "completed";
         }
 
         // Save the updated match
@@ -107,7 +100,7 @@ const updateTennisDoublesScore = async (req, res) => {
 // Get all tennis doubles matches
 const getTennisDoubles = async (req, res) => {
     try {
-        const matches = await TennisDoubles.find();
+        const matches = await TennisDouble.find();
         res.status(200).json(matches);
     } catch (err) {
         res.status(500).json({ message: err.message });

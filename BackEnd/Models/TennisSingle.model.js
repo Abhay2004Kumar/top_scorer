@@ -1,51 +1,39 @@
 import mongoose from "mongoose";
 
-const PlayerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  teamname: {
-    type: String,
-    required: true,
-  },
-  teamlogo: {
-    type: String,
-    required: true,
-  },
-  s1score: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  s2score: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-  s3score: {
-    type: Number,
-    default: 0,
-    min: 0,
-  },
-}, { _id: false });
-
 const TennisSingleSchema = new mongoose.Schema(
   {
-    player1: PlayerSchema,
-    player2: PlayerSchema,
-    winner: {
-      type: String,
-      enum: ["player1", "player2", null],  // Tracks the winner, null means no winner yet
-      default: null,
+   teamA: {
+      name: {
+        type:String,
+        required:true,
+      }, 
+      player: {
+        type:String,
+        required:true,
+      },
+    }, 
+    teamB: {
+      name: {
+        type:String,
+        required:true,
+      }, 
+      player: {
+        type:String,
+        required:true,
+      },
     },
-    matchStatus: {
-      type: String,
-      enum: ["ongoing", "completed"],
-      default: "ongoing",
+    tmA_score: [],
+    tmB_score: [],
+    currentSet:{
+      type:Number,
     },
+    latestUpdate:{
+      type:String,
+      default:"NULL",
+    }
   },
   { timestamps: true }
 );
+
 
 export const TennisSingle = mongoose.model("TennisSingle", TennisSingleSchema);
