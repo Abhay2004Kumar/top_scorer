@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 
+// Player schema
 const PlayerSchema = new mongoose.Schema({
-  name1: {
-    type: String,
-    required: true,
-  },
-  name2: {
+  name: {
     type: String,
     required: true,
   },
@@ -20,26 +17,44 @@ const PlayerSchema = new mongoose.Schema({
   s1score: {
     type: Number,
     default: 0,
-    min:0,
+    min: 0,
   },
   s2score: {
     type: Number,
     default: 0,
-    min:0,
+    min: 0,
   },
   s3score: {
     type: Number,
     default: 0,
-    min:0,
+    min: 0,
   },
-},{_id:false});
+}, { _id: false });
 
-const TennisDoubleSchema = new mongoose.Schema(
+// Doubles schema
+const TennisDoublesSchema = new mongoose.Schema(
   {
-    player1:PlayerSchema,
-    player2: PlayerSchema,
+    team1: {
+      player1: PlayerSchema,
+      player2: PlayerSchema,
+    },
+    team2: {
+      player1: PlayerSchema,
+      player2: PlayerSchema,
+    },
+    winner: {
+      type: String,
+      enum: ["team1", "team2", null], // Tracks the winner, null means no winner yet
+      default: null,
+    },
+    matchStatus: {
+      type: String,
+      enum: ["ongoing", "completed"],
+      default: "ongoing",
+    },
   },
   { timestamps: true }
 );
 
-export const TennisDouble = mongoose.model("TennisDouble", TennisDoubleSchema);
+// Create and export the model
+export const TennisDoubles = mongoose.model("TennisDoubles", TennisDoublesSchema);
