@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "../Tennis/Tennis.module.css"; // Update with Kabaddi styles
 import Options from '../../Components/Live_Upcoming/Options';
 import { MdSportsKabaddi } from "react-icons/md";
@@ -23,6 +23,10 @@ function Kabaddi({ data }) {
     latestUpdate: "No updates available",
   };
 
+  const [currSet, setCurrSet] = useState(1);
+  const [wdth, setWidth] = useState(50);
+
+  // Utility function to check if a set is empty
   const isSetEmpty = (set) =>
     set.raidPoints === 0 &&
     set.tacklePoints === 0 &&
@@ -30,63 +34,66 @@ function Kabaddi({ data }) {
     set.bonusPoints === 0 &&
     set.totalPoints === 0;
 
-  const currentSet = 
-    !isSetEmpty(matchData.teamA.set1Points) || !isSetEmpty(matchData.teamB.set1Points)
-      ? 1
-      : !isSetEmpty(matchData.teamA.set2Points) || !isSetEmpty(matchData.teamB.set2Points)
-      ? 2
-      : 3;
+  // Set current set based on the match data
+  useEffect(() => {
+    if (!(matchData.teamA.set1Points) || !(matchData.teamB.set1Points)) {
+      setCurrSet(1);
+    } else if (!(matchData.teamA.set2Points) || !(matchData.teamB.set2Points)) {
+      setCurrSet(2);
+    } else if (!(matchData.teamA.set3Points) || !(matchData.teamB.set3Points)) {
+      setCurrSet(3);
+    }
+  }, [matchData]); // Run this effect only when matchData changes
 
-      const renderSetData = (teamAData, teamBData, setName) => (
-        <div className={styles.sets}>
-          <h4>{setName} Summary</h4>
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Player Name</th>
-                <th>Touch Points</th>
-                <th>Tackle Points</th>
-                <th>Raid Points</th>
-                <th>Bonus Points</th>
-                <th>Total Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Team A Row */}
-              <tr>
-                <td>
-                  <span className={styles.flg}>
-                    <img className={styles.tableimg} src={flag1_link} alt="flag" />
-                  </span>
-                </td>
-                <td>{matchData.teamA.player}</td>
-                <td>{teamAData.touchPoints}</td>
-                <td>{teamAData.tacklePoints}</td>
-                <td>{teamAData.raidPoints}</td>
-                <td>{teamAData.bonusPoints}</td>
-                <td>{teamAData.totalPoints}</td>
-              </tr>
-      
-              {/* Team B Row */}
-              <tr>
-                <td>
-                  <span className={styles.flg}>
-                    <img className={styles.tableimg} src={flag2_link} alt="flag" />
-                  </span>
-                </td>
-                <td>{matchData.teamB.player}</td>
-                <td>{teamBData.touchPoints}</td>
-                <td>{teamBData.tacklePoints}</td>
-                <td>{teamBData.raidPoints}</td>
-                <td>{teamBData.bonusPoints}</td>
-                <td>{teamBData.totalPoints}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-      
+  const renderSetData = (teamAData, teamBData, setName) => (
+    <div className={styles.sets}>
+      <h4>{setName} Summary</h4>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Player Name</th>
+            <th>Touch Points</th>
+            <th>Tackle Points</th>
+            <th>Raid Points</th>
+            <th>Bonus Points</th>
+            <th>Total Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Team A Row */}
+          <tr>
+            <td>
+              <span className={styles.flg}>
+                <img className={styles.tableimg} src={flag1_link} alt="flag" />
+              </span>
+            </td>
+            <td>{matchData.teamA.player}</td>
+            <td>{teamAData.touchPoints}</td>
+            <td>{teamAData.tacklePoints}</td>
+            <td>{teamAData.raidPoints}</td>
+            <td>{teamAData.bonusPoints}</td>
+            <td>{teamAData.totalPoints}</td>
+          </tr>
+  
+          {/* Team B Row */}
+          <tr>
+            <td>
+              <span className={styles.flg}>
+                <img className={styles.tableimg} src={flag2_link} alt="flag" />
+              </span>
+            </td>
+            <td>{matchData.teamB.player}</td>
+            <td>{teamBData.touchPoints}</td>
+            <td>{teamBData.tacklePoints}</td>
+            <td>{teamBData.raidPoints}</td>
+            <td>{teamBData.bonusPoints}</td>
+            <td>{teamBData.totalPoints}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
     <>
@@ -112,7 +119,7 @@ function Kabaddi({ data }) {
               <h1 className={styles.gols}>
                 {matchData.teamA.totalPoints} - {matchData.teamB.totalPoints}
               </h1>
-              <p className={styles.setInfo}>Set {currentSet}</p>
+              <p className={styles.setInfo}> .</p>
             </div>
             <div className={styles.teamB}>
               <p className={styles.tname}>{matchData.teamB.name}</p>
@@ -129,17 +136,20 @@ function Kabaddi({ data }) {
         </div>
 
         <div className={styles.textUpdate}>
+          <div className={styles.predictor}>
+            <div style={{ width: `30%`, transition: "1s" }} className={styles.bar}></div> 
+          </div>
           <p>{matchData.latestUpdate}</p>
         </div>
 
         <div className={styles.Sumry}>
           <h2>Summary</h2>
         </div>
-<div className={styles.table}>
-  {renderSetData(matchData.teamA.set1Points, matchData.teamB.set1Points, "Set 1")}
-  {renderSetData(matchData.teamA.set2Points, matchData.teamB.set2Points, "Set 2")}
-  {renderSetData(matchData.teamA.set3Points, matchData.teamB.set3Points, "Set 3")}
-</div>
+        <div className={styles.table}>
+          {renderSetData(matchData.teamA.set1Points, matchData.teamB.set1Points, "Set 1")}
+          {renderSetData(matchData.teamA.set2Points, matchData.teamB.set2Points, "Set 2")}
+          {renderSetData(matchData.teamA.set3Points, matchData.teamB.set3Points, "Set 3")}
+        </div>
 
       </div>
     </>

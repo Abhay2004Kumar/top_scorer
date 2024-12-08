@@ -1,8 +1,8 @@
 import Options from "../../../Components/Live_Upcoming/Options";
 import styles from "./kabaddiArchived.module.css";
-import { useState, useEffect } from "react";
+import { react, useState, useEffect } from "react";
 
-function KabaddiArchived() {
+function KabaddiArchived() {  
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,6 +10,7 @@ function KabaddiArchived() {
 
   // Fetch match data from the API
   useEffect(() => {
+    console.log("HEEELLLO")
     const fetchMatches = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/v1/sports/getKabaddi");
@@ -58,6 +59,7 @@ function KabaddiArchived() {
   }
 
   return (
+    <>
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
         <Options
@@ -208,9 +210,9 @@ function KabaddiArchived() {
           <div className={styles.CardContainer}>
             {matches.map((match) => (
               <div
-                key={match._id}
-                className={styles.MatchCard}
-                onClick={() => handleCardClick(match._id)}
+              key={match._id}
+              className={styles.MatchCard}
+              onClick={() => handleCardClick(match._id)}
               >
                 <h3>
                   {match.teamA.name} vs {match.teamB.name}
@@ -230,6 +232,7 @@ function KabaddiArchived() {
         </div>
       )}
     </div>
+      </>
   );
 }
 

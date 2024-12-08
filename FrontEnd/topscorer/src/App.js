@@ -89,7 +89,7 @@ function App() {
             <Route path='/badminton_archived' element={<BadmintonArchived/>}></Route>
             <Route path='/sign_up' element={<SignupPage/>}></Route>
             <Route path='/tennis_archived' element={<TennisArchived/>}></Route>
-            <Route path='/kabbadi_archived' element={<KabaddiArchived/>}></Route>
+            <Route path='/kabaddi_archived' element={<KabaddiArchived/>}></Route>
             <Route path='/football_archived' element={<FootballArchived/>}></Route>
             <Route path='/cricket_archived' element={<CricketArchived/>}></Route>
             <Route path='/dbadminton_archived' element={<DBadmintonArchived/>}></Route>
