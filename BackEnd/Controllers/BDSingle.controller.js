@@ -1,10 +1,11 @@
 import { BDSingle } from "../Models/BDSingle.model.js";
+import { updateWinPlayer, updateWinTeam } from "./PlayerTeam.controller.js";
 
 const createBDSingle = async (req, res) => {
     try {
       
         const { data } = req.body;
-// console.log(data);
+        console.log(data);
       
         const newMatch = await BDSingle.create({
             teamA:data.teamA,
@@ -14,6 +15,29 @@ const createBDSingle = async (req, res) => {
             currentSet: data.currentSet || 1,      
             latestUpdate: data.latestUpdate || "NULL"
         });
+
+        let scoreA=0;
+        let scoreB=0;
+        for (let i = 0 ; i<newMatch.tmA_score.length;i++)
+        {
+            scoreA+=newMatch.tmA_score[i];}
+
+        for (let i = 0 ; i<newMatch.tmA_score.length;i++)
+            {
+                scoreB+=newMatch.tmB_score[i];
+            }
+
+        if (scoreA>scoreB)
+        {
+
+            let {name,player} =newMatch.teamA;
+            console.log(`${name} has won`)
+
+        }
+        else{
+            let {name,player} =newMatch.teamB;
+            console.log(`${name} has won`)
+        }
 
     
         res.status(201).json( newMatch);
