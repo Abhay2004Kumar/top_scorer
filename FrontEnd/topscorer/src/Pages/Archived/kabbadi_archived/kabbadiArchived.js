@@ -92,46 +92,114 @@ function KabaddiArchived() {
 
           <p className={styles.MatchUpdate}>{selectedMatch.latestUpdate}</p>
 
+          {/* Displaying separate tables for each set */}
           <div className={styles.Scoreboard}>
             <h3>Scoreboard</h3>
+
+            {/* Set 1 Table */}
+            <h4 className={styles.head4}>Set 1</h4>
             <table>
               <thead>
                 <tr>
-                  <th>Team</th>
-                  <th>Raid Points</th>
-                  <th>Tackle Points</th>
-                  <th>Touch Points</th>
-                  <th>Bonus Points</th>
-                  <th>Total Points</th>
+                  <th className={styles.table_heading}>Team</th>
+                  <th className={styles.table_heading} >Raid Points</th>
+                  <th className={styles.table_heading} >Tackle Points</th>
+                  <th className={styles.table_heading} >Touch Points</th>
+                  <th className={styles.table_heading} >Bonus Points</th>
+                  <th className={styles.table_heading} >Total Points</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{selectedMatch.teamA.name}</td>
-                  <td>{selectedMatch.teamA.raidPoints.join(", ")}</td>
-                  <td>{selectedMatch.teamA.tacklePoints.join(", ")}</td>
-                  <td>{selectedMatch.teamA.touchPoints.join(", ")}</td>
-                  <td>{selectedMatch.teamA.bonusPoints.join(", ")}</td>
-                  <td>{selectedMatch.teamA.totalPoints}</td>
+                  <td>{selectedMatch.teamA.set1Points.raidPoints}</td>
+                  <td>{selectedMatch.teamA.set1Points.tacklePoints}</td>
+                  <td>{selectedMatch.teamA.set1Points.touchPoints}</td>
+                  <td>{selectedMatch.teamA.set1Points.bonusPoints}</td>
+                  <td>{selectedMatch.teamA.set1Points.totalPoints}</td>
                 </tr>
                 <tr>
                   <td>{selectedMatch.teamB.name}</td>
-                  <td>{selectedMatch.teamB.raidPoints.join(", ")}</td>
-                  <td>{selectedMatch.teamB.tacklePoints.join(", ")}</td>
-                  <td>{selectedMatch.teamB.touchPoints.join(", ")}</td>
-                  <td>{selectedMatch.teamB.bonusPoints.join(", ")}</td>
-                  <td>{selectedMatch.teamB.totalPoints}</td>
+                  <td>{selectedMatch.teamB.set1Points.raidPoints}</td>
+                  <td>{selectedMatch.teamB.set1Points.tacklePoints}</td>
+                  <td>{selectedMatch.teamB.set1Points.touchPoints}</td>
+                  <td>{selectedMatch.teamB.set1Points.bonusPoints}</td>
+                  <td>{selectedMatch.teamB.set1Points.totalPoints}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* Set 2 Table */}
+            <h4 className={styles.head4} >Set 2</h4>
+            <table>
+              <thead>
+              <tr>
+                  <th className={styles.table_heading}>Team</th>
+                  <th className={styles.table_heading} >Raid Points</th>
+                  <th className={styles.table_heading} >Tackle Points</th>
+                  <th className={styles.table_heading} >Touch Points</th>
+                  <th className={styles.table_heading} >Bonus Points</th>
+                  <th className={styles.table_heading} >Total Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{selectedMatch.teamA.name}</td>
+                  <td>{selectedMatch.teamA.set2Points.raidPoints}</td>
+                  <td>{selectedMatch.teamA.set2Points.tacklePoints}</td>
+                  <td>{selectedMatch.teamA.set2Points.touchPoints}</td>
+                  <td>{selectedMatch.teamA.set2Points.bonusPoints}</td>
+                  <td>{selectedMatch.teamA.set2Points.totalPoints}</td>
+                </tr>
+                <tr>
+                  <td>{selectedMatch.teamB.name}</td>
+                  <td>{selectedMatch.teamB.set2Points.raidPoints}</td>
+                  <td>{selectedMatch.teamB.set2Points.tacklePoints}</td>
+                  <td>{selectedMatch.teamB.set2Points.touchPoints}</td>
+                  <td>{selectedMatch.teamB.set2Points.bonusPoints}</td>
+                  <td>{selectedMatch.teamB.set2Points.totalPoints}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            {/* Set 3 Table */}
+            <h4 className={styles.head4}>Set 3</h4>
+            <table>
+              <thead>
+              <tr>
+                  <th className={styles.table_heading}>Team</th>
+                  <th className={styles.table_heading} >Raid Points</th>
+                  <th className={styles.table_heading} >Tackle Points</th>
+                  <th className={styles.table_heading} >Touch Points</th>
+                  <th className={styles.table_heading} >Bonus Points</th>
+                  <th className={styles.table_heading} >Total Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{selectedMatch.teamA.name}</td>
+                  <td>{selectedMatch.teamA.set3Points.raidPoints}</td>
+                  <td>{selectedMatch.teamA.set3Points.tacklePoints}</td>
+                  <td>{selectedMatch.teamA.set3Points.touchPoints}</td>
+                  <td>{selectedMatch.teamA.set3Points.bonusPoints}</td>
+                  <td>{selectedMatch.teamA.set3Points.totalPoints}</td>
+                </tr>
+                <tr>
+                  <td>{selectedMatch.teamB.name}</td>
+                  <td>{selectedMatch.teamB.set3Points.raidPoints}</td>
+                  <td>{selectedMatch.teamB.set3Points.tacklePoints}</td>
+                  <td>{selectedMatch.teamB.set3Points.touchPoints}</td>
+                  <td>{selectedMatch.teamB.set3Points.bonusPoints}</td>
+                  <td>{selectedMatch.teamB.set3Points.totalPoints}</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <div className={styles.MatchSummary}>
-            {/* <h4>Match Summary:</h4> */}
-            <br></br>
             <p><strong>Current Half: </strong>{selectedMatch.currentHalf}</p>
             <p><strong>Latest Update: </strong>{selectedMatch.latestUpdate}</p>
-            <p><strong>Match Date : </strong>{formatDate(selectedMatch.createdAt)}</p>
+            <p><strong>Match Date: </strong>{formatDate(selectedMatch.createdAt)}</p>
           </div>
         </div>
       ) : (
@@ -153,9 +221,8 @@ function KabaddiArchived() {
                 </p>
                 <div className={styles.CardScore}>
                   <p>
-                    Last Raid Points: {match.teamA.raidPoints.at(-1)} - {match.teamB.raidPoints.at(-1)}
+                    Last Raid Points: {match.teamA.set3Points.raidPoints} - {match.teamB.set3Points.raidPoints}
                   </p>
-                  {/* <p>Current Half: {match.currentHalf}</p> */}
                 </div>
               </div>
             ))}

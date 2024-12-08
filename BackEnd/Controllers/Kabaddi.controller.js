@@ -88,7 +88,6 @@ import { Kabaddi } from "../Models/Kabaddi.model.js";
 const createKabaddiMatch = async (req, res) => {
   try {
     const { teamA, teamB, currentHalf, latestUpdate } = req.body;
-
     const calculateTotalPoints = (team) => {
       const totalPoints = ['set1Points', 'set2Points', 'set3Points'].reduce((acc, set) => {
         const setPoints = team[set];
@@ -99,7 +98,7 @@ const createKabaddiMatch = async (req, res) => {
 
     teamA.totalPoints = calculateTotalPoints(teamA);
     teamB.totalPoints = calculateTotalPoints(teamB);
-
+    
     const newMatch = await Kabaddi.create({
       teamA,
       teamB,

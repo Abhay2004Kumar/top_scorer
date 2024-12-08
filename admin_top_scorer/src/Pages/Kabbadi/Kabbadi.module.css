@@ -152,7 +152,17 @@
 .kabaddiTextArea {
   resize: vertical;
 }
-
+.kabaddiSocketButton{
+  padding: 10px 20px;
+  background-color: #26A69A;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 20px;
+}
 .kabaddiSubmitButton {
   padding: 10px 20px;
   background-color: #26A69A;
@@ -245,6 +255,7 @@
 .kabaddiInput {
   font-size: 14px;
   padding: 8px;
+  width: 95%;
   margin-bottom: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;

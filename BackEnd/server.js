@@ -43,6 +43,9 @@ let full_Payload = {
   },
   tennis_D: {
     "TTD": false
+  },
+  kabbadi_M:{
+    "Kabb":false
   }
 };
  
@@ -50,14 +53,14 @@ io.on("connection", (socket) => {
   console.log("A user connected");
 
   // Send the full payload to the newly connected client
-  socket.emit("FullPayLoad", full_Payload);
+  // socket.emit("FullPayLoad", full_Payload);
   // console.log("FICK",full_Payload.tennis_D);
 
   // console.log("ALL",full_Payload);
   // Listen for data from the client
   socket.on("data", (payload) => {
     // Check if payload has a name and update the corresponding game type
-    // console.log("Payload: ", payload)
+    console.log("Payload: ", payload)
     if (payload.name === "Badminton") {
       // Update badminton data
       full_Payload.badminton.lastMessageBD = payload.data;
@@ -76,6 +79,13 @@ io.on("connection", (socket) => {
       console.log("Tennis_D");
       full_Payload.tennis_D.TTD = payload.data;
     }
+    else if (payload.name === "Kabaddi") {
+      // Update badminton_double data 
+      // console.log("Kabaddi");
+      console.log(payload.data)
+      full_Payload.kabbadi_M.Kabb = payload.data;
+    }
+    
 
     io.emit("FullPayLoad", full_Payload);
   });

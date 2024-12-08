@@ -31,6 +31,7 @@ import DBadmintonArchived from "./Pages/Archived/dbadminton_archived/dbadmintonA
 import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived";
 // import './index.css';
 import toast, { Toaster} from 'react-hot-toast'
+import { fas } from "@fortawesome/free-solid-svg-icons";
 const socket = io.connect("http://localhost:5000");
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
     badminton_double: false,
     tennis:false,
     tennis_D: false,
+    kabbadi_M: false,
   });
   
   const [islogin,setislogin] = useState(false);
@@ -77,7 +79,8 @@ function App() {
             <Route path='/badminton_d' element={<Badminton_D bdoubles={matchD.badminton_double.lastMessageBDouble}/>} ></Route>
             <Route path='/tennis' element={<Tennis  tt={matchD.tennis.TT} />} ></Route>
             <Route path='/tennis_d' element={<Tennis_D ttd ={matchD.tennis_D.TTD} />} ></Route>
-            <Route path='/kabaddi' element={<Kabaddi/>} ></Route>
+            <Route path='/kabaddi' element={<Kabaddi data={matchD.kabbadi_M.Kabb}/>} ></Route>
+            
             <Route path='/tnc' element={<TermsAndConditions/>} ></Route>
             <Route path='/dev++' element={<DevelopmentTeam/>} ></Route>
             <Route path='/login' element={<Login setislogin={setislogin} />} ></Route>
