@@ -62,87 +62,88 @@ function DBTennisArchived() {
       </div>
 
       {selectedMatch ? (
-        <div className={styles.MatchDetail}>
-          <button
-            className={styles.BackButton}
-            onClick={() => setSelectedMatch(null)}
-          >
-            Back to Matches
-          </button>
+  <div className={styles.MatchDetail}>
+    <button
+      className={styles.BackButton}
+      onClick={() => setSelectedMatch(null)}
+    >
+      Back to Matches
+    </button>
 
-          <div className={styles.math_info}>
-            <div className={styles.MatchTeams}>
-              <div className={styles.TeamDetails}>
-                <h3>{selectedMatch.teamA.name}</h3>
-                <p>{selectedMatch.teamA.players.join(" & ")}</p>
-              </div>
-              <div className={styles.TeamDetails}>
-                <h3>Vs</h3>
-              </div>
-              <div className={styles.TeamDetails}>
-                <h3>{selectedMatch.teamB.name}</h3>
-                <p>{selectedMatch.teamB.players.join(" & ")}</p>
-              </div>
-            </div>
-          </div>
-
-          <p className={styles.MatchUpdate}>{selectedMatch.latestUpdate}</p>
-
-          <div className={styles.Scoreboard}>
-            <h3>Scoreboard</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Set</th>
-                  <th>{selectedMatch.teamA.name}</th>
-                  <th>{selectedMatch.teamB.name}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedMatch.tmA_score.map((score, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{score}</td>
-                    <td>{selectedMatch.tmB_score[index]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className={styles.MatchSummary}>
-            <br />
-            <p><strong>Match Date: </strong>{formatDate(selectedMatch.createdAt)}</p>
-          </div>
+    <div className={styles.math_info}>
+      <div className={styles.MatchTeams}>
+        <div className={styles.TeamDetails}>
+          <h3>{selectedMatch.teamA.name}</h3>
+          <p>{`${selectedMatch.teamA.player1} & ${selectedMatch.teamA.player2}`}</p>
         </div>
-      ) : (
-        <div className={styles.MatchList}>
-          <span className={styles.Heading2}>Archived Tennis Doubles Matches</span>
-          <div className={styles.CardContainer}>
-            {reversedMatches.map((match) => (
-              <div
-                key={match._id}
-                className={styles.MatchCard}
-                onClick={() => handleCardClick(match._id)}
-              >
-                <h3>
-                  {match.teamA.name} vs {match.teamB.name}
-                </h3>
-                <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
-
-                <div className={styles.CardScore}>
-                  <p>
-                    Last Set: {match.tmA_score.at(-1)} - {match.tmB_score.at(-1)}
-                  </p>
-                </div>
-                <p className={styles.date_st} style={{ color: "grey" }}>
-                  Date: {formatDate(match.createdAt)}
-                </p>
-              </div>
-            ))}
-          </div>
+        <div className={styles.TeamDetails}>
+          <h3>Vs</h3>
         </div>
-      )}
+        <div className={styles.TeamDetails}>
+          <h3>{selectedMatch.teamB.name}</h3>
+          <p>{`${selectedMatch.teamB.player1} & ${selectedMatch.teamB.player2}`}</p>
+        </div>
+      </div>
+    </div>
+
+    <p className={styles.MatchUpdate}>{selectedMatch.latestUpdate}</p>
+
+    <div className={styles.Scoreboard}>
+      <h3>Scoreboard</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Set</th>
+            <th>{selectedMatch.teamA.name}</th>
+            <th>{selectedMatch.teamB.name}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {selectedMatch.tmA_score.map((score, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{score}</td>
+              <td>{selectedMatch.tmB_score[index]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div className={styles.MatchSummary}>
+      <br />
+      <p><strong>Match Date: </strong>{formatDate(selectedMatch.createdAt)}</p>
+    </div>
+  </div>
+) : (
+  <div className={styles.MatchList}>
+    <span className={styles.Heading2}>Archived Tennis Doubles Matches</span>
+    <div className={styles.CardContainer}>
+      {reversedMatches.map((match) => (
+        <div
+          key={match._id}
+          className={styles.MatchCard}
+          onClick={() => handleCardClick(match._id)}
+        >
+          <h3>
+            {match.teamA.name} vs {match.teamB.name}
+          </h3>
+          <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
+
+          <div className={styles.CardScore}>
+            <p>
+              Last Set: {match.tmA_score.at(-1)} - {match.tmB_score.at(-1)}
+            </p>
+          </div>
+          <p className={styles.date_st} style={{ color: "grey" }}>
+            Date: {formatDate(match.createdAt)}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
