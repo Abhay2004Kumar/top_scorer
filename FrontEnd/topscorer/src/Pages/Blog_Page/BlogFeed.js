@@ -56,7 +56,7 @@ const BlogFeed = () => {
         blogId: selectedBlog._id,
         accessToken: localStorage.getItem('accessToken'),
       });
-      toast.success("Liked successfully");
+      // toast.success("Liked successfully");
       // Refresh blogs and update the selected blog
       await fetchBlogs();
       // Update selectedBlog with the updated data
@@ -88,6 +88,16 @@ const BlogFeed = () => {
     setComment('');
   };
   
+  // const toTime =(date)=>{
+  //   console.log(date);
+  //   console.log(typeof(date))
+  //   const arr = date.split(' ');
+  //   let newdate = '';
+  //   for(let i=0;i<arr.length;i++){
+  //     newdate+=arr[i]+' ';
+  //   }
+  //   return newdate;
+  // }
 
   return (
     <>
@@ -109,15 +119,15 @@ const BlogFeed = () => {
                 </p>
                 <p className={styles.blogContent}>{blog.content}</p>
                 <div className={styles.blogActions}>
-                  <button className={styles.actionBtn}>
+                  <div  className={styles.actionBtn}>
                     <FaThumbsUp /> Like ({blog.likes.length})
-                  </button>
-                  <button className={styles.actionBtn}>
+                  </div >
+                  <div  className={styles.actionBtn}>
                     <FaComment /> Comments ({blog.comments.length})
-                  </button>
-                  <button className={styles.actionBtn}>
+                  </div >
+                  {/* <button className={styles.actionBtn}>
                     <FaShareAlt /> Share
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -172,7 +182,7 @@ const BlogFeed = () => {
                     <ul>
                       {selectedBlog.comments.map((comment) => {
                         return (
-                          <Comment_Box key={comment._id} user={comment.user.username} mssg={comment.content} />
+                          <Comment_Box key={comment._id} user={comment.user.username} mssg={comment.content}/>
                         );
                       })}
                     </ul>
