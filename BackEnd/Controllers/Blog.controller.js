@@ -3,7 +3,15 @@ import { Blog } from "../Models/Blog.model.js";
 export const getAllBlogs = async (req, res) => {
     try {
         const blogs = await Blog.find()  // Find all blogs in the database
-            .populate("author", "username fullname")  // Optionally populate user details
+            .populate("author", "username fullname")
+            .populate({
+                path: "comments", // Populate comments field
+                select: "content author", // Include content and author from each comment
+                populate: {
+                    path: "user", // Populate the author of the comment
+                    select: "username fullname", // Include username and fullname of the comment's author
+                },
+            })
             .sort({ createdAt: -1 });  // Sort blogs by creation date (optional)
 
         res.status(200).json({ message: "Blogs fetched successfully", blogs });
