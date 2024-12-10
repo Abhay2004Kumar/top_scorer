@@ -1,121 +1,221 @@
 .blogFeedContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ACE4B8;
-    border-radius: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .blogFeed {
-    width: 100%; /* Set width as needed */
-    max-height: 600px; /* Set a fixed height */
-    overflow-y: auto; /* Allow vertical scrolling */
-    border: 1px solid #ddd; /* Optional border for visual separation */
-    border-radius: 8px; /* Optional rounding */
-    padding: 10px; /* Optional padding */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ACE4B8;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blogFeed {
+  width: 100%; /* Set width as needed */
+  max-height: 600px; /* Set a fixed height */
+  overflow-y: auto; /* Allow vertical scrolling */
+  border: 1px solid #ddd; /* Optional border for visual separation */
+  border-radius: 8px; /* Optional rounding */
+  padding: 10px; /* Optional padding */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.blogPost {
+  display: flex;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-start; /* Changed from space-between to flex-start */
+  background-color: #e6ffe6;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blogText {
+  flex: 3;
+  padding-left: 20px; /* Changed to padding-left */
+}
+
+.blogImage img {
+  width: 100%; /* Ensures the image takes up the full width of the container */
+  height: auto; /* Maintains the aspect ratio */
+  border-radius: 8px; /* Optional: adds rounded corners */
+}
+
+
+.blogTitle {
+  font-size: 16px;
+  width: 80%;
+  border-radius: 5px;
+  background-color: #C7F8FF;
+  padding: 5px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #1c3d1c;
+}
+
+.blogAuthorDate {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.blogContent {
+  font-size: 16px;
+  color: #333;
+}
+
+.blogImage {
+  flex: 1; /* Adjusted to keep image on the left */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.imageBox {
+  width: 100px;
+  height: 100px;
+  background-color: #c4c4c4;
+  border-radius: 8px;
+}
+
+.blogActions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+}
+.actionBtn {
+  background-color: #8b3d3d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actionBtn:hover {
+  background-color: #6a2d2d;
+}
+.closeModal {
+  background-color: #ff6666;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.closeModal:hover {
+  background-color: #cc5252;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modalBlogHeader {
+  border: 5px solid red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.postInfo{
+  color: gray;
+  display: flex;
+}
+.auth{
+  margin: 5px;
+}
+.modalBlogImage img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.modalBlogContent {
+  display: flex;
+
+}
+.ModelLikeCount{
+  padding: 5px;
+  font-size: 0.9em;
+  background-color: #C7F8FF;
+  margin: 10px;
+  border-radius: 20px;
+  max-width: 150px;
+}
+.modelContent{
+  margin: 10px;
+  height: 100%;
+  width: 60%;
+  background-color: #ACE4B8;
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 10px;
+}
+
+.modalBlogDetail h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.miniView {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  width: 300px;
+}
+.modalContent{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.commentInput {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid red;
+  font-size: 14px;
+  resize: none;
+}
+
+@media (max-width: 768px) {
   .blogPost {
-    display: flex;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: flex-start; /* Changed from space-between to flex-start */
-    background-color: #e6ffe6;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .blogText {
-    flex: 3;
-    padding-left: 20px; /* Changed to padding-left */
-  }
-  
-  .blogImage img {
-    width: 100%; /* Ensures the image takes up the full width of the container */
-    height: auto; /* Maintains the aspect ratio */
-    border-radius: 8px; /* Optional: adds rounded corners */
-  }
-  
-  
-  .blogTitle {
-    font-size: 16px;
-    width: 80%;
-    border-radius: 5px;
-    background-color: #C7F8FF;
-    padding: 5px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #1c3d1c;
-  }
-  
-  .blogAuthorDate {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
-  }
-  
-  .blogContent {
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .blogImage {
-    flex: 1; /* Adjusted to keep image on the left */
-    display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
   }
-  .imageBox {
-    width: 100px;
-    height: 100px;
-    background-color: #c4c4c4;
-    border-radius: 8px;
+
+  .blogImage {
+    margin-bottom: 15px;
   }
-  
-  .blogActions {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-top: 20px;
+
+  .blogText {
+    padding-left: 0;
+    text-align: center;
   }
-  .actionBtn {
-    background-color: #8b3d3d;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .actionBtn:hover {
-    background-color: #6a2d2d;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .blogPost {
-      flex-direction: column;
-    }
-  
-    .blogText {
-      padding-right: 0;
-    }
-  
-    .blogImage {
-      margin-top: 20px;
-    }
-  
-    .imageBox {
-      width: 80px;
-      height: 80px;
-    }
-  }
-  
+}
