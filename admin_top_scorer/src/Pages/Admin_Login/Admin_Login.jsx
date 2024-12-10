@@ -28,27 +28,22 @@ function Admin_Login({setChange,setusername}) {
     
     try {
       const response = await axios.post('http://localhost:5000/api/v1/admin/loginAdmin', formData);
-    
-      // Ensure the response contains the necessary data
+      
       if (response.data && response.data.success) {
         const { user, accessToken, refreshToken } = response.data.data;
-
-
-        // Display success message
         toast.success('Login Successful!');
         
-        // Store tokens securely (consider alternatives for sensitive data)
+        // Store tokens securely
         localStorage.setItem('admin_accessToken', accessToken);
         localStorage.setItem('admin_refreshToken', refreshToken);
         
-        // Update username state
-
         setusername(user.username);
-        setChange((prev)=>!prev);
-        // Redirect to the home page
-        navigate('/')
+        setChange((prev) => !prev);
         
-        console.log(refreshToken);
+        console.log('Navigating to /badminton');
+        navigate('/badminton');
+        window.location.reload(); // Force a refresh to re-render the app
+
       } else {
         toast.error('Login failed. Please try again.');
       }
@@ -56,8 +51,8 @@ function Admin_Login({setChange,setusername}) {
       console.error('Error during login:', error);
       toast.error('An error occurred during login. Please try again.');
     }
-    
-  };
+ };
+
 
   return (
     <div className={styles.container}>
