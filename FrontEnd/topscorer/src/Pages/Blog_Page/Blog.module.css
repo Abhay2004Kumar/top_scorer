@@ -150,14 +150,19 @@
   margin: 5px;
 }
 .modalBlogImage img {
-  width: 100%;
+  width: 90%;
   max-width: 400px;
+  min-width: 200px;
   border-radius: 8px;
   object-fit: cover;
 }
 
 .modalBlogContent {
   display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 
 }
 .ModelLikeCount{
@@ -170,8 +175,8 @@
 }
 .modelContent{
   margin: 10px;
-  height: 100%;
-  width: 60%;
+  height: 100%;min-width: 300px;
+  width: 45%;
   background-color: #ACE4B8;
   padding: 20px;
   margin-left: 20px;
