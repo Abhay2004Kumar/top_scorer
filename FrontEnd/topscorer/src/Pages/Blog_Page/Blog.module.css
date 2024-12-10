@@ -129,9 +129,12 @@
   background-color: white;
   padding: 20px;
   border-radius: 10px;
+  height: 80%;
+  overflow: scroll;
   width: 90%;
   max-width: 1000px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* border: 5px sold red; */
   position: relative;
 }
 
@@ -187,7 +190,18 @@
   font-size: 24px;
   margin-bottom: 15px;
 }
-
+.line{
+  padding: 2px;
+  background-color: #66b766;
+  height: 1px;
+  margin: 10px;
+  border: none;
+  border-radius: 20px;
+  /* border-bottom: 5px solid green; */
+  align-self: center;
+  margin-left: 5%;
+  width: 90%;
+}
 .miniView {
   display: flex;
   text-align: center;
@@ -196,6 +210,19 @@
 }
 .modalContent{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.commentboxx{
+  /* width: 100%; */
+  /* margin-left: 5%; */
+  background-color: rgb(250, 243, 234);
+  padding: 10px;
+  border-radius: 10px;
+  padding-left: 20px;
+}
+.comHead{
+  font-size: 16px;
+  color: #498549;
+
 }
 
 .commentInput {
