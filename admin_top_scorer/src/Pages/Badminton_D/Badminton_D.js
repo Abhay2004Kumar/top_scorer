@@ -78,13 +78,13 @@ function AdminBadminton_D() {
     <>
      {popup && 
        <div className={style.cover} onClick={handleMatchSubmit}>
-        <div className={style.pop}
-        onClick={(e) => e.stopPropagation()}>
-        <p style={{color:"blue",textAlign:"center",fontSize:"30px"}}>Are you sure to submit the score?</p>
-        <button className={style.yes} onClick={submitMatchData}>Yes</button>
-        <button className={style.no} onClick={handleMatchSubmit}>NO</button>
-        </div>
-      </div>
+       <div className={style.pop}
+       onClick={(e) => e.stopPropagation()}>
+       <p className={style.text_pop}>Are you sure to submit the score?</p>
+       <button className={style.yes} onClick={submitMatchData}>Yes</button>
+       <button className={style.no} onClick={handleMatchSubmit}>NO</button>
+       </div>
+     </div>
       }
     <div className={style.MainDiv}>
       <h2>Badminton Doubles Admin Page</h2>

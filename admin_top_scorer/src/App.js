@@ -13,6 +13,7 @@ import AdminBadminton_D from './Pages/Badminton_D/Badminton_D';
 import AdminTennis from './Pages/Tennis/Tennis';
 import AdminTennis_D from './Pages/Tennis_D/Admin_Tennis_D';
 import toast, { Toaster } from 'react-hot-toast';
+import Admin_Login from './Pages/Admin_Login/Admin_Login';
 
 
 
@@ -36,6 +37,7 @@ function App() {
           <Route path='/kabbadi' element={<Kabbadi />} />
           <Route path='/football' element={<Football />} />
           <Route path='/cricket' element={<Cricket />} />
+          <Route path='/signin' element={<Admin_Login/>} />
           {/* Add other routes as needed */}
         </Routes>
 

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import style from "../Badminton/Badminton.module.css";
 import io from "socket.io-client";
 import axios from 'axios'
+import toast from "react-hot-toast";
+
 
 const socket = io.connect("http://localhost:5000");
 
@@ -53,6 +55,7 @@ function AdminBadminton() {
     e.preventDefault();
     // console.log("Match Data Submitted:", matchData);
     socket.emit("data", matchData); // Emit the whole matchData object
+    toast.success("Data Updated!");
   };
   // to decide the state of popup
   const handleMatchSubmit = () => {
@@ -62,8 +65,10 @@ function AdminBadminton() {
   const submitMatchData = async()=>{
     try{
       await axios.post('http://localhost:5000/api/v1/sports/bdsingle',{data:matchData.data});
+      toast.success("Saved to Database!");
     }catch(err){
       console.log(err);
+      toast.error("Please Check Server Connection!");
     }
     handleMatchSubmit();
   }
@@ -74,7 +79,7 @@ function AdminBadminton() {
        <div className={style.cover} onClick={handleMatchSubmit}>
         <div className={style.pop}
         onClick={(e) => e.stopPropagation()}>
-        <p style={{color:"blue",textAlign:"center",fontSize:"30px"}}>Are you sure to submit the score?</p>
+        <p className={style.text_pop}>Are you sure to submit the score?</p>
         <button className={style.yes} onClick={submitMatchData}>Yes</button>
         <button className={style.no} onClick={handleMatchSubmit}>NO</button>
         </div>

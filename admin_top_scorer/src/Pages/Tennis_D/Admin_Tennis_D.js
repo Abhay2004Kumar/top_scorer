@@ -246,34 +246,14 @@ function Tennis_D() {
   return (
     <>
       {popup && (
-        <div
-          className={`${style.cover} popup-cover`}
-          onClick={handleMatchSubmit}
-        >
-          <div
-            className={`${style.pop} popup-box`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="popup-title">Confirm Submission</h2>
-            <p className="popup-message">
-              Are you sure you want to submit the match details?
-            </p>
-            <div className="popup-actions">
-              <button
-                className="popup-button popup-yes"
-                onClick={submitMatchData}
-              >
-                Yes
-              </button>
-              <button
-                className="popup-button popup-no"
-                onClick={handleMatchSubmit}
-              >
-                No
-              </button>
-            </div>
-          </div>
+        <div className={style.cover} onClick={handleMatchSubmit}>
+        <div className={style.pop}
+        onClick={(e) => e.stopPropagation()}>
+        <p className={style.text_pop}>Are you sure to submit the score?</p>
+        <button className={style.yes} onClick={submitMatchData}>Yes</button>
+        <button className={style.no} onClick={handleMatchSubmit}>NO</button>
         </div>
+      </div>
       )}
       <div className={style.MainDiv}>
         <h2>Tennis Doubles Admin Page</h2>

@@ -171,11 +171,18 @@ select:focus {
   position: absolute;
   top: 0px;
 }
+.text_pop{
+  color: white;
+  margin: 20px;
+  font-weight: 600;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  
+}
 .pop{
-  height: 200px;
+  height: 150px;
   width: 300px;
   border-radius: 7px  ;
-  background-color: rgba(17, 194, 222, 0.882);
+  background-color: rgb(27, 40, 17);
   text-align: center;
   position: absolute;
   top: 30%;
@@ -186,10 +193,14 @@ select:focus {
   margin-right: 40px;
   border: none;
   scale: 1.4;
+  width: 80px;
+  height: 30px;
   border-radius: 8px;
 }
 .no{
   border: none;
+  width: 80px;
+  height: 30px;
   scale: 1.4;
   border-radius: 8px;
 }
