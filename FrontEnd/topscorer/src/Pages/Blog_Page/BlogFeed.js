@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaThumbsUp, FaComment, FaShareAlt } from 'react-icons/fa';
 import styles from '../Blog_Page/Blog.module.css'; // Ensure correct path to CSS module
 import toast from 'react-hot-toast';
+import Comment_Box from '../../Components/Comment_Box/Comment_Box';
 
 const BlogFeed = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,7 +29,7 @@ const BlogFeed = () => {
   const openBlogModal = (blog) => {
     setSelectedBlog(blog);
     setIsModalOpen(true);
-    toast.success('Opening detailed view of blog');
+    // toast.success('Opening detailed view of blog');
   };
 
   // Close modal
@@ -110,22 +111,23 @@ const BlogFeed = () => {
                     </div>
                   </div>
                 </div>
-                <h3>Comments:</h3>
-                <ul>
-                  {selectedBlog.comments.map((commentId) => {
-                    const comment = selectedBlog.comments.find((comment) => comment._id === commentId);
-                    return (
-                      <li key={commentId}>
-                        <p>
-                          {console.log(selectedBlog)}
-                          {console.log("Data")}
-                          {console.log(comment)}
-                          {/* <strong>{comment.name}:</strong> {comment.content} */}
-                        </p>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <div className={styles.line}></div>
+                <div className={styles.commentboxx}>
+                  <h3 className={styles.comHead}>Comments</h3>
+
+                  {/* Display No comments if there are no comments */}
+                  {selectedBlog.comments.length === 0 ? (
+                    <p>No comments</p>
+                  ) : (
+                    <ul>
+                      {selectedBlog.comments.map((comment) => {
+                        return (
+                          <Comment_Box key={comment._id} user={comment.user.username} mssg={comment.content} />
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
               </div>
             ) : (
               <p>Loading blog details...</p>
