@@ -55,9 +55,8 @@ io.on("connection", (socket) => {
   console.log("A user connected");
 
   // Send the full payload to the newly connected client
-  // socket.emit("FullPayLoad", full_Payload);
-  // console.log("FICK",full_Payload.tennis_D);
-
+  socket.emit("FullPayLoad", full_Payload);
+  
   // console.log("ALL",full_Payload);
   // Listen for data from the client
   socket.on("data", (payload) => {
