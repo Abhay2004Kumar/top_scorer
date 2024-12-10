@@ -14,8 +14,8 @@ UserRouter.route("/refresh-token").post(refreshAccessToken)
 UserRouter.route("/change-password").post(verifyJWT, changeCurrentPass)
 
 UserRouter.route("/createBlog").post(verifyJWT,createBlog)
-UserRouter.route("/:blogId/likeBlog").put(verifyJWT,likeBlog)
-UserRouter.route("/:blogId/commentBlog").post(verifyJWT,addComment)
+UserRouter.route("/likeBlog").put(verifyJWT,likeBlog)
+UserRouter.route("/commentBlog").post(verifyJWT,addComment)
 UserRouter.route("/getAllblogs").get(getAllBlogs)
 
 export default UserRouter

@@ -40,7 +40,7 @@ export const createBlog = async (req, res) => {
 
 export const likeBlog = async (req, res) => {
     try {
-        const { blogId } = req.params;
+        const { blogId } = req.body;
         const blog = await Blog.findById(blogId);
 
         if (!blog) return res.status(404).json({ message: "Blog not found" });
