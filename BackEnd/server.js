@@ -8,6 +8,7 @@ import { routes } from './routes/sport.route.js';
 import UserRouter from './routes/user.route.js';
 import PlayerRouter from './routes/player.route.js';
 import adminRouter from './routes/admin.route.js';
+import FeedbackRouter from './routes/feedback.route.js';
 
 
 const PORT = process.env.PORT
@@ -102,6 +103,7 @@ app.use('/api/v1/sports',routes);
 app.use('/api/v1/users',UserRouter)
 app.use('/api/v1/players',PlayerRouter)
 app.use('/api/v1/admin',adminRouter)
+app.use('/api/v1/feedback',FeedbackRouter)
 
 
 // Start the server
