@@ -32,6 +32,7 @@ import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived"
 // import './index.css';
 import toast, { Toaster} from 'react-hot-toast'
 import { fas } from "@fortawesome/free-solid-svg-icons";
+import Comment_Box from "./Components/Comment_Box/Comment_Box";
 const socket = io.connect("http://localhost:5000");
 
 function App() {
@@ -94,6 +95,8 @@ function App() {
             <Route path='/cricket_archived' element={<CricketArchived/>}></Route>
             <Route path='/dbadminton_archived' element={<DBadmintonArchived/>}></Route>
             <Route path='/dbtennis_archived' element={<DBTennisArchived/>}></Route>
+
+            <Route path='/comBox' element={<Comment_Box/>}></Route>
 
 
 

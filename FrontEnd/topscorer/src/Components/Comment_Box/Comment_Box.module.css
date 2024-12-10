@@ -1,0 +1,39 @@
+.box {
+    display: flex;                /* Flexbox layout to align items horizontally */
+    /* background-color: rgb(224, 228, 222); Light background color */
+    padding: 3px;
+    /* border-radius: 20px;  */
+            /* Slightly more rounded corners */
+    max-width: 350px;             /* Increased max-width for better fit */
+    margin: 10px 0;   
+    /* border: 5px sod; */
+    /* border-bottom: 4px sold #666;            Margin for separation between comment boxes */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  */
+  }
+  
+  .avatar {
+    font-size: 40px;              /* Increased font size for better avatar visibility */
+    color: #666;                  /* Lighter avatar color */
+    margin-right: 15px;           /* Space between avatar and comment */
+    align-self: flex-start;       /* Align avatar at the top */
+  }
+  
+  
+  .commentDetails {
+    display: flex;
+    flex-direction: column;       /* Stack name and comment vertically */
+  }
+  
+  .name {
+    font-weight: 600;             /* Bold name for emphasis */
+    font-size: 13px;              /* Slightly larger font for the name */
+    color: #333;                  /* Dark color for readability */
+    margin-bottom: 5px;           /* Space between name and comment */
+  }
+  
+  .commentText {
+    font-size: 14px;              /* Standard font size for the comment */
+    color: #555;                  /* Slightly lighter text color */
+    line-height: 1.4;             /* Line height for readability */
+  }
+  
