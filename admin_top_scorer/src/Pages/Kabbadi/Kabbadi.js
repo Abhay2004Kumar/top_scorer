@@ -4,7 +4,7 @@ import axios from "axios";
 import io from "socket.io-client";
 import toast from "react-hot-toast";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function AdminKabaddi() {
   const [popup, setPopup] = useState(false);
@@ -97,7 +97,7 @@ function AdminKabaddi() {
         },
       };
 
-      await axios.post("http://localhost:5000/api/v1/sports/Createkabaddi", {
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/Createkabaddi`, {
         teamA: updatedMatchData.data.teamA,
         teamB: updatedMatchData.data.teamB,
         currentHalf: updatedMatchData.data.currentHalf,

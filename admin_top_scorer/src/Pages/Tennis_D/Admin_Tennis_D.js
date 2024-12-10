@@ -3,7 +3,7 @@ import style from '../Badminton/Badminton.module.css';
 import io from "socket.io-client";
 import axios from 'axios';
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function Tennis_D() {
   const [popup, setPopup] = useState(false);
@@ -60,7 +60,7 @@ function Tennis_D() {
       console.log("Submitting match data:", matchData.data); // Log match data before sending
 
       // API call to submit match data, replace with your actual endpoint
-      const response = await axios.post("http://localhost:5000/api/v1/sports/tennisDoubles", {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/tennisDoubles`, {
         data: matchData.data,
       });
 

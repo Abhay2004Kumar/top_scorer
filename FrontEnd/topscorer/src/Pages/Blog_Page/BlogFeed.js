@@ -16,7 +16,7 @@ const BlogFeed = () => {
   // Fetch blogs data from API
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/users/getAllblogs');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/getAllblogs`);
       const data = await response.json();
       setBlogs(data.blogs); // Store blogs from API response
     } catch (error) {
@@ -52,7 +52,7 @@ const BlogFeed = () => {
 
   const doLike = async () => {
     try {
-      const res = await axios.put('http://localhost:5000/api/v1/users/likeBlog', {
+      const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/likeBlog`, {
         blogId: selectedBlog._id,
         accessToken: localStorage.getItem('accessToken'),
       });
@@ -70,7 +70,7 @@ const BlogFeed = () => {
   
   const sendComment = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/api/v1/users/commentBlog', {
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/commentBlog`, {
         blogId: selectedBlog._id,
         accessToken: localStorage.getItem('accessToken'),
         content: comment,

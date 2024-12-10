@@ -33,8 +33,7 @@ import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived"
 import toast, { Toaster} from 'react-hot-toast'
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import Comment_Box from "./Components/Comment_Box/Comment_Box";
-const socket = io.connect("http://localhost:5000");
-
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 function App() {
   const[matchD,setMatchD] = useState({
     badminton:false,
@@ -73,7 +72,7 @@ function App() {
       <Card/> */}
 
       <Routes>
-            <Route path='/' element={<Badminton/>} ></Route>
+            <Route path='/' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>
             <Route path='/cricket' element={<Cricket/>} ></Route>
             <Route path='/football' element={<Football/>} ></Route>
             <Route path='/badminton' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>

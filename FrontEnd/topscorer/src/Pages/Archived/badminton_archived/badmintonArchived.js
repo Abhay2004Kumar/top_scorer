@@ -12,7 +12,7 @@ function BadmintonArchived() {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/v1/sports/getbdsingle");
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/getbdsingle`);
         if (!response.ok) {
           throw new Error("Failed to fetch matches");
         }

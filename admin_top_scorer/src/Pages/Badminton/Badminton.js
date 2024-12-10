@@ -5,7 +5,7 @@ import axios from 'axios'
 import toast from "react-hot-toast";
 
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function AdminBadminton() {
   const [popup, setPopup] = useState(false);
@@ -64,7 +64,7 @@ function AdminBadminton() {
   //To submit match data as archieve in DB.
   const submitMatchData = async()=>{
     try{
-      await axios.post('http://localhost:5000/api/v1/sports/bdsingle',{data:matchData.data});
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/bdsingle`,{data:matchData.data});
       toast.success("Saved to Database!");
     }catch(err){
       console.log(err);

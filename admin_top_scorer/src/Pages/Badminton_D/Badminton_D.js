@@ -3,7 +3,7 @@ import style from '../Badminton/Badminton.module.css';
 import io from "socket.io-client";
 import axios from 'axios'
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function AdminBadminton_D() {
   const [popup, setPopup] = useState(false);
@@ -67,7 +67,7 @@ function AdminBadminton_D() {
   //To submit match data as archieve in DB.
   const submitMatchData = async()=>{
     try{
-      await axios.post('http://localhost:5000/api/v1/sports/bdDouble',{data:matchData.data});
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/bdDouble`,{data:matchData.data});
     }catch(err){
       console.log(err);
     }

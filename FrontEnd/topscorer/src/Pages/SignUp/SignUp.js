@@ -36,7 +36,7 @@ const SignupPage = () => {
         try {
             const userData = { username, fullname, email, password };
 
-            const response = await axios.post(`http://localhost:5000/api/v1/users/registerUser`, userData);
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/registerUser`, userData);
 
             console.log(response.data);
             toast.success('Signup successful! You can now log in.');

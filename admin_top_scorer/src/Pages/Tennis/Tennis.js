@@ -3,7 +3,7 @@ import style from '../Tennis/Tennis.module.css'
 import axios from 'axios';
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function AdminTennis() {
   const [matchData, setMatchData] = useState({
