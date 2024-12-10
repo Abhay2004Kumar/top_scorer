@@ -16,30 +16,37 @@ function Login({setislogin}) {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/v1/users/loginUser`, { 
-        login:emailOrUsername, 
-        password:password 
-      });
-      console.log(response) /// doubt full how is it showing password????
+        const response = await axios.post(`http://localhost:5000/api/v1/users/loginUser`, { 
+            login: emailOrUsername, 
+            password: password 
+        });
+        console.log(response); // The response body shows data returned from the backend
 
-      // Assuming the backend returns a JWT token and user data
-      const { accessToken, refreshToken } = response.data.data;
+        // Assuming the backend returns a JWT token and user data
+        const { accessToken, refreshToken } = response.data.data;
 
-      // Save tokens in localStorage (or use cookies for security)
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      setislogin(true);
-      // Redirect to the dashboard or homepage
-      toast.success(`Welcome, ${response.data.data.user.username}!`)
-      navigate('/');
+        // Save tokens in localStorage
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+
+        // Save tokens in browser cookies
+        document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure`;
+        document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800; Secure`;
+
+        setislogin(true);
+
+        // Redirect to the dashboard or homepage
+        toast.success(`Welcome, ${response.data.data.user.username}!`);
+        navigate('/');
 
     } catch (err) {
-      
-      toast.error('Login failed')
-      // Set error message for invalid credentials or other issues
-      // setError(err.response?.data?.message || 'Something went wrong. Please try again.');
+        console.error(err);
+        toast.error('Login failed');
+        // Optionally handle error messages here
     }
-  };
+};
+
+
 
   return (
     <>

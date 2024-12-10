@@ -3,25 +3,37 @@ import { FaThumbsUp, FaComment, FaShareAlt } from 'react-icons/fa';
 import styles from '../Blog_Page/Blog.module.css'; // Ensure correct path to CSS module
 import toast from 'react-hot-toast';
 import Comment_Box from '../../Components/Comment_Box/Comment_Box';
+import { IoIosSend } from "react-icons/io";
+import axios from 'axios'
 
 const BlogFeed = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null); // To store the blog that was clicked
+  const [selectedBlog, setSelectedBlog] = useState(null);
+ // To store the blog that was clicked
+ const [comment,setComment] = useState('');
   const [blogs, setBlogs] = useState([]);
 
   // Fetch blogs data from API
+  const fetchBlogs = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/users/getAllblogs');
+      const data = await response.json();
+      setBlogs(data.blogs); // Store blogs from API response
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      toast.error('Failed to fetch blogs');
+    }
+  };
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/v1/users/getAllblogs');
-        const data = await response.json();
-        setBlogs(data.blogs); // Store blogs from API response
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
-        toast.error('Failed to fetch blogs');
+    if (selectedBlog) {
+      const updatedBlog = blogs.find(blog => blog._id === selectedBlog._id);
+      if (updatedBlog) {
+        setSelectedBlog(updatedBlog);
       }
-    };
-
+    }
+  }, [blogs]);
+  
+  useEffect(() => {
     fetchBlogs();
   }, []);
 
@@ -37,6 +49,45 @@ const BlogFeed = () => {
     setIsModalOpen(false);
     setSelectedBlog(null); // Clear selected blog when modal is closed
   };
+
+  const doLike = async () => {
+    try {
+      const res = await axios.put('http://localhost:5000/api/v1/users/likeBlog', {
+        blogId: selectedBlog._id,
+        accessToken: localStorage.getItem('accessToken'),
+      });
+      toast.success("Liked successfully");
+      // Refresh blogs and update the selected blog
+      await fetchBlogs();
+      // Update selectedBlog with the updated data
+      const updatedBlog = blogs.find(blog => blog._id === selectedBlog._id);
+      setSelectedBlog(updatedBlog);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to like blog");
+    }
+  };
+  
+  const sendComment = async () => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/v1/users/commentBlog', {
+        blogId: selectedBlog._id,
+        accessToken: localStorage.getItem('accessToken'),
+        content: comment,
+      });
+      toast.success("Comment added successfully");
+      // Refresh blogs and update the selected blog
+      await fetchBlogs();
+      // Update selectedBlog with the updated data
+      const updatedBlog = blogs.find(blog => blog._id === selectedBlog._id);
+      setSelectedBlog(updatedBlog);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to add comment");
+    }
+    setComment('');
+  };
+  
 
   return (
     <>
@@ -99,12 +150,11 @@ const BlogFeed = () => {
                   <div className={styles.modelContent}>
                     <p>{selectedBlog.content}</p>
                     <div className={styles.blogActions}>
-                      <button className={styles.actionBtn}>
+                      <button  className={styles.actionBtn} onClick={doLike}>
                         <FaThumbsUp /> Like ({selectedBlog.likes.length})
                       </button>
-                      <button className={styles.actionBtn}>
-                        <FaComment /> Comments ({selectedBlog.comments.length})
-                      </button>
+                      <input value={comment} onChange={(e)=>setComment(e.target.value)} type='text' placeholder='Comment here...' style={{padding:"5px",paddingLeft:"5px" ,marginLeft:"4px"}}></input>
+                      <button onClick={sendComment} style={{padding:"10px",borderRadius:"10px"}}><IoIosSend style={{scale:"1.7"}}/></button>
                       {/* <button className={styles.actionBtn}>
                         <FaShareAlt /> Share
                       </button> */}

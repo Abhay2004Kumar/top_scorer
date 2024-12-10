@@ -3,8 +3,7 @@ import { Blog } from "../Models/Blog.model.js";
 
 export const addComment = async (req, res) => {
     try {
-        const { blogId } = req.params;
-        const { content } = req.body;
+        const { blogId,content,accessToken } = req.body;
 
         const blog = await Blog.findById(blogId);
         if (!blog) return res.status(404).json({ message: "Blog not found" });
