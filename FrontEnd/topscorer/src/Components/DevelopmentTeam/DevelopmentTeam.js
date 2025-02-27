@@ -7,7 +7,7 @@ const teamMembers = [
   {
     name: 'Prasoon',
     role: 'Competitive Programmer',
-    photo: 'https://media.licdn.com/dms/image/v2/D5603AQHQ-iMnLYwqyw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718269484577?e=1730937600&v=beta&t=JMwj76BS7lStBCBV2hMdek9sWtV-9nMi2jLaQTLatB4',
+    photo: 'https://avatars.githubusercontent.com/u/73454209?v=4',
 
     linkedin: 'https://www.linkedin.com/in/prasoon-kushwaha-578ba3255/',
     github: 'https://github.com/Prasoon-kushwaha',
@@ -17,7 +17,7 @@ const teamMembers = [
   {
     name: 'Piyush',
     role: 'Backend Developer',
-    photo: 'https://media.licdn.com/dms/image/v2/D4D03AQHtL-rSZkdTTA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1684826021163?e=1730937600&v=beta&t=ncDWpv6tnUvr31h9KFV2jswsliX14Qqmmf2n4K_YBiY',
+    photo: 'https://iiitu.ac.in/DevTeam/PIYUSH%20YADAV.jpg',
     linkedin: 'https://www.linkedin.com/in/piyush-yadav-744806270/',
     github: 'https://github.com/piy3',
     twitter: 'https://twitter.com/prasoon',
@@ -26,7 +26,7 @@ const teamMembers = [
   {
     name: 'Abhay',
     role: 'Frontend Developer',
-    photo: 'https://media.licdn.com/dms/image/v2/D5635AQGw1tPk5E9eZw/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1721932553216?e=1725796800&v=beta&t=d3wX40tRU5BT9LF4f2Oq4ragqQtyozxhf3Dyw0S9cJE',
+    photo: 'https://abhay-kumar-pfolio.netlify.app/static/media/about.d600f30a5e3894e45696.png',
     linkedin: 'https://www.linkedin.com/in/abhay-kumar-74b16124a/',
     github: 'https://github.com/Abhay2004Kumar',
     twitter: 'https://twitter.com/abhay',
