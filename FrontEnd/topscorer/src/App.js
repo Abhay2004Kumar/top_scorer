@@ -61,10 +61,11 @@ function App() {
      <div style={{backgroundColor:"#080A1F"}}>
 
      <div style={{display:"flex",backgroundColor:"#080A1F"}}>
+
      <Sidebar/>
      
 
-     <div style={{width:"90vw",backgroundColor:"#001E19"}}>
+     <div style={{width:"100vw",backgroundColor:"#001E19"}}>
      
       <Horizontal/>
       
@@ -97,8 +98,7 @@ function App() {
 
       </Routes>
         
-      </div>       
-     <div style={{width:"00px",backgroundColor:"#080A1F"}}></div>       
+      </div>          
      </div>
     
       

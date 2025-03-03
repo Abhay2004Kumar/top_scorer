@@ -15,7 +15,7 @@
 }
 @media (max-width:571px){
     .sidemenu{
-        visibility:hidden;
+        display: none;
     }
 }
 
