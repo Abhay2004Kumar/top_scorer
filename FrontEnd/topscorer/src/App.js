@@ -65,11 +65,9 @@ function App() {
      
 
      <div style={{width:"90vw",backgroundColor:"#001E19"}}>
-      {/* <Login/> */}
+     
       <Horizontal/>
-      {/* <Card/>
-      <Card/>
-      <Card/> */}
+      
 
       <Routes>
             <Route path='/' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>
@@ -97,12 +95,8 @@ function App() {
 
             <Route path='/comBox' element={<Comment_Box/>}></Route>
 
-
-
       </Routes>
-
-    
-    
+        
       </div>       
      <div style={{width:"00px",backgroundColor:"#080A1F"}}></div>       
      </div>
