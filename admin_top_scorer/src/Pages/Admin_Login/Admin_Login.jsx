@@ -4,8 +4,7 @@ import styles from './Admin.module.css';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-const image = "https://api.iiitu.ac.in/uploads/gallery/IMG_09491726633560530-294898103.webp";
-
+const image = "https://images.pexels.com/photos/9153468/pexels-photo-9153468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 function Admin_Login({setChange,setusername}) {
   
   const [formData, setFormData] = useState({ username: '', password: '' });
