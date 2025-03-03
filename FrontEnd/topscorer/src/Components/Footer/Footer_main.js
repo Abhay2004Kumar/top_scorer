@@ -1,66 +1,105 @@
-import React from 'react';
-import styles from '../Footer/Footer_main.module.css';
+import React, { useState } from 'react';
 import { RiInstagramLine } from "react-icons/ri";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
-import TermsAndConditions from '../TnC/Tnc';
 import icons from '../../Project_Icon/Dark.png';
- 
+
 function Footer_main() {
+  // State to manage dark mode
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
   return (
-    <div className={styles.foot_m}>
-      <div className={styles.upper}>
-        <div className={styles.uleft}>
-          {/* <img 
-            src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Cricket_India_Crest.svg/800px-Cricket_India_Crest.svg.png" 
-            className={styles.icn} 
-            alt="Cricket India Crest" 
-          /> */}
-      <div className={styles.logoContainer}>
-        <img className={styles.logo} src={icons} alt="Dark Icon" />
-        {/* <h1 className={styles.title}>Sports Updates</h1> */}
-      </div>
+    <footer className={`bg-white dark:bg-gray-900 text-gray-900 dark:text-white py-12 transition-colors duration-300`}>
+      <div className="container mx-auto px-6">
+        {/* Dark Mode Toggle Button */}
+        <div className="flex justify-end mb-8">
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 bg-gray-200 dark:bg-gray-700 rounded-full focus:outline-none"
+          >
+            {isDarkMode ? (
+              <span className="text-white">🌞</span> // Sun icon for light mode
+            ) : (
+              <span className="text-gray-900">🌙</span> // Moon icon for dark mode
+            )}
+          </button>
         </div>
 
-        <div className={styles.umid}>
-          <h1>Get In Touch</h1>
-          <form className={styles.form}>
-            <input type='text' placeholder='Name' className={styles.uinp} />
-            <input type='email' placeholder='Email' className={styles.emid} />
-            <textarea placeholder='Type your message here' className={styles.msg_box} />
-            <div className={styles.btnContainer}>
-              <button className={styles.sb_btn}>Submit</button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Logo Section */}
+          <div className="flex flex-col items-center md:items-start">
+            <img className="h-16 w-32 mb-4" src={icons} alt="Dark Icon" />
+            <h1 className="text-2xl font-bold">Sports Updates</h1>
+          </div>
+
+          {/* Contact Form Section */}
+          <div className="flex flex-col items-center md:items-start">
+            <h1 className="text-2xl font-bold mb-4">Get In Touch</h1>
+            <form className="w-full max-w-md">
+              <input
+                type="text"
+                placeholder="Name"
+                className="w-full p-2 mb-4 rounded bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full p-2 mb-4 rounded bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <textarea
+                placeholder="Type your message here"
+                className="w-full p-2 mb-4 rounded bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="4"
+              />
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+
+          {/* Social Links Section */}
+          <div className="flex flex-col items-center md:items-start">
+            <h3 className="text-2xl font-bold mb-4">Important Links</h3>
+            <div className="space-y-2">
+              <a href="https://instagram.com/#" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white transition-colors">
+                <RiInstagramLine className="mr-2" /> Instagram
+              </a>
+              <a href="https://linkedin.com/in/#" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white transition-colors">
+                <FaLinkedin className="mr-2" /> LinkedIn
+              </a>
+              <a href="https://github.com/#" className="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white transition-colors">
+                <FaGithub className="mr-2" /> GitHub
+              </a>
             </div>
-          </form>
+          </div>
         </div>
-        
-        <div className={styles.uright}>
-          <h2 className={styles.ilinks}>Important Links</h2>
-          <div className={styles.LLlinks}>
-            <a href="https://instagram.com/#" className={styles.link}>
-              <RiInstagramLine className={styles.icon} /> Instagram
+
+        {/* Lower Footer Section */}
+        <div className="border-t border-gray-200 dark:border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <h3 className="text-gray-600 dark:text-gray-400">© Litti Chokha</h3>
+          </div>
+          <div className="mb-4 md:mb-0">
+            <a href="/dev++" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white transition-colors">
+              Development Team
             </a>
-            <a href="https://linkedin.com/in/#" className={styles.link}>
-              <FaLinkedin className={styles.icon} /> LinkedIn
-            </a>
-            <a href="https://github.com/#" className={styles.link}>
-              <FaGithub className={styles.icon} /> GitHub
+          </div>
+          <div>
+            <a href="/tnc" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white transition-colors">
+              Terms and Conditions
             </a>
           </div>
         </div>
       </div>
-
-      <div className={styles.lower}>
-        <div className={styles.lleft}>
-          <h3>© Litti Chokha</h3>
-        </div>
-        <div className={styles.lmid}>
-          <a href="/dev++" className={styles.link}>Development Team</a>
-        </div>
-        <div className={styles.lright}>
-          <a href="/tnc" className={styles.link}>Terms and Conditions</a>
-        </div>
-      </div>
-    </div>
+    </footer>
   );
 }
 

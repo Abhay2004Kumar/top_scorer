@@ -1,38 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Header.module.css';
-import icons from '../../Project_Icon/Dark.png';
 import { IoExitOutline } from "react-icons/io5";
 import toast from 'react-hot-toast';
+import icons from '../../Project_Icon/Dark.png';
 
-function Header({ islogin ,setislogin}) {
+function Header({ islogin, setislogin }) {
   const navigate = useNavigate();
   const [isUser, setIsUser] = useState('');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
-  const handleLoginClick = () => {
-    navigate('/login');
-  };
-
-  const handleLogout = () => {
-    // Clear the access token and other user data on logout
-    localStorage.removeItem('accessToken');
-    setIsUser('');
-    setislogin(false);
-
-    // Trigger a toast notification for logout process
-    toast.promise(
-      // Here, we'll simulate a promise (you can replace this with actual logout logic)
-      Promise.resolve(),
-      {
-        loading: 'Logging Out...',
-        success: <b>See you soon!</b>,
-        error: <b>Logout failed. Please try again.</b> // In case of error
-      }
-    );
-
-    // Navigate to the home page after logout
-    navigate('/');
-  };
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   useEffect(() => {
     const acToken = localStorage.getItem('accessToken');
@@ -42,29 +25,49 @@ function Header({ islogin ,setislogin}) {
       if (decodedPayload.username) {
         setIsUser(decodedPayload.username);
       }
-    } else {
-      console.log('No acToken found in localStorage');
     }
   }, [islogin]);
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    setIsUser('');
+    setislogin(false);
+
+    toast.promise(
+      Promise.resolve(),
+      {
+        loading: 'Logging Out...',
+        success: <b>See you soon!</b>,
+        error: <b>Logout failed. Please try again.</b>
+      }
+    );
+
+    navigate('/');
+  };
+
   return (
-    <header className={styles.header}>
-      <div className={styles.logoContainer}>
-        <img className={styles.logo} src={icons} alt="Dark Icon" />
+    <header className="bg-white text-black dark:bg-gray-900 dark:text-white flex justify-between items-center px-6 py-4 shadow-md">
+      <div className="flex items-center space-x-3">
+        <img src={icons} alt="Dark Icon" className="w-2-0 h-10" />
+        <span className="text-lg font-semibold">TopScorer</span>
       </div>
-      <nav className={styles.nav}>
-        <a href="/" className={styles.navLink}>Home</a>
-        {/* <a href="/chat" className={styles.navLink}>Chat</a> */}
-        
-        {isUser !== '' ? (
-          <div className={styles.userContainer}>
-            <span className={styles.username}>{isUser}</span>
-            <button className={styles.logoutButton} onClick={handleLogout}>
-              <IoExitOutline className={styles.logoutIcon} />
+      <nav className="flex items-center space-x-6">
+        <a href="/" className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">Home</a>
+        {isUser ? (
+          <div className="flex items-center space-x-3">
+            <span className="text-sm font-medium">{isUser}</span>
+            <button onClick={handleLogout} className="text-gray-600 dark:text-gray-400 hover:text-red-500 transition">
+              <IoExitOutline size={24} />
             </button>
           </div>
         ) : (
-          <button className={styles.login} onClick={handleLoginClick}>Login</button>
+          <button onClick={handleLoginClick} className="bg-green-500 text-white dark:bg-green-600 px-4 py-2 rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition">
+            Login
+          </button>
         )}
       </nav>
     </header>
