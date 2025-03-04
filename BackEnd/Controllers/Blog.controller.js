@@ -2,19 +2,22 @@ import { Blog } from "../Models/Blog.model.js";
 
 export const getAllBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find()  // Find all blogs in the database
+        const blogs = await Blog.find()
             .populate("author", "username fullname")
             .populate({
-                path: "comments", // Populate comments field
-                select: "content author", // Include content and author from each comment
+                path: "comments",
+                select: "content user",
                 populate: {
-                    path: "user", // Populate the author of the comment
-                    select: "username fullname", // Include username and fullname of the comment's author
+                    path: "user",
+                    select: "username fullname",
                 },
             })
-            .sort({ createdAt: -1 });  // Sort blogs by creation date (optional)
+            .sort({ createdAt: -1 });
 
-        res.status(200).json({ message: "Blogs fetched successfully", blogs });
+        // Filter out blogs where the author is missing (deleted user)
+        const filteredBlogs = blogs.filter(blog => blog.author !== null);
+
+        res.status(200).json({ message: "Blogs fetched successfully", blogs: filteredBlogs });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -22,36 +25,47 @@ export const getAllBlogs = async (req, res) => {
 
 export const createBlog = async (req, res) => {
     try {
-        if (!req.user) {
+        if (!req.user || !req.user._id) {
             return res.status(401).json({ message: "Unauthorized. Please log in to create a blog." });
         }
+
         const { title, content, imageUrl } = req.body;
+
         const blog = await Blog.create({
             title,
             content,
             imageUrl,
-            author: req.user._id, // Assuming `req.user` contains the authenticated user
+            author: req.user._id,
         });
-        res.status(201).json(blog);
+
+        if (!blog) {
+            return res.status(500).json({ message: "Failed to create blog" });
+        }
+
+        res.status(201).json({ message: "Blog created successfully", blog });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
+
 export const likeBlog = async (req, res) => {
     try {
         const { blogId } = req.body;
-        const blog = await Blog.findById(blogId);
+        const blog = await Blog.findById(blogId).populate("author", "username fullname");
 
-        if (!blog) return res.status(404).json({ message: "Blog not found" });
+        if (!blog || !blog.author) {
+            return res.status(404).json({ message: "Blog not found or author is invalid" });
+        }
 
         if (blog.likes.includes(req.user._id)) {
             blog.likes.pull(req.user._id); // Unlike
         } else {
             blog.likes.push(req.user._id); // Like
         }
+
         await blog.save();
-        res.status(200).json(blog);
+        res.status(200).json({ message: "Blog like updated", blog });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
