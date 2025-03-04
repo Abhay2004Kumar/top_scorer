@@ -3,7 +3,7 @@ import { RxAvatar } from "react-icons/rx";
 
 export default function Comment_Box({ user, mssg, createdAt }) {
   return (
-    <div className="flex gap-4 p-4 rounded-lg m-1 shadow-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+    <div className="flex gap-2 p-2 rounded-lg m-1 shadow-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
       {/* Avatar and username in a vertical stack */}
       <div className="flex flex-col items-center">
         <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center text-xl">
