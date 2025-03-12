@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { FaThumbsUp, FaComment } from 'react-icons/fa';
 import { IoIosSend } from 'react-icons/io';
 import toast from 'react-hot-toast';
+import { Grid } from "react-loader-spinner";
 import axios from 'axios';
 import Comment_Box from '../../Components/Comment_Box/Comment_Box';
 
 const BlogFeed = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const [loading,setLoading]  = useState(true);
   const [comment, setComment] = useState('');
   const [blogs, setBlogs] = useState([]);
   const [visibleComments, setVisibleComments] = useState(3); // Number of comments to show initially
 
   const fetchBlogs = async () => {
+    
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/getAllblogs`);
       setBlogs(response.data.blogs);
@@ -20,6 +23,7 @@ const BlogFeed = () => {
       console.error('Error fetching blogs:', error);
       toast.error('Failed to fetch blogs');
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -82,6 +86,23 @@ const BlogFeed = () => {
   const loadMoreComments = () => {
     setVisibleComments((prev) => prev + 3); // Load 3 more comments
   };
+
+  if (loading) {
+    return (
+      <div className=" w-[100%] h-[100%] flex items-center justify-center">
+        <Grid
+          visible={true}
+          height="80"
+          width="80"
+          color="#4fa94d"
+          ariaLabel="grid-loading"
+          radius="12.5"
+          wrapperStyle={{}}
+          wrapperClass="grid-wrapper"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white">
