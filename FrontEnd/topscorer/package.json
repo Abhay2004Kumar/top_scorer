@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
+    "emoji-picker-react": "^4.12.2",
     "icons": "^1.0.0",
     "jwt-decode": "^4.0.0",
     "motion": "^12.5.0",

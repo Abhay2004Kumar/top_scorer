@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from "../Tennis/Tennis.module.css"; // Update with Kabaddi styles
 import Options from '../../Components/Live_Upcoming/Options';
 import { MdSportsKabaddi } from "react-icons/md";
+import ChatComponent from '../../Components/Chat/Chat';
 
 function Kabaddi({ data }) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
@@ -98,6 +99,8 @@ function Kabaddi({ data }) {
   return (
     <>
       <div className={styles.MainDiv}>
+        
+      <ChatComponent sportName={"Kabbadi"}/>
         <Options cur_link="/kabaddi" archived="/kabaddi_archived" />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>

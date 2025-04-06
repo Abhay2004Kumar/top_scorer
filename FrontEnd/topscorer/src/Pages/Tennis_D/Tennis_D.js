@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "../Tennis_D/Tennis_D.module.css";
 import Options from '../../Components/Live_Upcoming/Options';
 import { GiTennisRacket } from "react-icons/gi";
+import ChatComponent from "../../Components/Chat/Chat";
 
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 
@@ -54,6 +55,8 @@ function Tennis_D({ttd}) {
 
   return (
     <div className={styles.MainDiv}>
+      
+      <ChatComponent sportName={"Tennis_D"}/>
       <Options cur_link="/tennis_d" archived="/dbtennis_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>

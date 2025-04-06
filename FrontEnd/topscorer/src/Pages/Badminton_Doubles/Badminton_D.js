@@ -4,6 +4,7 @@ import Options from "../../Components/Live_Upcoming/Options";
 import { GiTennisRacket } from "react-icons/gi";
 import io from "socket.io-client";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
+import ChatComponent from "../../Components/Chat/Chat";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function Badminton_D({ bdoubles }) {
@@ -77,6 +78,8 @@ function Badminton_D({ bdoubles }) {
 
   return (
     <div className={styles.MainDiv}>
+
+    <ChatComponent sportName={"Badminton_Doubles"}/>
       <Options cur_link="/badminton_d" archived="/dbadminton_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>
