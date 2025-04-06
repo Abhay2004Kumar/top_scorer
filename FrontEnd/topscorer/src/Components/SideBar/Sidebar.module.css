@@ -25,7 +25,9 @@
     padding: 10px;
     background-color: #0C2F3A;
     border-radius: 6px;
-    height: 390px;
+    width: 150px;
+    transition: 0.2s;
+    
 
     
 }
@@ -33,6 +35,7 @@
     overflow-y: scroll;
     /* position: absolute; */
     display: flex;
+    height:fit-content;
     flex-direction: column;
 }
 .space{
@@ -61,6 +64,7 @@
     height: 20px;
     border-style: none;
     width: 30px;    
+    color: white;
 }
 .menu button{
     border-radius: 5px;
