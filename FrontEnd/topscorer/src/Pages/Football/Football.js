@@ -2,6 +2,7 @@ import React from 'react';
 import styles from "../Football/Football.module.css";
 import { IoMdFootball } from "react-icons/io";
 import Options from '../../Components/Live_Upcoming/Options';
+import ChatComponent from '../../Components/Chat/Chat';
 
 function Football() {
   const matchData = {
@@ -34,6 +35,7 @@ function Football() {
   return (
     <>
       <div className={styles.MainDiv}>
+      <ChatComponent sportName={"Football"}/>
       <Options
           cur_link="/football"
           archived="/football_archived"

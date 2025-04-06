@@ -3,6 +3,7 @@ import styles from "../Tennis/Tennis.module.css";
 import Options from '../../Components/Live_Upcoming/Options';
 import { MdOutlineSportsTennis } from "react-icons/md";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
+import ChatComponent from "../../Components/Chat/Chat";
 
 function Tennis({ tt }) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
@@ -44,6 +45,8 @@ function Tennis({ tt }) {
   return (
     <>
       <div className={styles.MainDiv}>
+
+      <ChatComponent sportName={"Tennis"}/>
           <Options 
             cur_link="/tennis"
             archived="/tennis_archived"

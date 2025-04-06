@@ -3,7 +3,7 @@ import style from '../Cricket/cricket.module.css'
 import Horizontal from '../../Components/HorizontalGameopt/horizontal'
 import Options from '../../Components/Live_Upcoming/Options'
 import Card from '../../Components/PlayerCard/Card'
-
+import ChatComponent from '../../Components/Chat/Chat'
 function Cricket() {
     const [teamData, setTeamData] = useState(null);
     const [scoreCard, setScoreCard] = useState(null);
@@ -59,6 +59,7 @@ function Cricket() {
     return (
         <>
             <div className={style.maindiv}>
+                <ChatComponent sportName={"Cricket"}/>
                 <Options
             cur_link="/cricket"
             archived="/cricket_archived"

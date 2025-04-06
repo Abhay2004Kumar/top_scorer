@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Options from "../../Components/Live_Upcoming/Options";
 import { GiTennisRacket } from "react-icons/gi";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
+import ChatComponent from "../../Components/Chat/Chat";
 
 function Badminton({ bd }) {
   const flag1_link =
@@ -56,6 +57,7 @@ function Badminton({ bd }) {
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
         {/* Scoreboard Section */}
+        <ChatComponent sportName={"Badminton"}/>
         <div className="flex items-center justify-center space-x-3">
           <GiTennisRacket className="text-4xl text-green-600 dark:text-green-400" />
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">

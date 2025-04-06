@@ -10,16 +10,14 @@ import PlayerRouter from './routes/player.route.js';
 import adminRouter from './routes/admin.route.js';
 import FeedbackRouter from './routes/feedback.route.js';
 
-
-const PORT = process.env.PORT
-
+const PORT = process.env.PORT;
 
 const app = express();
 const server = http.createServer(app);
 app.use(cors({ 
   origin: '*',
-    optionsSuccessStatus: 200,
-    credentials: true,
+  optionsSuccessStatus: 200,
+  credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -27,16 +25,12 @@ app.use(cookieParser());
 // CORS Configuration
 const io = new Server(server, {
   cors: {
-    origin: "*",  // For development purposes, update to specific origin(s) in production
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
 
-// // Variables to store last messages for each game type
-let lastMessageBD = { matchData: false };  // Variable to store last Badminton match data
-let lastMessageBDouble = { matchData: false };  // Variable to store last Badminton Doubles match data
-
-// Full payload object to store all game data
+// ========== EXISTING GAME DATA SOCKET LOGIC ==========
 let full_Payload = {
   badminton: { 
     "lastMessageBD" : false
@@ -44,70 +38,123 @@ let full_Payload = {
   badminton_double: {
     "lastMessageBDouble" : false
   },
-  tennis : {
+  tennis: {
     "TT": false
   },
   tennis_D: {
     "TTD": false
   },
-  kabbadi_M:{
+  kabbadi_M: {
     "Kabb":false
   }
 };
- 
-io.on("connection", (socket) => {
-  console.log("A user connected");
 
-  // Send the full payload to the newly connected client
+io.on("connection", (socket) => {
+  console.log("A user connected (main namespace)");
+
   socket.emit("FullPayLoad", full_Payload);
   
-  // console.log("ALL",full_Payload);
-  // Listen for data from the client
   socket.on("data", (payload) => {
-    // Check if payload has a name and update the corresponding game type
-    console.log("Payload: ", payload)
     if (payload.name === "Badminton") {
-      // Update badminton data
       full_Payload.badminton.lastMessageBD = payload.data;
     } 
     else if (payload.name === "Badminton_D") {
-      // Update badminton_double datatennis_D
       full_Payload.badminton_double.lastMessageBDouble = payload.data;
     }
     else if (payload.name === "tennis") {
-      // Update  data
-      console.log("TEnnis");
       full_Payload.tennis.TT = payload.data;
     }
     else if (payload.name === "Tennis_D") {
-      // Update badminton_double data 
-      console.log("Tennis_D");
       full_Payload.tennis_D.TTD = payload.data;
     }
     else if (payload.name === "Kabaddi") {
-      // Update badminton_double data 
-      // console.log("Kabaddi");
-      console.log(payload.data)
       full_Payload.kabbadi_M.Kabb = payload.data;
     }
     
-
     io.emit("FullPayLoad", full_Payload);
   });
   
-
-  // Handle client disconnection 
   socket.on("disconnect", () => {
-    console.log("A user disconnected");
+    console.log("A user disconnected (main namespace)");
   });
 });
 
-app.use('/api/v1/sports',routes);
-app.use('/api/v1/users',UserRouter)
-app.use('/api/v1/players',PlayerRouter)
-app.use('/api/v1/admin',adminRouter)
-app.use('/api/v1/feedback',FeedbackRouter)
+// ========== NEW CHAT ROOM SOCKET LOGIC ==========
+const chatNamespace = io.of('/chat');
 
+// Store chat rooms and users
+const chatRooms = {
+  Badminton: { users: [] },
+  Badminton_Doubles: { users: [] },
+  Tennis: { users: [] },
+  Tennis_D: { users: [] },
+  Kabbadi: { users: [] },
+  Cricket: { users: [] },
+  Football:{ users: [] }
+};
+
+chatNamespace.on('connection', (socket) => {
+  console.log('New user connected to chat namespace');
+
+  // Join a chat room
+  socket.on('join_chat_room', ({ username, room }) => {
+    console.log(username);
+    if (chatRooms[room]) {
+      // Add user to room
+      chatRooms[room].users.push({ id: socket.id, username });
+      socket.join(room);
+      
+      // Notify room that user joined
+      socket.to(room).emit('user_joined_chat', username);
+      
+      // Send room info to user
+      chatNamespace.to(socket.id).emit('chat_room_info', {
+        room,
+        users: chatRooms[room].users.map(u => u.username)
+      });
+      
+      console.log(`${username} joined ${room} chat room`);
+    }
+  });
+
+  // Handle chat messages
+  socket.on('send_chat_message', ({ room, message }) => {
+    const user = chatRooms[room]?.users.find(u => u.id === socket.id);
+    if (user) {
+      const chatMessage = {
+        username: message.username,
+        message:message.message,
+        timestamp: new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true // change to false if you prefer 24-hour format
+        })
+      };
+      chatNamespace.to(room).emit('receive_chat_message', chatMessage);
+    }
+  });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    // Find and remove user from all rooms
+    Object.keys(chatRooms).forEach(room => {
+      const index = chatRooms[room].users.findIndex(u => u.id === socket.id);
+      if (index !== -1) {
+        const user = chatRooms[room].users[index];
+        chatRooms[room].users.splice(index, 1);
+        socket.to(room).emit('user_left_chat', user.username);
+        console.log(`${user.username} left ${room} chat room`);
+      }
+    });
+  });
+});
+
+// ========== EXPRESS ROUTES ==========
+app.use('/api/v1/sports', routes);
+app.use('/api/v1/users', UserRouter);
+app.use('/api/v1/players', PlayerRouter);
+app.use('/api/v1/admin', adminRouter);
+app.use('/api/v1/feedback', FeedbackRouter);
 
 // Start the server
 server.listen(PORT, () => {
