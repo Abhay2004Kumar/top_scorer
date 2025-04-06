@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     /* height: 100vh; */
-    background-color: #000000;
+    /* background-color: #000000; */
     border-radius: 4px;
   }
   
@@ -15,12 +15,12 @@
     font-family: sans-serif;
     /* text-transform: uppercase; */
     font-size: 1em;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     overflow: hidden;
     background: linear-gradient(90deg, #000, #fff, #000);
     background-repeat: no-repeat;
-    background-size: 80%;
-    animation: animate 1.5s linear infinite;
+    background-size: 90%;
+    animation: animate 1s linear infinite;
     -webkit-background-clip: text;
     -webkit-text-fill-color: rgba(255, 255, 255, 0);
   }
