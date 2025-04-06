@@ -1,16 +1,19 @@
 .option{
-    /* text-align: center; */
+    text-align: center;
     background-color: #000A27;
     margin-top: 6px;
-
     border-radius: 6px;
     padding: 5px;
     height: fit-content;
-    width: 100px;
+    width: 100%;
     color: white;
 }
 .option:hover{
     background-color: rgb(184, 179, 179);
     color:black;
     transition: 0.2s;
+}
+.active{
+    background: skyblue;
+    color: black;
 }
