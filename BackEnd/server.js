@@ -48,36 +48,46 @@ let full_Payload = {
     "Kabb":false
   }
 };
+let connectedClient = 0;
 
 io.on("connection", (socket) => {
-  console.log("A user connected (main namespace)");
+  connectedClient++; // ✅ Increment on connection
+  console.log("A user connected. Total clients:", connectedClient);
 
+  // Broadcast connected client count
+  io.emit("clientCount", connectedClient);
+
+  // Send full payload
   socket.emit("FullPayLoad", full_Payload);
-  
+
+  // Handle data updates
   socket.on("data", (payload) => {
-    if (payload.name === "Badminton") {
+    if (payload.name === "Badminton") { 
       full_Payload.badminton.lastMessageBD = payload.data;
-    } 
-    else if (payload.name === "Badminton_D") {
+    } else if (payload.name === "Badminton_D") {
       full_Payload.badminton_double.lastMessageBDouble = payload.data;
-    }
-    else if (payload.name === "tennis") {
+    } else if (payload.name === "tennis") {
       full_Payload.tennis.TT = payload.data;
-    }
-    else if (payload.name === "Tennis_D") {
+    } else if (payload.name === "Tennis_D") {
       full_Payload.tennis_D.TTD = payload.data;
-    }
-    else if (payload.name === "Kabaddi") {
+    } else if (payload.name === "Kabaddi") {
       full_Payload.kabbadi_M.Kabb = payload.data;
     }
-    
+
+    // Optional: update payload with live client count
+    full_Payload.clients = connectedClient;
+
+    // Broadcast to all
     io.emit("FullPayLoad", full_Payload);
   });
-  
+
   socket.on("disconnect", () => {
-    console.log("A user disconnected (main namespace)");
+    connectedClient--; // ✅ Decrement on disconnect
+    console.log("A user disconnected. Total clients:", connectedClient);
+    io.emit("clientCount", connectedClient);
   });
 });
+
 
 // ========== NEW CHAT ROOM SOCKET LOGIC ==========
 const chatNamespace = io.of('/chat');

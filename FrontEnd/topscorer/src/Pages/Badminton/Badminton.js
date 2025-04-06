@@ -3,8 +3,10 @@ import Options from "../../Components/Live_Upcoming/Options";
 import { GiTennisRacket } from "react-icons/gi";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 import ChatComponent from "../../Components/Chat/Chat";
+import ShiningText from "../../Components/TextAnimation/shiningText";
 
-function Badminton({ bd }) {
+
+function Badminton({ bd,clients }) {
   const flag1_link =
     "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
   const flag2_link =
@@ -73,6 +75,10 @@ function Badminton({ bd }) {
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
             Badminton
           </h1>
+          {/* <ShinyText text="Just some shiny text!" disabled={false} speed={3} className='custom-class' /> */}
+          {/* <ShiningText text={`Live View:${clients}`}></ShiningText> */}
+          <span className="absolute right-10 font-thin">Live Views:{clients}</span>
+          
         </div>
         <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-blue-800 dark:to-gray-800 rounded-3xl p-8 w-full max-w-4xl mx-auto my-6 shadow-md border-2 border-gray-200 dark:border-gray-700">
           <div className="grid grid-cols-3 gap-4 items-center">

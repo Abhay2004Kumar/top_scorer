@@ -18,12 +18,14 @@
     }
 }
 .live{
-    width: 30%;
+    
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #305E64;
+    padding-left: 10px;
+    padding-right: 10px;
     border-radius: 30px;
 }
 .upcoming{

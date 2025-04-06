@@ -31,9 +31,9 @@ import DBadmintonArchived from "./Pages/Archived/dbadminton_archived/dbadmintonA
 import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived";
 // import './index.css';
 import toast, { Toaster} from 'react-hot-toast'
-import { fas } from "@fortawesome/free-solid-svg-icons";
 import Comment_Box from "./Components/Comment_Box/Comment_Box";
-const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
+// const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
+// const socket = io.connect('http://localhost:5000/');
 function App() {
   const[matchD,setMatchD] = useState({
     badminton:false,
@@ -44,12 +44,22 @@ function App() {
   });
   
   const [islogin,setislogin] = useState(false);
+  const [ClientCount,setClientCount] = useState(0);
   
   useEffect(()=>{
     socket.on("FullPayLoad",(payload)=>{
       setMatchD((payload));
+      console.log(payload.clients);
+     
       // console.log(matchD.badminton);
     });
+    socket.on("clientCount", (count) => {
+      setClientCount(count); // 👈 Save count in state
+    });
+  
+    return () => {
+      socket.off("clientCount");
+    };
   },[])
   // console.log("***** ",matchD);
 
@@ -61,8 +71,8 @@ function App() {
      <div style={{backgroundColor:"#080A1F"}}>
 
      <div style={{display:"flex",backgroundColor:"#080A1F"}}>
-
-     <Sidebar/>
+ 
+     <Sidebar/> 
      
 
      <div style={{width:"100vw",backgroundColor:"#001E19"}}>
@@ -74,7 +84,7 @@ function App() {
             <Route path='/' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>
             <Route path='/cricket' element={<Cricket/>} ></Route>
             <Route path='/football' element={<Football/>} ></Route>
-            <Route path='/badminton' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>
+            <Route path='/badminton' element={<Badminton bd={matchD.badminton.lastMessageBD} clients={ClientCount}/>} ></Route>
             <Route path='/badminton_d' element={<Badminton_D bdoubles={matchD.badminton_double.lastMessageBDouble}/>} ></Route>
             <Route path='/tennis' element={<Tennis  tt={matchD.tennis.TT} />} ></Route>
             <Route path='/tennis_d' element={<Tennis_D ttd ={matchD.tennis_D.TTD} />} ></Route>
