@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Options from "../../Components/Live_Upcoming/Options";
 import { GiTennisRacket } from "react-icons/gi";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
@@ -11,6 +11,9 @@ function Badminton({ bd }) {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
 
   const [wdth, setWidth] = useState(50);
+  const [animateScore, setAnimateScore] = useState({ teamA: false, teamB: false });
+  const prevScores = useRef({ teamA: 0, teamB: 0 });
+
   const matchData = bd || {
     teamA: { name: "NA", player: "NA" },
     teamB: { name: "NA", player: "NA" },
@@ -22,15 +25,25 @@ function Badminton({ bd }) {
 
   // Calculate probability and set width based on scores
   useEffect(() => {
-    let score1 =
-      matchData.tmA_score.length > 0
-        ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10)
-        : 0;
+    const score1 = matchData.tmA_score.length > 0
+      ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10)
+      : 0;
+    const score2 = matchData.tmB_score.length > 0
+      ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10)
+      : 0;
 
-    let score2 =
-      matchData.tmB_score.length > 0
-        ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10)
-        : 0;
+    // Check if scores have changed to trigger animations
+    if (score1 !== prevScores.current.teamA) {
+      setAnimateScore(prev => ({ ...prev, teamA: true }));
+      setTimeout(() => setAnimateScore(prev => ({ ...prev, teamA: false })), 500);
+      prevScores.current.teamA = score1;
+    }
+    
+    if (score2 !== prevScores.current.teamB) {
+      setAnimateScore(prev => ({ ...prev, teamB: true }));
+      setTimeout(() => setAnimateScore(prev => ({ ...prev, teamB: false })), 500);
+      prevScores.current.teamB = score2;
+    }
 
     let prbabs = Badminton_Probability(score1, score2) || 0;
     if (!isNaN(prbabs)) {
@@ -42,16 +55,13 @@ function Badminton({ bd }) {
   return (
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-sans p-3 rounded-3xl shadow-lg">
       {/* Header Section */}
-    
       <div className="text-center mb-8">
-        
-        <div className="flex justify-center items-center mt-2 ">
-        <Options
-        cur_link="/badminton"
-        archived="/badminton_archived"
-      />
+        <div className="flex justify-center items-center mt-2">
+          <Options
+            cur_link="/badminton"
+            archived="/badminton_archived"
+          />
         </div>
-        
       </div>
 
       {/* Main Content Container */}
@@ -83,9 +93,27 @@ function Badminton({ bd }) {
 
             {/* VS Section */}
             <div className="flex flex-col items-center space-y-2">
-              <h1 className="text-xl font-bold text-green-600 dark:text-green-400">
-                {matchData.tmA_score.at(-1)} - {matchData.tmB_score.at(-1)}
-              </h1>
+              <div className="flex items-center">
+                <span 
+                  className={`text-4xl font-bold ${
+                    animateScore.teamA 
+                      ? 'text-green-500 dark:text-green-300 scale-125 transition-all duration-300' 
+                      : 'text-gray-900 dark:text-white transition-all duration-300'
+                  }`}
+                >
+                  {matchData.tmA_score.at(-1) || 0}
+                </span>
+                <span className="text-4xl font-bold mx-2">-</span>
+                <span 
+                  className={`text-4xl font-bold ${
+                    animateScore.teamB 
+                      ? 'text-green-500 dark:text-green-300 scale-125 transition-all duration-300' 
+                      : 'text-gray-900 dark:text-white transition-all duration-300'
+                  }`}
+                >
+                  {matchData.tmB_score.at(-1) || 0}
+                </span>
+              </div>
               <p className="text-sm text-gray-700 dark:text-gray-300">
                 Set {matchData.tmA_score.length}
               </p>

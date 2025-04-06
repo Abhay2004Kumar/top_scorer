@@ -41,7 +41,7 @@ body{
 {
     box-sizing: border-box;
     height: 250px;
-    margin: 20px;
+    margin: 20px;   
     /* border: 5px solid red; */
     width: 200px;
 }
@@ -84,9 +84,9 @@ h4
 .FLZ
 {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     /* border: 5px solid red; */
-    align-items: center;
+    /* align-items: center; */
 }
 
 .textUpdate
@@ -117,7 +117,9 @@ h4
     border-radius: 30px;
     background-color: #004D40;
     font-size: 20px;
-    border: 5x solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 280px;
 }
 .bar
