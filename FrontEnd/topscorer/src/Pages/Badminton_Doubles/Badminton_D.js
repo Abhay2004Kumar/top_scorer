@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import styles from "../Badminton_Doubles/Badminton_D.module.css";
-import Options from '../../Components/Live_Upcoming/Options';
+import Options from "../../Components/Live_Upcoming/Options";
 import { GiTennisRacket } from "react-icons/gi";
 import io from "socket.io-client";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
-
-const socket = io.connect("http://localhost:5000");
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function Badminton_D({ bdoubles }) {
-  const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
-  const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
+  const flag1_link =
+    "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
+  const flag2_link =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
 
   const [wdth, setWidth] = useState(50);
   const matchData = bdoubles || {
@@ -17,23 +18,23 @@ function Badminton_D({ bdoubles }) {
     teamB: { name: "NA", player1: "NA", player2: "NA" },
     tmA_score: [],
     tmB_score: [],
-    latestUpdate: "NA"
+    latestUpdate: "NA",
+    notLive: "true",
   };
-
-  console.log("bdoubles:", bdoubles);
-  console.log("matchData:", matchData);
 
   useEffect(() => {
     if (matchData) {
       console.log("MAT", matchData);
 
-      let score1 = matchData.tmA_score.length > 0
-        ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10)
-        : 0;
+      let score1 =
+        matchData.tmA_score.length > 0
+          ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10)
+          : 0;
 
-      let score2 = matchData.tmB_score.length > 0
-        ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10)
-        : 0;
+      let score2 =
+        matchData.tmB_score.length > 0
+          ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10)
+          : 0;
 
       console.log("Score", score1, score2);
 
@@ -44,20 +45,45 @@ function Badminton_D({ bdoubles }) {
         console.log("Width set to:", prbabs);
       }
     }
-  }, [matchData]);  // Update when matchData changes
+  }, [matchData]); // Update when matchData changes
 
   useEffect(() => {
-    console.log('Width updated to:', wdth);
+    console.log("Width updated to:", wdth);
   }, [wdth]);
 
+ 
+
   const { teamA, teamB, tmA_score, tmB_score, latestUpdate } = matchData;
+  if (matchData?.notLive == "false") {  //make it 'true' if want animation when no live match
+    return (
+      <>
+        <div className=" flex justify-center items-center">
+          <Options cur_link="/badminton_d" archived="/dbadminton_archived" />
+        </div>
+        <div className=" flex justify-center items-center">
+          <DotLottieReact
+            className="h-[350px] "
+            src="https://lottie.host/6b8c2746-c6c1-42b1-aa6d-806f5b888165/dkdaxQB4jr.lottie"
+            loop
+            autoplay
+          />
+        </div>
+          <p className="text-white text-center">No live match.</p>
+      </>
+    );
+  }
+
+
 
   return (
     <div className={styles.MainDiv}>
       <Options cur_link="/badminton_d" archived="/dbadminton_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>
-          <p><GiTennisRacket /> <GiTennisRacket /> Badminton Doubles</p>
+        <GiTennisRacket /> <GiTennisRacket />
+          <p>
+             Badminton Doubles
+          </p>
         </div>
         <div className={styles.FLZ}>
           <div className={styles.teamA}>
@@ -70,7 +96,8 @@ function Badminton_D({ bdoubles }) {
           </div>
           <div className={styles.VS}>
             <h1 style={{ marginTop: "15px" }} className={styles.gols}>
-              {tmA_score.length > 0 ? tmA_score.at(-1) : 0} - {tmB_score.length > 0 ? tmB_score.at(-1) : 0}
+              {tmA_score.length > 0 ? tmA_score.at(-1) : 0} -{" "}
+              {tmB_score.length > 0 ? tmB_score.at(-1) : 0}
             </h1>
             <p className={styles.setInfo}>Set {tmA_score.length}</p>
           </div>
@@ -87,7 +114,10 @@ function Badminton_D({ bdoubles }) {
 
       <div className={styles.textUpdate}>
         <div className={styles.predictor}>
-          <div style={{ width: `${wdth}%`, transition: "1s" }} className={styles.bar}></div>
+          <div
+            style={{ width: `${wdth}%`, transition: "1s" }}
+            className={styles.bar}
+          ></div>
         </div>
         <p>{latestUpdate}</p>
       </div>
@@ -113,7 +143,11 @@ function Badminton_D({ bdoubles }) {
               <tr>
                 <td>
                   <span className={styles.flg}>
-                    <img className={styles.tableimg} src={flag1_link} alt="Flag 1" />
+                    <img
+                      className={styles.tableimg}
+                      src={flag1_link}
+                      alt="Flag 1"
+                    />
                   </span>
                 </td>
                 <td>{teamA.player1}</td>
@@ -125,7 +159,11 @@ function Badminton_D({ bdoubles }) {
               <tr>
                 <td>
                   <span className={styles.flg}>
-                    <img className={styles.tableimg} src={flag2_link} alt="Flag 2" />
+                    <img
+                      className={styles.tableimg}
+                      src={flag2_link}
+                      alt="Flag 2"
+                    />
                   </span>
                 </td>
                 <td>{teamB.player1}</td>
