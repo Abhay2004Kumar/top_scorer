@@ -5,6 +5,14 @@ import { createKabaddiMatch, getKabaddiMatches } from '../Controllers/Kabaddi.co
 import { createTennisSingle, getTennisSingles } from '../Controllers/Tennis.controller.js';
 import { createTennisDoubles, getTennisDoubles } from '../Controllers/TTDoubles.controller.js';
 
+import {
+    createMatch,
+    getMatch,
+    updateInnings,
+    finishMatch,
+    getLiveMatches
+  } from "../Controllers/Cricket.controller.js"
+
 const routes = express.Router();
  
 routes.post('/bdsingle',createBDSingle);
@@ -17,6 +25,13 @@ routes.post('/tennisSingle',createTennisSingle)
 routes.get('/tennisSingles',getTennisSingles)
 routes.post('/tennisDoubles', createTennisDoubles)
 routes.get('/tennisDoubles',getTennisDoubles)
+
+// 🏏 Cricket Match Routes
+routes.post('/cricketMatch', createMatch);
+routes.get('/cricketMatch/live', getLiveMatches);
+routes.get('/cricketMatch/:id', getMatch);
+routes.patch('/cricketMatch/innings', updateInnings);
+routes.patch('/cricketMatch/finish', finishMatch);
 
 
 
