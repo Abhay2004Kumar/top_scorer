@@ -249,7 +249,7 @@ const ChatComponent = ({ sportName }) => {
                           )}
                           
                           {/* Message text */}
-                          <div className={isEmojiOnly(msg.message) ? '' : 'pb-2'}>
+                          <div className={isEmojiOnly(msg.message) ? '' : 'pb-3'}>
                             {msg.message}
                           </div>
                           
