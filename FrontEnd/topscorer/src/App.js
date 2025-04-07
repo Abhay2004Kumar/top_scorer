@@ -29,6 +29,8 @@ import FootballArchived from "./Pages/Archived/football_archived/footballArchive
 import CricketArchived from "./Pages/Archived/cricket_archived/cricketArchived";
 import DBadmintonArchived from "./Pages/Archived/dbadminton_archived/dbadmintonArchived";
 import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived";
+
+import SubscribeBtn from '../src/Components/payment/subscrbeBtn'
 // import './index.css';
 import toast, { Toaster} from 'react-hot-toast'
 import Comment_Box from "./Components/Comment_Box/Comment_Box";
@@ -110,13 +112,13 @@ function App() {
         
       </div>          
      </div>
-    
+ 
       
      </div>
 
     </Router>
     
-     
+    {/* <SubscribeBtn/> */}
       
       <div >
         <Footer_main/>
