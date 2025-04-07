@@ -118,7 +118,7 @@ function App() {
 
     </Router>
     
-    {/* <SubscribeBtn/> */}
+    <SubscribeBtn/>
       
       <div >
         <Footer_main/>
