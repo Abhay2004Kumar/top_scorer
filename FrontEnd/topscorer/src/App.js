@@ -32,7 +32,7 @@ import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived"
 // import './index.css';
 import toast, { Toaster} from 'react-hot-toast'
 import Comment_Box from "./Components/Comment_Box/Comment_Box";
-// const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
+const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 // const socket = io.connect('http://localhost:5000/');
 function App() {
   const[matchD,setMatchD] = useState({
