@@ -4,6 +4,8 @@ import { GiTennisRacket } from "react-icons/gi";
 import Badminton_Probability from "../ProbabilityPred/BadmintonPred";
 import ChatComponent from "../../Components/Chat/Chat";
 import ShiningText from "../../Components/TextAnimation/shiningText";
+import { FaEye } from "react-icons/fa";
+import FireworksComponent from "../../Components/customAnimations/FireWork";
 
 
 function Badminton({ bd,clients }) {
@@ -66,6 +68,7 @@ function Badminton({ bd,clients }) {
         </div>
       </div>
 
+        {/* <FireworksComponent/> */}
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
         {/* Scoreboard Section */}
@@ -74,10 +77,13 @@ function Badminton({ bd,clients }) {
           <GiTennisRacket className="text-4xl text-green-600 dark:text-green-400" />
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
             Badminton
+
           </h1>
-          {/* <ShinyText text="Just some shiny text!" disabled={false} speed={3} className='custom-class' /> */}
-          {/* <ShiningText text={`Live View:${clients}`}></ShiningText> */}
-          <span className="absolute right-10 font-thin">Live Views:{clients}</span>
+          <div className="absolute right-10 flex justify-center items-center">
+          <FaEye/>
+          <span className="ml-1">{clients}</span>
+            
+          </div>
           
         </div>
         <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-blue-800 dark:to-gray-800 rounded-3xl p-8 w-full max-w-4xl mx-auto my-6 shadow-md border-2 border-gray-200 dark:border-gray-700">
