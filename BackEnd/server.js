@@ -168,6 +168,8 @@ app.use('/api/v1/players', PlayerRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/feedback', FeedbackRouter);
 app.use('/api/v1/payment', paymentRouter);
+
+// this is route is still in progress
 app.use('/api/v1',stripeRouter);
 
 // Start the server
