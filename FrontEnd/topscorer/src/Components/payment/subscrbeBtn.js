@@ -4,7 +4,7 @@ import axios from "axios";
 const SubscribeBtn = () => {
   const handleSubscribe = async () => {
     try {
-      const res = await axios.post("https://top-scorer.onrender.com/api/v1/payment/create-checkout-session");
+      const res = await axios.post("http://localhost:5000/api/v1/payment/create-checkout-session");
       
       if (res.data.url) {
         window.location.href = res.data.url;

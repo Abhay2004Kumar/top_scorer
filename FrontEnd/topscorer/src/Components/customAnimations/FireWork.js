@@ -1,30 +1,34 @@
-import React from 'react';
-import { Fireworks } from '@fireworks-js/react';
+import React from "react";
+import { Fireworks } from "@fireworks-js/react";
 
 const FireworksComponent = () => {
   const options = {
-    opacity: 0.5,   // Transparency of fireworks
-    // sound: {
-    //   enabled: true,      // Enable sound
-    //   files: [            // Optional: custom sound files
-    //     'https://fireworks.js.org/sounds/explosion0.mp3',
-    //     'https://fireworks.js.org/sounds/explosion1.mp3',
-    //     'https://fireworks.js.org/sounds/explosion2.mp3'
-    //   ],
-    //   volume: 1,          // Volume level from 0 to 1
-    // },
+    opacity: 0.5,
+    sound: {
+      enabled: true,
+      volume: {
+        min: 0.5,
+        max: 10,
+      },
+      files: ["/sounds/explosive.mp3"], // Path to your sound file
+    },
   };
 
   const style = {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '150vh',
+    width: "100%",
+    height: "100%",
     zIndex: 10,
+    pointerEvents: "none", // So it doesn't block clicks
   };
 
-  return <Fireworks options={options} style={style} />;
+  return (
+    <>
+      <Fireworks options={options} style={style} />
+    </>
+  );
 };
 
 export default FireworksComponent;

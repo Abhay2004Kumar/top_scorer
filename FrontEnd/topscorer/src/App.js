@@ -34,6 +34,7 @@ import SubscribeBtn from '../src/Components/payment/subscrbeBtn'
 // import './index.css';
 import toast, { Toaster} from 'react-hot-toast'
 import Comment_Box from "./Components/Comment_Box/Comment_Box";
+import LandingPage from "./Pages/LandingPage/LandingPage";
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 // const socket = io.connect('http://localhost:5000/');
 function App() {
@@ -83,7 +84,7 @@ function App() {
       
 
       <Routes>
-            <Route path='/' element={<Badminton bd={matchD.badminton.lastMessageBD}/>} ></Route>
+            <Route path='/' element={<LandingPage/>} ></Route>
             <Route path='/cricket' element={<Cricket/>} ></Route>
             <Route path='/football' element={<Football/>} ></Route>
             <Route path='/badminton' element={<Badminton bd={matchD.badminton.lastMessageBD} clients={ClientCount}/>} ></Route>
@@ -118,7 +119,7 @@ function App() {
 
     </Router>
     
-    {/* <SubscribeBtn/> */}
+    <SubscribeBtn/>
       
       <div >
         <Footer_main/>
