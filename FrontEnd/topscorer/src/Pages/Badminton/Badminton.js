@@ -15,6 +15,7 @@ function Badminton({ bd,clients }) {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
 
   const [wdth, setWidth] = useState(50);
+  const [cracker,setCracker] = useState(true);
   const [animateScore, setAnimateScore] = useState({ teamA: false, teamB: false });
   const prevScores = useRef({ teamA: 0, teamB: 0 });
 
@@ -56,6 +57,12 @@ function Badminton({ bd,clients }) {
     }
   }, [matchData]);
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      setCracker(false)
+    },7000)
+  },[])
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-sans p-3 rounded-3xl shadow-lg">
       {/* Header Section */}
@@ -67,8 +74,10 @@ function Badminton({ bd,clients }) {
           />
         </div>
       </div>
-
-        {/* <FireworksComponent/> */}
+    {
+      cracker && (<FireworksComponent/>)
+    }
+        
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
         {/* Scoreboard Section */}
