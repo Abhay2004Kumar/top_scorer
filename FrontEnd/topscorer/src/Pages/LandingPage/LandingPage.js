@@ -38,14 +38,14 @@ const LandingPage = () => {
         <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
           Welcome to <span className="text-yellow-400">Top Scorer</span>
         </h1>
-        <p className="text-xl md:text-2xl max-w-2xl mb-8 font-mono">
+        <p className=" animate-slide-in-left text-xl md:text-2xl max-w-2xl mb-8 font-mono">
           Empowering the passion of local sports with real-time scores and seamless match management.
         </p>
         <button
-          onClick={() => navigate("/badminton")}
-          className="px-8 py-3 bg-blue-800 hover:bg-blue-900 text-white font-semibold text-lg rounded-full shadow-lg transition duration-300"
+          onClick={() => navigate("/dashboard/badminton")}
+          className=" animate-bounce px-8 py-3 bg-blue-800 hover:bg-blue-900 text-white font-semibold text-lg rounded-full shadow-lg transition duration-300"
         >
-          Get Started
+          Get Started 
         </button>
       </div>
     </div>
