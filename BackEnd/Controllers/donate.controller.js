@@ -28,7 +28,7 @@ export const createDonateSession = async (req, res) => {
           },
         ],
         success_url: "https://top-scorer-ecru.vercel.app",
-        cancel_url: "https://top-scorer-ecru.vercel.app/cancel",
+        cancel_url: "https://top-scorer-ecru.vercel.app",
       });
   
       res.status(200).json({ url: session.url });
