@@ -199,8 +199,8 @@ function TennisArchived({ matches }) {
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
           <Options 
-            cur_link="/tennis"
-            archived="/tennis_archived"
+            cur_link="/dashboard/tennis"
+            archived="/dashboard/tennis_archived"
           />
       </div>
      

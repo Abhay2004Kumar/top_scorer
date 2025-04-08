@@ -58,7 +58,7 @@ function DBTennisArchived() {
   return (
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
-        <Options cur_link="/tennis_d" archived="/dbtennis_archived" />
+        <Options cur_link="/dashboard/tennis_d" archived="/dashboard/dbtennis_archived" />
       </div>
 
       {selectedMatch ? (

@@ -113,6 +113,7 @@ h4
 }
 .SportName
 {
+    display: flex;
     border: 2px solid #90F0FD;
     border-radius: 30px;
     background-color: #004D40;
@@ -151,10 +152,13 @@ h2{
     border-radius: 12px;
     object-fit: contain;
 }
-.teamA_Img
+.teamA_Img,.teamB_Img
 {
 
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width:1200px){

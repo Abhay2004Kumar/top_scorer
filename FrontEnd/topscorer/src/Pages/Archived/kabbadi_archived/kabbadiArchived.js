@@ -63,8 +63,8 @@ function KabaddiArchived() {
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
         <Options
-          cur_link="/kabaddi"
-          archived="/kabaddi_archived"
+          cur_link="/dashboard/kabaddi"
+          archived="/dashboard/kabaddi_archived"
         />
       </div>
 

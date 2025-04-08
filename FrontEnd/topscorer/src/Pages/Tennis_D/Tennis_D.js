@@ -57,10 +57,10 @@ function Tennis_D({ttd}) {
     <div className={styles.MainDiv}>
       
       <ChatComponent sportName={"Tennis_D"}/>
-      <Options cur_link="/tennis_d" archived="/dbtennis_archived" />
+      <Options cur_link="/dashboard/tennis_d" archived="/dashboard/dbtennis_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>
-          <p><GiTennisRacket /> <GiTennisRacket /> Tennis Doubles</p>
+          <GiTennisRacket className="absoute mt-2 ml-1" /> <GiTennisRacket /><p> Tennis Doubles</p>
         </div>
         <div className={styles.FLZ}>
           <div className={styles.teamA}>

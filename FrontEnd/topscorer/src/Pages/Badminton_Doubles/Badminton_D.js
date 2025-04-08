@@ -80,7 +80,7 @@ function Badminton_D({ bdoubles }) {
     <div className={styles.MainDiv}>
 
     <ChatComponent sportName={"Badminton_Doubles"}/>
-      <Options cur_link="/badminton_d" archived="/dbadminton_archived" />
+      <Options cur_link="/dashboard/badminton_d" archived="/dashboard/dbadminton_archived" />
       <div className={styles.ScoreBoard}>
         <div className={styles.SportName}>
         <GiTennisRacket /> <GiTennisRacket />

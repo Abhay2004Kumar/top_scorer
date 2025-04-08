@@ -48,12 +48,12 @@ function Tennis({ tt }) {
 
       <ChatComponent sportName={"Tennis"}/>
           <Options 
-            cur_link="/tennis"
-            archived="/tennis_archived"
+            cur_link="/dashboard/tennis"
+            archived="/dashboard/tennis_archived"
           />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
-            <p><MdOutlineSportsTennis /> Tennis Singles</p>
+            <MdOutlineSportsTennis className="absolute ml-1 mt-2"/> <p>Tennis Singles</p>
           </div>
           <div className={styles.FLZ}>
             <div className={styles.teamA}>

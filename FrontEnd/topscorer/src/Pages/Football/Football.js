@@ -37,12 +37,12 @@ function Football() {
       <div className={styles.MainDiv}>
       <ChatComponent sportName={"Football"}/>
       <Options
-          cur_link="/football"
-          archived="/football_archived"
+          cur_link="/dashboard/football"
+          archived="/dashboard/football_archived"
         />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
-            <p><IoMdFootball /> {matchData.sport}</p>
+            <IoMdFootball className='absolute mt-1' /> <p>{matchData.sport}</p>
           </div>
           <div className={styles.FZF}>
             <div className={styles.teamA}>
