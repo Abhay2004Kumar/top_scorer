@@ -215,7 +215,7 @@ const ChatComponent = ({ sportName }) => {
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
                   onClick={() => {
                     // You might want to redirect to login page or open a login modal
-                    window.location.href = '/login'; // Adjust this based on your routing
+                    window.location.href = '/dashboard/login'; // Adjust this based on your routing
                   }}
                 >
                   Log In
