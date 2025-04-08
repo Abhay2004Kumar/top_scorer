@@ -15,14 +15,14 @@ function Sidebar() {
   };
 
   const games = [
-    { name: 'Badminton', icon: faSpaceShuttle, path: '/badminton' },
-    { name: 'Blogs', icon: faNewspaper, path: '/blog' },
-    { name: 'Badminton Doubles', icon: faSpaceShuttle, path: '/badminton_d' },
-    { name: 'Tennis', icon: faTableTennis, path: '/tennis' },
-    { name: 'Tennis Doubles', icon: faTableTennis, path: '/tennis_d' },
-    { name: 'Kabaddi', icon: faPersonRunning, path: '/kabaddi' },
-    { name: 'Football', icon: faFutbol, path: '/football' },
-    { name: 'Cricket', icon: faBaseballBall, path: '/cricket' },
+    { name: 'Badminton', icon: faSpaceShuttle, path: '/dashboard/badminton' },
+    { name: 'Blogs', icon: faNewspaper, path: '/dashboard/blog' },
+    { name: 'Badminton Doubles', icon: faSpaceShuttle, path: '/dashboard/badminton_d' },
+    { name: 'Tennis', icon: faTableTennis, path: '/dashboard/tennis' },
+    { name: 'Tennis Doubles', icon: faTableTennis, path: '/dashboard/tennis_d' },
+    { name: 'Kabaddi', icon: faPersonRunning, path: '/dashboard/kabaddi' },
+    { name: 'Football', icon: faFutbol, path: '/dashboard/football' },
+    { name: 'Cricket', icon: faBaseballBall, path: '/dashboard/cricket' },
   ];
 
   return (

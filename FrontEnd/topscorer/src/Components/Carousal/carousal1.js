@@ -4,7 +4,11 @@ import { Carousel } from 'react-responsive-carousel';
 
 export const Carousal1 = () => {
   return (
-    <Carousel autoPlay="true" infiniteLoop="true">
+    <Carousel autoPlay="true" infiniteLoop="true" interval={2000}>
+    <div>
+        <img src="https://images.unsplash.com/photo-1721760886982-3c643f05813d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJhZG1pbnRvbnxlbnwwfHwwfHx8MA%3D%3D" />
+        <p className="legend">Legend 3</p>
+    </div>
     <div>
         <img src="https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg" />
         <p className="legend">Legend 1</p>
@@ -14,8 +18,8 @@ export const Carousal1 = () => {
         <p className="legend">Legend 2</p>
     </div>
     <div>
-        <img src="https://images.unsplash.com/photo-1721760886982-3c643f05813d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGJhZG1pbnRvbnxlbnwwfHwwfHx8MA%3D%3D" />
-        <p className="legend">Legend 3</p>
+        <img src="https://plus.unsplash.com/premium_photo-1666913667082-c1fecc45275d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGVubmlzfGVufDB8fDB8fHww" />
+        <p className="legend">Legend 2</p>
     </div>
     </Carousel>
   )
