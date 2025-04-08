@@ -81,10 +81,10 @@ function Badminton({ bd,clients }) {
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
         {/* Scoreboard Section */}
-        <ChatComponent sportName={"Badminton"}/>
+        <ChatComponent  sportName={"Badminton"}/>
         <div className="flex items-center justify-center space-x-3">
-          <GiTennisRacket className="text-4xl text-green-600 dark:text-green-400" />
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+          <GiTennisRacket className=" text-2xl md:text-4xl  text-green-600 dark:text-green-400" />
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white">
             Badminton
 
           </h1>

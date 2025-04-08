@@ -135,11 +135,12 @@ chatNamespace.on('connection', (socket) => {
     if (user) {
       const chatMessage = {
         username: message.username,
-        message:message.message,
+        message: message.message,
         timestamp: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
-          hour12: true // change to false if you prefer 24-hour format
+          hour12: true,
+          timeZone: 'Asia/Kolkata'
         })
       };
       chatNamespace.to(room).emit('receive_chat_message', chatMessage);
