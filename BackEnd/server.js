@@ -165,7 +165,8 @@ chatNamespace.on('connection', (socket) => {
         timestamp: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
-          hour12: true
+          hour12: true,
+          timeZone: 'Asia/Kolkata'
         })
       };
       
