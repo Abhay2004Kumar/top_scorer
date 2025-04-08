@@ -2,10 +2,39 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import icons from '../../Project_Icon/Dark.png';
+import axios from "axios"
+
+
+
+
+
+
 
 const LandingPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [donateAmount, setDonateAmount] = useState("");
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleDonate = async () => {
+    const amount = parseInt(donateAmount);
+  
+    if (!amount || amount < 50) {
+      alert("Please enter a valid amount (minimum ₹50)");
+      return;
+    }
+  
+    try {
+      const response = await axios.post(
+        "https://top-scorer.onrender.com/api/v1/donate/create-donate-session",
+        { amount }
+      );
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error("Donation failed:", error);
+      alert("Something went wrong, please try again later.");
+    }
+  };
 
   // Array of background images
   const backgroundImages = [
@@ -125,6 +154,52 @@ const LandingPage = () => {
         >
           Trusted by IIIT Una sports communities
         </motion.div>
+
+    {/* Support Us Button */}
+<motion.div
+  variants={itemVariants}
+  className="mt-6 flex flex-col items-center space-y-2"
+>
+  <span
+    className="text-yellow-400 font-semibold hover:underline cursor-pointer text-lg"
+    onClick={() => setIsModalOpen(true)}
+  >
+    Support Us
+  </span>
+</motion.div>
+
+{/* Donation Modal */}
+{isModalOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl p-6 text-black w-[300px]">
+      <h2 className="text-xl font-semibold mb-4 text-center">Enter Amount</h2>
+      <input
+        type="number"
+        min="1"
+        value={donateAmount}
+        onChange={(e) => setDonateAmount(e.target.value)}
+        placeholder="Amount in ₹"
+        className="w-full px-4 py-2 border rounded mb-4 outline-none"
+      />
+      <div className="flex justify-between">
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleDonate}
+          className="bg-yellow-400 px-4 py-2 rounded hover:bg-yellow-500"
+        >
+          Donate
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
         {/* Carousel Indicators */}
         <div className="flex justify-center mt-8 space-x-2">
