@@ -94,19 +94,43 @@ io.on("connection", (socket) => {
 // ========== NEW CHAT ROOM SOCKET LOGIC ==========
 const chatNamespace = io.of('/chat');
 
-// Store chat rooms and users
+// Store chat rooms, users, and message history
 const chatRooms = {
-  Badminton: { users: [] },
-  Badminton_Doubles: { users: [] },
-  Tennis: { users: [] },
-  Tennis_D: { users: [] },
-  Kabbadi: { users: [] },
-  Cricket: { users: [] },
-  Football:{ users: [] }
+  Badminton: { 
+    users: [],
+    messages: [] 
+  },
+  Badminton_Doubles: { 
+    users: [],
+    messages: [] 
+  },
+  Tennis: { 
+    users: [],
+    messages: [] 
+  },
+  Tennis_D: { 
+    users: [],
+    messages: [] 
+  },
+  Kabbadi: { 
+    users: [],
+    messages: [] 
+  },
+  Cricket: { 
+    users: [],
+    messages: [] 
+  },
+  Football: { 
+    users: [],
+    messages: [] 
+  }
 };
 
+// Maximum number of messages to store per room
+const MAX_MESSAGES = 50;
+
 chatNamespace.on('connection', (socket) => {
-  console.log('New user connected to chat namespace');
+  // console.log('New user connected to chat namespace');
 
   // Join a chat room
   socket.on('join_chat_room', ({ username, room }) => {
@@ -119,13 +143,14 @@ chatNamespace.on('connection', (socket) => {
       // Notify room that user joined
       socket.to(room).emit('user_joined_chat', username);
       
-      // Send room info to user
+      // Send room info and message history to user
       chatNamespace.to(socket.id).emit('chat_room_info', {
         room,
-        users: chatRooms[room].users.map(u => u.username)
+        users: chatRooms[room].users.map(u => u.username),
+        messages: chatRooms[room].messages.slice(-MAX_MESSAGES) // Send last 50 messages
       });
       
-      console.log(`${username} joined ${room} chat room`);
+      // console.log(`${username} joined ${room} chat room`);
     }
   });
 
@@ -139,10 +164,19 @@ chatNamespace.on('connection', (socket) => {
         timestamp: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
-          hour12: true,
-          timeZone: 'Asia/Kolkata'
+          hour12: true
         })
       };
+      
+      // Add message to room's message history
+      chatRooms[room].messages.push(chatMessage);
+      
+      // Keep only the last MAX_MESSAGES messages
+      if (chatRooms[room].messages.length > MAX_MESSAGES) {
+        chatRooms[room].messages.shift();
+      }
+      
+      // Broadcast message to room
       chatNamespace.to(room).emit('receive_chat_message', chatMessage);
     }
   });
@@ -161,7 +195,6 @@ chatNamespace.on('connection', (socket) => {
     });
   });
 });
-
 // ========== EXPRESS ROUTES ==========
 app.use('/api/v1/sports', routes);
 app.use('/api/v1/users', UserRouter);

@@ -53,7 +53,8 @@ function Header({ islogin, setislogin }) {
     <header className="bg-white text-black dark:bg-gray-900 dark:text-white flex justify-between items-center px-6 py-4 shadow-md">
       <div className="flex items-center space-x-3">
         <img src={icons} alt="Dark Icon" className="w-2-0 h-10" />
-        <span className="text-lg font-semibold">TopScorer</span>
+        {/* <span className="hidden md:inline text-lg font-semibold">TopScorer</span> */}
+
       </div>
       <nav className="flex items-center space-x-6">
         <a href="/" className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">Home</a>

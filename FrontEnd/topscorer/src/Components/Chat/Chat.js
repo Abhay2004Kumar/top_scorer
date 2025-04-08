@@ -52,20 +52,20 @@ const ChatComponent = ({ sportName }) => {
 
     const Url = `${process.env.REACT_APP_BACKEND_URL}/chat`;
     const newSocket = io(Url);
-    console.log("Connected to : ", Url);
-    console.log('Connecting to chat namespace...');
+    // console.log("Connected to : ", Url);
+    // console.log('Connecting to chat namespace...');
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
-      console.log('Connected to chat namespace');
+      // console.log('Connected to chat namespace');
     });
 
     newSocket.on('disconnect', () => {
-      console.log('Disconnected from chat namespace');
+      // console.log('Disconnected from chat namespace');
     });
 
     return () => {
-      console.log('Cleaning up socket connection');
+      // console.log('Cleaning up socket connection');
       newSocket.disconnect();
     };
   }, [isLoggedIn]);
@@ -73,15 +73,25 @@ const ChatComponent = ({ sportName }) => {
   // Join room and listen for messages
   useEffect(() => {
     if (!socket || !sportName || !isLoggedIn) return;
-
-    console.log(`Joining room: ${sportName}`);
+  
+    // console.log(`Joining room: ${sportName}`);
     socket.emit('join_chat_room', { 
       username: currentUser,
       room: sportName 
     });
-
+  
+    const handleChatRoomInfo = ({ room, users, messages }) => {
+      // console.log(`Received chat room info for ${room}`, messages);
+      const formattedMessages = messages.map(msg => ({
+        username: msg.username || 'Unknown',
+        message: typeof msg.message === 'string' ? msg.message : JSON.stringify(msg.message),
+        timestamp: msg.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }));
+      setMessages(formattedMessages); // <-- Set older messages here
+    };
+  
     const handleReceiveMessage = (data) => {
-      console.log('Received message:', data);
+      // console.log('Received message:', data);
       if (data && data.message) {
         const formattedMessage = {
           username: data.username || 'Unknown',
@@ -91,7 +101,7 @@ const ChatComponent = ({ sportName }) => {
         setMessages(prev => [...prev, formattedMessage]);
       }
     };
-
+  
     const handleUserJoined = (username) => {
       setMessages(prev => [...prev, { 
         username: 'System', 
@@ -99,7 +109,7 @@ const ChatComponent = ({ sportName }) => {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     };
-
+  
     const handleUserLeft = (username) => {
       setMessages(prev => [...prev, { 
         username: 'System', 
@@ -107,18 +117,20 @@ const ChatComponent = ({ sportName }) => {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     };
-
+  
+    socket.on('chat_room_info', handleChatRoomInfo);
     socket.on('receive_chat_message', handleReceiveMessage);
     socket.on('user_joined_chat', handleUserJoined);
     socket.on('user_left_chat', handleUserLeft);
-
+  
     return () => {
+      socket.off('chat_room_info', handleChatRoomInfo);
       socket.off('receive_chat_message', handleReceiveMessage);
       socket.off('user_joined_chat', handleUserJoined);
       socket.off('user_left_chat', handleUserLeft);
     };
   }, [socket, sportName, isLoggedIn, currentUser]);
-
+  
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
