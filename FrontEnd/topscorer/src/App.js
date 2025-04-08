@@ -39,33 +39,6 @@ import Dashboard from "./Dashboard";
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 // const socket = io.connect('http://localhost:5000/');
 function App() {
-  const[matchD,setMatchD] = useState({
-    badminton:false,
-    badminton_double: false,
-    tennis:false,
-    tennis_D: false,
-    kabbadi_M: false,
-  });
-  
-  const [islogin,setislogin] = useState(false);
-  const [ClientCount,setClientCount] = useState(0);
-  
-  useEffect(()=>{
-    socket.on("FullPayLoad",(payload)=>{
-      setMatchD((payload));
-      console.log(payload.clients);
-     
-      // console.log(matchD.badminton);
-    });
-    socket.on("clientCount", (count) => {
-      setClientCount(count); // 👈 Save count in state
-    });
-  
-    return () => {
-      socket.off("clientCount");
-    };
-  },[])
-  // console.log("***** ",matchD);
 
   return (
     <>

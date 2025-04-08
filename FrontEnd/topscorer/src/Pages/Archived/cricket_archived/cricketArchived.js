@@ -101,8 +101,8 @@ function CricketArchived({ matches }) {
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
         <Options
-          cur_link="/cricket"
-          archived="/cricket_archived"
+          cur_link="/dashboard/cricket"
+          archived="/dashboard/cricket_archived"
         />
       </div>
 

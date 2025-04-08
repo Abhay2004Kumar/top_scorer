@@ -20,16 +20,18 @@
 .live{
     
     height: 100%;
+    width: 50%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-color: #305E64;
+    align-items: center; 
+     background-color: #305E64;
     padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 30px;
+    padding-right: 10px; 
+     border-radius: 30px;
+    color: white;
 }
 .upcoming{
-    width: 30%;
+    /* width: 10%; */
     height: 100%;
     display: flex;
     justify-content: center;
@@ -38,7 +40,7 @@
     border-radius: 30px;
 }
 .archived{
-    width: 30%;
+    width: 50%;
     height: 100%;
     display: flex;
     justify-content: center;

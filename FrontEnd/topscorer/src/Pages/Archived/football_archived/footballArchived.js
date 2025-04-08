@@ -197,8 +197,8 @@ function FootballArchived({ matches }) {
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
         <Options
-          cur_link="/football"
-          archived="/football_archived"
+          cur_link="/dashboard/football"
+          archived="/dashboard/football_archived"
         />
       </div>
 

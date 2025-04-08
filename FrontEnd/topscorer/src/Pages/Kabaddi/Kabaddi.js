@@ -101,10 +101,10 @@ function Kabaddi({ data }) {
       <div className={styles.MainDiv}>
         
       <ChatComponent sportName={"Kabbadi"}/>
-        <Options cur_link="/kabaddi" archived="/kabaddi_archived" />
+        <Options cur_link="/dashboard/kabaddi" archived="/dashboard/kabaddi_archived" />
         <div className={styles.ScoreBoard}>
           <div className={styles.SportName}>
-            <p><MdSportsKabaddi /> Kabaddi</p>
+            <MdSportsKabaddi className='absolute mt-2 ml-1' /> <p>Kabaddi</p>
           </div>
           <div className={styles.FLZ}>
             <div className={styles.teamA}>

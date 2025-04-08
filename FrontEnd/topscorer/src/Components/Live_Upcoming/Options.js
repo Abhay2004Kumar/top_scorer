@@ -20,9 +20,7 @@ function Options({ cur_link, archived, upcoming }) {
             className={style.live}
             onClick={() => handleRedirect(cur_link)}
           >
-            <p>
-              Live
-            </p>
+            Live
             {/* <div className={style.icon}></div> */}
           </button>
               <DotLottieReact

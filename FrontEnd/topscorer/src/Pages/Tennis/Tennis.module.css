@@ -151,9 +151,11 @@ h2{
     border-radius: 12px;
     object-fit: contain;
 }
-.teamA_Img
+.teamA_Img,.teamB_Img
 {
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
 }
 

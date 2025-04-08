@@ -66,7 +66,7 @@ function DBadmintonArchived() {
   return (
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
-        <Options cur_link="/badminton_d" archived="/dbadminton_archived" />
+        <Options cur_link="/dashboard/badminton_d" archived="/dashboard/dbadminton_archived" />
       </div>
 
       {selectedMatch ? (

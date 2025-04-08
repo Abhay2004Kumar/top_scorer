@@ -26,9 +26,9 @@ body{
     width: 80%;
     padding: 20px;
     /* border: 5px solid green; */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    /* display: flex; */
+    /* flex-direction: column;
+    justify-content: center; */
 
 }
 .FZF{
@@ -40,12 +40,12 @@ body{
 }
 .SportName
 {
-    /* border: 2px solid #90F0FD; */
+    border: 2px solid #90F0FD;
     border-radius: 30px;
     background-color: #004D40;
     font-size: 20px;
     border: 5x solid red;
-    width: 210px;
+    width: 210px; 
 }
 .teamA , .teamB 
 {
@@ -142,6 +142,9 @@ h2{
 {
     height: 200px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width:1200px){

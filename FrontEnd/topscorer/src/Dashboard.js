@@ -30,8 +30,7 @@ import CricketArchived from "./Pages/Archived/cricket_archived/cricketArchived";
 import DBadmintonArchived from "./Pages/Archived/dbadminton_archived/dbadmintonArchived";
 import DBTennisArchived from "./Pages/Archived/dtennis_archived/dtennisArchived";
 import Comment_Box from "./Components/Comment_Box/Comment_Box";
-import LandingPage from "./Pages/LandingPage/LandingPage";
-import SubscribeBtn from "./Components/payment/subscrbeBtn";
+
 
 
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
