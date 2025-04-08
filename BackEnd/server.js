@@ -11,6 +11,7 @@ import adminRouter from './routes/admin.route.js';
 import FeedbackRouter from './routes/feedback.route.js';
 import paymentRouter from './routes/payment.route.js';
 import stripeRouter from './routes/webhook.route.js'
+import DonateRouter from './routes/donate.route.js';
 
 const PORT = process.env.PORT;
 
@@ -202,6 +203,7 @@ app.use('/api/v1/players', PlayerRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/feedback', FeedbackRouter);
 app.use('/api/v1/payment', paymentRouter);
+app.use('/api/v1/donate',DonateRouter)
 
 // this is route is still in progress
 app.use('/api/v1',stripeRouter);
