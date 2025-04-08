@@ -33,8 +33,8 @@ export const createCheckoutSession = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: "https://top-scorer-ecru.vercel.app/success",
-      cancel_url: "https://top-scorer-ecru.vercel.app/cancel",
+      success_url: "https://top-scorer-ecru.vercel.app/dashboard",
+      cancel_url: "https://top-scorer-ecru.vercel.app/dashboard",
     });
 
     res.json({ url: session.url });
