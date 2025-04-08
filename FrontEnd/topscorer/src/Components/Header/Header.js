@@ -29,7 +29,7 @@ function Header({ islogin, setislogin }) {
   }, [islogin]);
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate('/dashboard/login');
   };
 
   const handleLogout = () => {

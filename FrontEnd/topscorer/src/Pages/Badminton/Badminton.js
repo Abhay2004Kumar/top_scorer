@@ -69,8 +69,8 @@ function Badminton({ bd,clients }) {
       <div className="text-center mb-8">
         <div className="flex justify-center items-center mt-2">
           <Options
-            cur_link="/badminton"
-            archived="/badminton_archived"
+            cur_link="/dashboard/badminton"
+            archived="/dashboard/badminton_archived"
           />
         </div>
       </div>

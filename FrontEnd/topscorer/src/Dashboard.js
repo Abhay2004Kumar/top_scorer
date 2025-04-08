@@ -87,25 +87,25 @@ function Dashboard() {
             <Route path='football' element={<Football/>} ></Route>
             <Route path='badminton' element={<Badminton bd={matchD.badminton.lastMessageBD} clients={ClientCount}/>} ></Route>
             <Route path='badminton_d' element={<Badminton_D bdoubles={matchD.badminton_double.lastMessageBDouble}/>} ></Route>
-            <Route path='/tennis' element={<Tennis  tt={matchD.tennis.TT} />} ></Route>
-            <Route path='/tennis_d' element={<Tennis_D ttd ={matchD.tennis_D.TTD} />} ></Route>
-            <Route path='/kabaddi' element={<Kabaddi data={matchD.kabbadi_M.Kabb}/>} ></Route>
+            <Route path='tennis' element={<Tennis  tt={matchD.tennis.TT} />} ></Route>
+            <Route path='tennis_d' element={<Tennis_D ttd ={matchD.tennis_D.TTD} />} ></Route>
+            <Route path='kabaddi' element={<Kabaddi data={matchD.kabbadi_M.Kabb}/>} ></Route>
             
-            <Route path='/tnc' element={<TermsAndConditions/>} ></Route>
-            <Route path='/dev++' element={<DevelopmentTeam/>} ></Route>
-            <Route path='/login' element={<Login setislogin={setislogin} />} ></Route>
-            <Route path='/chat' element={<Chat/>} ></Route>
+            <Route path='tnc' element={<TermsAndConditions/>} ></Route>
+            <Route path='dev++' element={<DevelopmentTeam/>} ></Route>
+            <Route path='login' element={<Login setislogin={setislogin} />} ></Route>
+            <Route path='chat' element={<Chat/>} ></Route>
             <Route path='Blog' element={<BlogFeed/>} ></Route>
-            <Route path='/badminton_archived' element={<BadmintonArchived/>}></Route>
-            <Route path='/sign_up' element={<SignupPage/>}></Route>
-            <Route path='/tennis_archived' element={<TennisArchived/>}></Route>
-            <Route path='/kabaddi_archived' element={<KabaddiArchived/>}></Route>
-            <Route path='/football_archived' element={<FootballArchived/>}></Route>
-            <Route path='/cricket_archived' element={<CricketArchived/>}></Route>
-            <Route path='/dbadminton_archived' element={<DBadmintonArchived/>}></Route>
-            <Route path='/dbtennis_archived' element={<DBTennisArchived/>}></Route>
+            <Route path='badminton_archived' element={<BadmintonArchived/>}></Route>
+            <Route path='sign_up' element={<SignupPage/>}></Route>
+            <Route path='tennis_archived' element={<TennisArchived/>}></Route>
+            <Route path='kabaddi_archived' element={<KabaddiArchived/>}></Route>
+            <Route path='football_archived' element={<FootballArchived/>}></Route>
+            <Route path='cricket_archived' element={<CricketArchived/>}></Route>
+            <Route path='dbadminton_archived' element={<DBadmintonArchived/>}></Route>
+            <Route path='dbtennis_archived' element={<DBTennisArchived/>}></Route>
 
-            <Route path='/comBox' element={<Comment_Box/>}></Route>
+            <Route path='comBox' element={<Comment_Box/>}></Route>
 
       </Routes>
         
@@ -116,7 +116,7 @@ function Dashboard() {
      </div>
 
     
-    <SubscribeBtn/>
+    {/* <SubscribeBtn/> */}
       
       <div >
         <Footer_main/>
