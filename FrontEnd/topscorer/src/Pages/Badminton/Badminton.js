@@ -60,7 +60,7 @@ function Badminton({ bd,clients }) {
   useEffect(()=>{
     setTimeout(()=>{
       setCracker(false)
-    },7000)
+    },4000)
   },[])
 
   return (
