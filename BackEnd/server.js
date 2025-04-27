@@ -50,6 +50,9 @@ let full_Payload = {
   },
   kabbadi_M: {
     "Kabb":false
+  },
+  Cricket_D: {
+    "Cricket":false
   }
 };
 let connectedClient = 0;
@@ -77,6 +80,9 @@ io.on("connection", (socket) => {
       full_Payload.tennis_D.TTD = payload.data;
     } else if (payload.name === "Kabaddi") {
       full_Payload.kabbadi_M.Kabb = payload.data;
+    }
+    else if (payload.name==="Cricket"){
+      full_Payload.Cricket_D.Cricket = payload.data;
     }
 
     // Optional: update payload with live client count

@@ -29,11 +29,22 @@ const initialMatchData = {
             bowler: "",
             thisOver: [],
             partnership: "0 (0)",
-            lastOver: { runs: 0, wickets: 0 }
+            lastOver: { runs: 0, wickets: 0 },
+            striker: 0, // 0 for first batsman, 1 for second batsman
+            nonStriker: 1
         },
-        scorecard: [],
-        bowlingcard: [],
-        commentary: []
+        scorecard: {
+            team1: [],
+            team2: []
+        },
+        bowlingcard: {
+            team1: [],
+            team2: []
+        },
+        overs: {
+            team1: [],
+            team2: []
+        }
     }
 };
 
@@ -45,6 +56,25 @@ function Cricket() {
     const [isConnected, setIsConnected] = useState(false);
     const [currentBalls, setCurrentBalls] = useState(0);
     const [activeStep, setActiveStep] = useState(1); // 1: Team Setup, 2: Match Settings, 3: Scoring
+
+    // Add field positions to the match data
+    const [fieldPositions, setFieldPositions] = useState([
+        { name: "Slip", x: 85, y: 30 },
+        { name: "Gully", x: 80, y: 25 },
+        { name: "Point", x: 75, y: 20 },
+        { name: "Cover", x: 70, y: 15 },
+        { name: "Extra Cover", x: 65, y: 10 },
+        { name: "Mid Off", x: 60, y: 5 },
+        { name: "Mid On", x: 40, y: 5 },
+        { name: "Mid Wicket", x: 35, y: 10 },
+        { name: "Square Leg", x: 30, y: 15 },
+        { name: "Fine Leg", x: 25, y: 20 },
+        { name: "Long Leg", x: 20, y: 25 },
+        { name: "Long Off", x: 15, y: 30 },
+        { name: "Long On", x: 10, y: 35 },
+        { name: "Deep Mid Wicket", x: 5, y: 40 },
+        { name: "Deep Square Leg", x: 0, y: 45 }
+    ]);
 
     // Socket connection status
     useEffect(() => {
@@ -74,17 +104,46 @@ function Cricket() {
                 const savedMatchData = localStorage.getItem('cricketMatchData');
                 if (savedMatchData) {
                     const parsedData = JSON.parse(savedMatchData);
-                    setMatchData(parsedData);
+                    
+                    // Ensure all required fields exist
+                    const completeData = {
+                        ...initialMatchData,
+                        ...parsedData,
+                        data: {
+                            ...initialMatchData.data,
+                            ...parsedData.data,
+                            scorecard: {
+                                team1: parsedData.data.scorecard?.team1 || [],
+                                team2: parsedData.data.scorecard?.team2 || []
+                            },
+                            bowlingcard: {
+                                team1: parsedData.data.bowlingcard?.team1 || [],
+                                team2: parsedData.data.bowlingcard?.team2 || []
+                            },
+                            overs: {
+                                team1: parsedData.data.overs?.team1 || [],
+                                team2: parsedData.data.overs?.team2 || []
+                            },
+                            current: {
+                                ...initialMatchData.data.current,
+                                ...parsedData.data.current,
+                                striker: parsedData.data.current?.striker || 0,
+                                nonStriker: parsedData.data.current?.nonStriker || 1
+                            }
+                        }
+                    };
+                    
+                    setMatchData(completeData);
                     setLastSaved(new Date().toISOString());
                     
                     // Calculate current balls from overs
-                    const currentTeam = parsedData.data.teams.team1.score !== "0/0" ? "team1" : "team2";
-                    const overs = parsedData.data.teams[currentTeam].overs;
+                    const currentTeam = completeData.data.teams.team1.score !== "0/0" ? "team1" : "team2";
+                    const overs = completeData.data.teams[currentTeam].overs;
                     const [fullOvers, balls] = overs.split('.').map(Number);
                     setCurrentBalls(fullOvers * 6 + (balls || 0));
                     
                     // Set active step based on data
-                    if (parsedData.data.teams.team1.name && parsedData.data.teams.team2.name) {
+                    if (completeData.data.teams.team1.name && completeData.data.teams.team2.name) {
                         setActiveStep(2);
                     }
                     
@@ -206,6 +265,19 @@ function Cricket() {
             newFullOvers += 1;
             newBalls = 0;
             
+            // Save the completed over
+            const overData = {
+                number: newFullOvers,
+                balls: matchData.data.current.thisOver,
+                runs: matchData.data.current.thisOver.reduce((sum, ball) => {
+                    if (ball === 'W') return sum;
+                    return sum + (parseInt(ball) || 0);
+                }, 0),
+                wickets: matchData.data.current.thisOver.filter(ball => ball === 'W').length
+            };
+            
+            addOver(team, overData);
+            
             // Reset the thisOver array when a new over starts
             setMatchData(prev => ({
                 ...prev,
@@ -217,6 +289,35 @@ function Cricket() {
                     }
                 }
             }));
+            
+            // Ask for new bowler name when a new over starts
+            const newBowlerName = prompt("Enter name of new bowler for this over:");
+            if (newBowlerName) {
+                const bowlingTeam = team === "team1" ? "team2" : "team1";
+                
+                // Check if bowler already exists
+                const existingBowlerIndex = matchData.data.bowlingcard[bowlingTeam].findIndex(b => b.name === newBowlerName);
+                
+                if (existingBowlerIndex === -1) {
+                    // Add new bowler if not exists
+                    addBowler(bowlingTeam, newBowlerName);
+                }
+                
+                // Set as current bowler
+                setMatchData(prev => ({
+                    ...prev,
+                    data: {
+                        ...prev.data,
+                        current: {
+                            ...prev.data.current,
+                            bowler: newBowlerName
+                        }
+                    }
+                }));
+            }
+            
+            // Rotate strike at the end of over
+            rotateStrike();
         }
         
         // Update overs
@@ -245,6 +346,136 @@ function Cricket() {
         }));
     };
 
+    // Add a new batsman to the scorecard
+    const addBatsman = (team, name) => {
+        if (!name) return;
+        
+        setMatchData(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                scorecard: {
+                    ...prev.data.scorecard,
+                    [team]: [
+                        ...prev.data.scorecard[team],
+                        {
+                            name,
+                            runs: 0,
+                            balls: 0,
+                            fours: 0,
+                            sixes: 0,
+                            strikeRate: "0.00",
+                            isOut: false,
+                            dismissal: "Not Out"
+                        }
+                    ]
+                }
+            }
+        }));
+    };
+
+    // Add a new bowler to the bowling card
+    const addBowler = (team, name) => {
+        if (!name) return;
+        
+        setMatchData(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                bowlingcard: {
+                    ...prev.data.bowlingcard,
+                    [team]: [
+                        ...prev.data.bowlingcard[team],
+                        {
+                            name,
+                            overs: "0.0",
+                            maidens: 0,
+                            runs: 0,
+                            wickets: 0,
+                            economy: "0.00"
+                        }
+                    ]
+                }
+            }
+        }));
+    };
+
+    // Update batsman statistics
+    const updateBatsmanStats = (team, index, stats) => {
+        setMatchData(prev => {
+            const updatedScorecard = [...prev.data.scorecard[team]];
+            updatedScorecard[index] = {
+                ...updatedScorecard[index],
+                ...stats,
+                strikeRate: stats.balls > 0 ? ((stats.runs / stats.balls) * 100).toFixed(2) : "0.00"
+            };
+            
+            return {
+                ...prev,
+                data: {
+                    ...prev.data,
+                    scorecard: {
+                        ...prev.data.scorecard,
+                        [team]: updatedScorecard
+                    }
+                }
+            };
+        });
+    };
+
+    // Update bowler statistics
+    const updateBowlerStats = (team, index, stats) => {
+        setMatchData(prev => {
+            const updatedBowlingcard = [...prev.data.bowlingcard[team]];
+            updatedBowlingcard[index] = {
+                ...updatedBowlingcard[index],
+                ...stats,
+                economy: parseFloat(stats.overs) > 0 ? (stats.runs / parseFloat(stats.overs)).toFixed(2) : "0.00"
+            };
+            
+            return {
+                ...prev,
+                data: {
+                    ...prev.data,
+                    bowlingcard: {
+                        ...prev.data.bowlingcard,
+                        [team]: updatedBowlingcard
+                    }
+                }
+            };
+        });
+    };
+
+    // Add an over to the overs list
+    const addOver = (team, overData) => {
+        setMatchData(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                overs: {
+                    ...prev.data.overs,
+                    [team]: [...prev.data.overs[team], overData]
+                }
+            }
+        }));
+    };
+
+    // Rotate strike on odd runs
+    const rotateStrike = () => {
+        setMatchData(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                current: {
+                    ...prev.data.current,
+                    striker: prev.data.current.nonStriker,
+                    nonStriker: prev.data.current.striker
+                }
+            }
+        }));
+    };
+
+    // Update the quickScoreUpdate function to handle strike rotation and stats
     const quickScoreUpdate = (team, runs, isWicket, isExtra = false) => {
         // Get current score or initialize if empty
         const currentScore = matchData.data.teams[team].score || "0/0";
@@ -253,12 +484,151 @@ function Cricket() {
         // Calculate new values, handling NaN cases
         const newRuns = (isNaN(currentRuns) ? 0 : currentRuns) + runs;
         const newWickets = (isNaN(currentWickets) ? 0 : currentWickets) + (isWicket ? 1 : 0);
+
+        if (isWicket) {
+            const strikerIndex = matchData.data.current.striker;
+            const strikerName = matchData.data.current.batsmen[strikerIndex];
+        
+            // Find the striker batsman in the scorecard
+            const batsmanIndex = matchData.data.scorecard[team].findIndex(batsman => batsman.name === strikerName);
+        
+            if (batsmanIndex !== -1) {
+                // 🛑 FIRST, prompt OUTSIDE setMatchData
+                const newBatsmanName = prompt("Enter name of new batsman:");
+                if (!newBatsmanName) {
+                    toast.error("New batsman name is required");
+                    return;
+                }
+        
+                // ✅ Now safe to update matchData
+                setMatchData(prev => {
+                    const prevScorecard = [...prev.data.scorecard[team]];
+                    
+                    // Mark outgoing batsman as out
+                    prevScorecard[batsmanIndex] = {
+                        ...prevScorecard[batsmanIndex],
+                        isOut: true,
+                        dismissal: "b " + prev.data.current.bowler
+                    };
+        
+                    // Create new batsman
+                    const newBatsman = {
+                        name: newBatsmanName,
+                        runs: 0,
+                        balls: 0,
+                        fours: 0,
+                        sixes: 0,
+                        strikeRate: "0.00",
+                        isOut: false,
+                        dismissal: "Not Out"
+                    };
+        
+                    const updatedScorecard = [...prevScorecard, newBatsman];
+        
+                    // Determine new batsmen
+                    const wasStriker = prev.data.current.batsmen[0] === strikerName;
+                    const updatedBatsmen = wasStriker
+                        ? [newBatsmanName, prev.data.current.batsmen[1]]
+                        : [prev.data.current.batsmen[0], newBatsmanName];
+        
+                    return {
+                        ...prev,
+                        data: {
+                            ...prev.data,
+                            scorecard: {
+                                ...prev.data.scorecard,
+                                [team]: updatedScorecard
+                            },
+                            current: {
+                                ...prev.data.current,
+                                batsmen: updatedBatsmen,
+                                striker: 0,
+                                nonStriker: 1
+                            }
+                        }
+                    };
+                });
+            } else {
+                console.error(`Striker batsman "${strikerName}" not found in scorecard!`);
+            }
+        }
+        
+        
         
         // Update the score
         handleTeamChange(team, 'score', `${newRuns}/${newWickets}`);
         
-        // Add the ball to the current over
-        addBall(runs, isExtra);
+        // Add the ball to the current over if not an extra
+        if (!isExtra) {
+            addBall(runs, false);
+        }
+        
+        // Update batsman stats if not an extra and not a wicket
+        if (!isExtra && !isWicket) {
+            const strikerIndex = matchData.data.current.striker;
+            const strikerName = matchData.data.current.batsmen[strikerIndex];
+            
+            // Find batsman index by name
+            const batsmanIndex = matchData.data.scorecard[team].findIndex(batsman => batsman.name === strikerName);
+            
+            if (batsmanIndex !== -1) {
+                const currentBatsman = matchData.data.scorecard[team][batsmanIndex];
+                console.log("Some ",currentBatsman);
+                if (!currentBatsman.isOut) {
+                    const updatedStats = {
+                        runs: currentBatsman.runs + runs,
+                        balls: currentBatsman.balls + 1,
+                        fours: runs === 4 ? currentBatsman.fours + 1 : currentBatsman.fours,
+                        sixes: runs === 6 ? currentBatsman.sixes + 1 : currentBatsman.sixes,
+                        strikeRate: ((currentBatsman.runs + runs) / (currentBatsman.balls + 1) * 100).toFixed(2)
+                    };
+                    console.log("Some2",updatedStats);
+
+                    
+                    updateBatsmanStats(team, batsmanIndex, updatedStats);
+        
+                    // Rotate strike on odd runs (1 or 3)
+                    if (runs === 1 || runs === 3) {
+                        rotateStrike();
+                    }
+                }
+            } else {
+                console.error(`Striker batsman "${strikerName}" not found in scorecard!`);
+            }
+        }
+        
+        
+        // Update bowler stats if not an extra
+        if (!isExtra) {
+            const bowlingTeam = team === "team1" ? "team2" : "team1";
+            const currentBowler = matchData.data.current.bowler;
+            const bowlerIndex = matchData.data.bowlingcard[bowlingTeam].findIndex(b => b.name === currentBowler);
+            
+            if (bowlerIndex !== -1) {
+                const currentBowlerStats = matchData.data.bowlingcard[bowlingTeam][bowlerIndex];
+                const [fullOvers, balls] = currentBowlerStats.overs.split('.').map(Number);
+                
+                let newBalls = (balls || 0) + 1;
+                let newFullOvers = fullOvers;
+                
+                if (newBalls >= 6) {
+                    newFullOvers += 1;
+                    newBalls = 0;
+                }
+                
+                const updatedStats = {
+                    overs: `${newFullOvers}.${newBalls}`,
+                    runs: currentBowlerStats.runs + runs,
+                    wickets: isWicket ? currentBowlerStats.wickets + 1 : currentBowlerStats.wickets,
+                    economy: ((currentBowlerStats.runs + runs) / (newFullOvers + newBalls/6)).toFixed(2)
+                };
+                
+                updateBowlerStats(bowlingTeam, bowlerIndex, updatedStats);
+            }
+        }
+        
+        // Send socket update after score change
+        sendSocketUpdate();
     };
 
     const submitData = async () => {
@@ -276,7 +646,8 @@ function Cricket() {
             return;
         }
         
-        socket.emit("cricket-update", matchData);
+        socket.emit("Cricket", matchData);
+        console.log(matchData);
         toast.success("Update sent to all connected clients");
     };
 
@@ -338,6 +709,52 @@ function Cricket() {
                 toast.error("Please enter both team names");
                 return;
             }
+        } else if (activeStep === 2) {
+            // Prompt for initial batsmen and bowler when moving to scoring
+            const battingTeam = getBattingTeam();
+            const bowlingTeam = getBowlingTeam();
+            
+            // Prompt for first batsman
+            const firstBatsmanName = prompt(`Enter name of first batsman for ${matchData.data.teams[battingTeam].name}:`);
+            if (firstBatsmanName) {
+                addBatsman(battingTeam, firstBatsmanName);
+                
+                // Prompt for second batsman
+                const secondBatsmanName = prompt(`Enter name of second batsman for ${matchData.data.teams[battingTeam].name}:`);
+                if (secondBatsmanName) {
+                    addBatsman(battingTeam, secondBatsmanName);
+                    
+                    // Prompt for bowler
+                    const bowlerName = prompt(`Enter name of bowler for ${matchData.data.teams[bowlingTeam].name}:`);
+                    if (bowlerName) {
+                        addBowler(bowlingTeam, bowlerName);
+                        
+                        // Set initial batsmen and bowler
+                        setMatchData(prev => ({
+                            ...prev,
+                            data: {
+                                ...prev.data,
+                                current: {
+                                    ...prev.data.current,
+                                    batsmen: [firstBatsmanName, secondBatsmanName],
+                                    bowler: bowlerName,
+                                    striker: 0,
+                                    nonStriker: 1
+                                }
+                            }
+                        }));
+                    } else {
+                        toast.error("Bowler name is required");
+                        return;
+                    }
+                } else {
+                    toast.error("Second batsman name is required");
+                    return;
+                }
+            } else {
+                toast.error("First batsman name is required");
+                return;
+            }
         }
         setActiveStep(activeStep + 1);
     };
@@ -361,6 +778,94 @@ function Cricket() {
             }
         }));
         toast.success(`${teamName} set as winning team`);
+    };
+
+    // Add a function to update field positions
+    const updateFieldPosition = (index, newPosition) => {
+        const updatedPositions = [...fieldPositions];
+        updatedPositions[index] = { ...updatedPositions[index], ...newPosition };
+        setFieldPositions(updatedPositions);
+        
+        // Update match data with new field positions
+        setMatchData(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                fieldPositions: updatedPositions
+            }
+        }));
+        
+        // Send socket update
+        sendSocketUpdate();
+    };
+
+    // Add a function to reset field positions to default
+    const resetFieldPositions = () => {
+        setFieldPositions([
+            { name: "Slip", x: 85, y: 30 },
+            { name: "Gully", x: 80, y: 25 },
+            { name: "Point", x: 75, y: 20 },
+            { name: "Cover", x: 70, y: 15 },
+            { name: "Extra Cover", x: 65, y: 10 },
+            { name: "Mid Off", x: 60, y: 5 },
+            { name: "Mid On", x: 40, y: 5 },
+            { name: "Mid Wicket", x: 35, y: 10 },
+            { name: "Square Leg", x: 30, y: 15 },
+            { name: "Fine Leg", x: 25, y: 20 },
+            { name: "Long Leg", x: 20, y: 25 },
+            { name: "Long Off", x: 15, y: 30 },
+            { name: "Long On", x: 10, y: 35 },
+            { name: "Deep Mid Wicket", x: 5, y: 40 },
+            { name: "Deep Square Leg", x: 0, y: 45 }
+        ]);
+        
+        // Update match data with reset field positions
+        setMatchData(prev => ({
+            ...prev,
+            data: {
+                ...prev.data,
+                fieldPositions: fieldPositions
+            }
+        }));
+        
+        // Send socket update
+        sendSocketUpdate();
+    };
+
+    // Add a field positions section to the UI
+    const renderFieldPositions = () => {
+        return (
+            <div className="bg-white p-4 rounded-lg mb-4 shadow">
+                <h2 className="text-xl font-semibold mb-3">Field Positions</h2>
+                <div className="grid grid-cols-3 gap-2">
+                    {fieldPositions.map((position, index) => (
+                        <div key={index} className="flex items-center">
+                            <span className="w-24 text-sm">{position.name}</span>
+                            <input
+                                type="number"
+                                value={position.x}
+                                onChange={(e) => updateFieldPosition(index, { x: parseInt(e.target.value) })}
+                                className="w-16 p-1 border rounded mr-1"
+                                placeholder="X"
+                            />
+                            <input
+                                type="number"
+                                value={position.y}
+                                onChange={(e) => updateFieldPosition(index, { y: parseInt(e.target.value) })}
+                                className="w-16 p-1 border rounded"
+                                placeholder="Y"
+                            />
+                        </div>
+                    ))}
+                </div>
+                <button
+                    onClick={resetFieldPositions}
+                    className="mt-2 p-2 bg-blue-100 rounded hover:bg-blue-200 text-sm"
+                >
+                    Reset Field Positions
+                </button>
+            </div>
+        );
     };
 
     return (
@@ -739,46 +1244,57 @@ function Cricket() {
                         <h2 className="text-xl font-semibold mb-3">Current Play</h2>
                         <div className="grid md:grid-cols-3 gap-4">
                             <div>
-                                <label className="block mb-1">Batsmen</label>
+                                <label className="block mb-1">Current Batsmen</label>
                                 <div className="space-y-2">
                                     {matchData.data.current.batsmen.map((batsman, i) => (
-                                        <input
-                                            key={i}
-                                            type="text"
-                                            placeholder={`Batsman ${i+1}`}
-                                            value={batsman}
-                                            onChange={(e) => {
-                                                const newBatsmen = [...matchData.data.current.batsmen];
-                                                newBatsmen[i] = e.target.value;
-                                                setMatchData(prev => ({
-                                                    ...prev,
-                                                    data: {
-                                                        ...prev.data,
-                                                        current: { ...prev.data.current, batsmen: newBatsmen }
-                                                    }
-                                                }));
-                                            }}
-                                            className="w-full p-2 border rounded"
-                                        />
+                                        <div key={i} className="flex items-center">
+                                            <span className="flex-1 p-2 border rounded bg-gray-50">
+                                                {batsman}
+                                                {i === matchData.data.current.striker && (
+                                                    <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 rounded text-xs">Striker</span>
+                                                )}
+                                                {i === matchData.data.current.nonStriker && (
+                                                    <span className="ml-2 px-2 py-1 bg-gray-100 text-gray-800 rounded text-xs">Non-striker</span>
+                                                )}
+                                            </span>
+                                        </div>
                                     ))}
+                                    <button
+                                        onClick={() => {
+                                            const battingTeam = getBattingTeam();
+                                            const newBatsmanName = prompt("Enter new batsman name");
+                                            if (newBatsmanName) {
+                                                addBatsman(battingTeam, newBatsmanName);
+                                            }
+                                        }}
+                                        className="mt-2 p-2 bg-blue-100 rounded hover:bg-blue-200 text-sm"
+                                    >
+                                        Add New Batsman
+                                    </button>
                                 </div>
                             </div>
                             
                             <div>
                                 <label className="block mb-1">Current Bowler</label>
-                                <input
-                                    type="text"
-                                    placeholder="Bowler name"
-                                    value={matchData.data.current.bowler}
-                                    onChange={(e) => setMatchData(prev => ({
-                                        ...prev,
-                                        data: {
-                                            ...prev.data,
-                                            current: { ...prev.data.current, bowler: e.target.value }
-                                        }
-                                    }))}
-                                    className="w-full p-2 border rounded"
-                                />
+                                <div className="space-y-2">
+                                    <div className="flex items-center">
+                                        <span className="flex-1 p-2 border rounded bg-gray-50">
+                                            {matchData.data.current.bowler}
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            const bowlingTeam = getBowlingTeam();
+                                            const newBowlerName = prompt("Enter new bowler name");
+                                            if (newBowlerName) {
+                                                addBowler(bowlingTeam, newBowlerName);
+                                            }
+                                        }}
+                                        className="mt-2 p-2 bg-blue-100 rounded hover:bg-blue-200 text-sm"
+                                    >
+                                        Add New Bowler
+                                    </button>
+                                </div>
                             </div>
                             
                             <div>
@@ -854,9 +1370,116 @@ function Cricket() {
                         </div>
                     </div>
 
+                    {/* Scorecard Section */}
+                    <div className="bg-white p-4 rounded-lg mb-4 shadow">
+                        <h2 className="text-xl font-semibold mb-3">Scorecard</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="py-2 px-4 border-b">Batsman</th>
+                                        <th className="py-2 px-4 border-b">R</th>
+                                        <th className="py-2 px-4 border-b">B</th>
+                                        <th className="py-2 px-4 border-b">4s</th>
+                                        <th className="py-2 px-4 border-b">6s</th>
+                                        <th className="py-2 px-4 border-b">SR</th>
+                                        <th className="py-2 px-4 border-b">Dismissal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {matchData.data.scorecard[getBattingTeam()].map((batsman, index) => (
+                                        <tr key={index} className={batsman.isOut ? "bg-red-50" : ""}>
+                                            <td className="py-2 px-4 border-b">
+                                                {batsman.name}
+                                                {!batsman.isOut && (
+                                                    <span className="ml-2 inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                                                )}
+                                            </td>
+                                            <td className="py-2 px-4 border-b">{batsman.runs}</td>
+                                            <td className="py-2 px-4 border-b">{batsman.balls}</td>
+                                            <td className="py-2 px-4 border-b">{batsman.fours}</td>
+                                            <td className="py-2 px-4 border-b">{batsman.sixes}</td>
+                                            <td className="py-2 px-4 border-b">{batsman.strikeRate}</td>
+                                            <td className="py-2 px-4 border-b">{batsman.dismissal}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {/* Bowling Card Section */}
+                    <div className="bg-white p-4 rounded-lg mb-4 shadow">
+                        <h2 className="text-xl font-semibold mb-3">Bowling Card</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="py-2 px-4 border-b">Bowler</th>
+                                        <th className="py-2 px-4 border-b">O</th>
+                                        <th className="py-2 px-4 border-b">M</th>
+                                        <th className="py-2 px-4 border-b">R</th>
+                                        <th className="py-2 px-4 border-b">W</th>
+                                        <th className="py-2 px-4 border-b">Econ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {matchData.data.bowlingcard[getBowlingTeam()].map((bowler, index) => (
+                                        <tr key={index}>
+                                            <td className="py-2 px-4 border-b">{bowler.name}</td>
+                                            <td className="py-2 px-4 border-b">{bowler.overs}</td>
+                                            <td className="py-2 px-4 border-b">{bowler.maidens}</td>
+                                            <td className="py-2 px-4 border-b">{bowler.runs}</td>
+                                            <td className="py-2 px-4 border-b">{bowler.wickets}</td>
+                                            <td className="py-2 px-4 border-b">{bowler.economy}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {/* Overs Table */}
+                    <div className="bg-white p-4 rounded-lg mb-4 shadow">
+                        <h2 className="text-xl font-semibold mb-3">Overs</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="py-2 px-4 border-b">Over</th>
+                                        <th className="py-2 px-4 border-b">Runs</th>
+                                        <th className="py-2 px-4 border-b">Wickets</th>
+                                        <th className="py-2 px-4 border-b">Balls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {matchData.data.overs[getBattingTeam()].map((over, index) => (
+                                        <tr key={index}>
+                                            <td className="py-2 px-4 border-b">{over.number}</td>
+                                            <td className="py-2 px-4 border-b">{over.runs}</td>
+                                            <td className="py-2 px-4 border-b">{over.wickets}</td>
+                                            <td className="py-2 px-4 border-b">
+                                                <div className="flex flex-wrap gap-1">
+                                                    {over.balls.map((ball, i) => (
+                                                        <span key={i} className="px-1 py-0.5 bg-gray-200 rounded text-xs">
+                                                            {ball}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     {/* Advanced Sections */}
                     {showAdvanced && (
                         <>
+                            {/* Field Positions Section */}
+                            {renderFieldPositions()}
+                            
                             {/* Commentary Section */}
                             <div className="bg-white p-4 rounded-lg mb-4 shadow">
                                 <h2 className="text-xl font-semibold mb-3">Commentary</h2>
@@ -881,6 +1504,7 @@ function Cricket() {
                                                 }
                                             }));
                                             setNewComment("");
+                                            sendSocketUpdate();
                                         }}
                                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                     >

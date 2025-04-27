@@ -44,6 +44,7 @@ function Dashboard() {
           tennis:false,
           tennis_D: false,
           kabbadi_M: false,
+          Cricket_D:false
         });
 
         const [ClientCount,setClientCount] = useState(0);
@@ -56,7 +57,7 @@ function Dashboard() {
             console.log(matchD);
           });
           socket.on("clientCount", (count) => {
-            setClientCount(count); // 👈 Save count in state
+            setClientCount(count); 
           });
         
           return () => {
