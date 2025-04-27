@@ -114,7 +114,7 @@ function Badminton({ bd, clients }) {
           />
         </div>
       </div>
-      {cracker && <FireworksComponent />}
+      {winner && <FireworksComponent />}
         
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">

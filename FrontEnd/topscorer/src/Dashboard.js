@@ -53,7 +53,7 @@ function Dashboard() {
             setMatchD((payload));
             console.log(payload.clients);
            
-            // console.log(matchD.badminton);
+            console.log(matchD);
           });
           socket.on("clientCount", (count) => {
             setClientCount(count); // 👈 Save count in state
