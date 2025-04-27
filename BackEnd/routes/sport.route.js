@@ -1,7 +1,15 @@
 import express from 'express'
 import { createBDSingle, getBDSingle } from '../Controllers/BDSingle.controller.js'
 import { createBDDoubles, getBDDoubles } from '../Controllers/BDDouble.controller.js';
-import { createKabaddiMatch, getKabaddiMatches } from '../Controllers/Kabaddi.controller.js';
+import { 
+  createKabaddiMatch, 
+  getKabaddiMatches, 
+  getKabaddiMatchById, 
+  updateKabaddiMatch, 
+  deleteKabaddiMatch,
+  updatePlayerStats,
+  updateMatchStatus
+} from '../Controllers/Kabaddi.controller.js';
 import { createTennisSingle, getTennisSingles } from '../Controllers/Tennis.controller.js';
 import { createTennisDoubles, getTennisDoubles } from '../Controllers/TTDoubles.controller.js';
 
@@ -33,8 +41,12 @@ routes.get('/cricketMatch/:id', getMatch);
 routes.patch('/cricketMatch/innings', updateInnings);
 routes.patch('/cricketMatch/finish', finishMatch);
 
-
-
+// 🏃 Kabaddi Match Routes
+routes.get('/kabaddi/:id', getKabaddiMatchById);
+routes.put('/kabaddi/:id', updateKabaddiMatch);
+routes.delete('/kabaddi/:id', deleteKabaddiMatch);
+routes.patch('/kabaddi/player-stats', updatePlayerStats);
+routes.patch('/kabaddi/match-status', updateMatchStatus);
 
 export{
     routes

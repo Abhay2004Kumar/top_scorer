@@ -256,19 +256,19 @@ function Cricket() {
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-            <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Current Run Rate</h4>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Current Run Rate</h3>
             <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{teamData[selectedTeam].crr}</p>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-            <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Target</h4>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Target</h3>
             <p className="text-2xl font-bold text-green-600 dark:text-green-400">235</p>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-            <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Req. Run Rate</h4>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Req. Run Rate</h3>
             <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">12.5</p>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-            <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Balls Remaining</h4>
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Balls Remaining</h3>
             <p className="text-2xl font-bold text-red-600 dark:text-red-400">18</p>
           </div>
         </div>
@@ -295,11 +295,11 @@ function Cricket() {
           </div>
           <div className="grid grid-cols-2 gap-6">
             <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Last Over Runs</h4>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Last Over Runs</h3>
               <p className="text-xl font-bold text-blue-600 dark:text-blue-400">{lastOver.runs}</p>
             </div>
             <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Last Over Wickets</h4>
+              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Last Over Wickets</h3>
               <p className="text-xl font-bold text-red-600 dark:text-red-400">{lastOver.wickets}</p>
             </div>
           </div>
@@ -452,7 +452,7 @@ function Cricket() {
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                  <h4 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-300">Run Rate Comparison</h4>
+                  <h3 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-300">Run Rate Comparison</h3>
                   <div className="h-64">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={runRateData}>
@@ -480,7 +480,7 @@ function Cricket() {
                 </div>
 
                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
-                  <h4 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-300">Win Probability</h4>
+                  <h3 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-300">Win Probability</h3>
                   <div className="h-64 flex items-center justify-center">
                     <div className="relative w-48 h-48">
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -512,19 +512,19 @@ function Cricket() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Runs</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Runs</h3>
                 <p className="text-lg font-bold text-blue-600 dark:text-blue-400">72</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Strike Rate</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Strike Rate</h3>
                 <p className="text-lg font-bold text-green-600 dark:text-green-400">171.42</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">4s</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">4s</h3>
                 <p className="text-lg font-bold text-blue-600 dark:text-blue-400">6</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">6s</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">6s</h3>
                 <p className="text-lg font-bold text-purple-600 dark:text-purple-400">3</p>
               </div>
             </div>
@@ -540,19 +540,19 @@ function Cricket() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Wickets</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Wickets</h3>
                 <p className="text-lg font-bold text-red-600 dark:text-red-400">2</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Economy</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Economy</h3>
                 <p className="text-lg font-bold text-yellow-600 dark:text-yellow-400">9.50</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Overs</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Overs</h3>
                 <p className="text-lg font-bold text-blue-600 dark:text-blue-400">4.0</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Runs</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Runs</h3>
                 <p className="text-lg font-bold text-green-600 dark:text-green-400">38</p>
               </div>
             </div>
@@ -568,19 +568,19 @@ function Cricket() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Runs</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Runs</h3>
                 <p className="text-lg font-bold text-blue-600 dark:text-blue-400">45</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Strike Rate</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">Strike Rate</h3>
                 <p className="text-lg font-bold text-green-600 dark:text-green-400">150.00</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">4s</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">4s</h3>
                 <p className="text-lg font-bold text-blue-600 dark:text-blue-400">5</p>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded">
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">6s</h4>
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">6s</h3>
                 <p className="text-lg font-bold text-purple-600 dark:text-purple-400">2</p>
               </div>
             </div>

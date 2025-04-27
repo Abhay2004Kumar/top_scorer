@@ -12,6 +12,7 @@ import FeedbackRouter from './routes/feedback.route.js';
 import paymentRouter from './routes/payment.route.js';
 import stripeRouter from './routes/webhook.route.js'
 import DonateRouter from './routes/donate.route.js';
+import { console } from 'inspector';
 
 const PORT = process.env.PORT;
 
@@ -56,12 +57,13 @@ let connectedClient = 0;
 io.on("connection", (socket) => {
   connectedClient++; // ✅ Increment on connection
   console.log("A user connected. Total clients:", connectedClient);
-
+  
   // Broadcast connected client count
   io.emit("clientCount", connectedClient);
 
   // Send full payload
   socket.emit("FullPayLoad", full_Payload);
+  console.log(full_Payload)
 
   // Handle data updates
   socket.on("data", (payload) => {
