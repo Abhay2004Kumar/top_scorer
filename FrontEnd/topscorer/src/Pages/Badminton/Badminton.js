@@ -196,7 +196,7 @@ function Badminton({ bd, clients }) {
                   {matchData.tmB_score.at(-1) || 0}
                 </span>
               </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+              <p className="text-sm text-gray-700 dark:text-gray-300 text-center">
                 Set {matchData.tmA_score.length}
               </p>
               </div>
