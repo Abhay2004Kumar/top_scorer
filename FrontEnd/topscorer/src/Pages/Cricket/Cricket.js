@@ -7,20 +7,204 @@ import Options from "../../Components/Live_Upcoming/Options";
 import PlayerCard from "../../Components/PlayerCard/Card";
 import { FaTrophy, FaChartLine, FaUserFriends, FaHistory, FaMoon, FaSun } from 'react-icons/fa';
 
-function Cricket() {
+const initialMatchData = {
+    name: "Cricket",
+    data: {
+        basicInfo: {
+            status: "In Progress",
+            venue: "IIIT Una Ground",
+            date: "2025-04-29",
+            toss: "IIIT Una",
+            decision: "Bat",
+            maxOvers: 20,
+            matchType: "T20",
+            winningTeam: "",
+            matchResult: ""
+        },
+        teams: {
+            team1: {
+                name: "IIIT Una",
+                score: "35/0",
+                overs: "1.5",
+                logo: "",
+                runRate: "23.33",
+                requiredRate: "N/A"
+            },
+            team2: {
+                name: "IIIT Ranchi",
+                score: "0/0",
+                overs: "0.2",
+                logo: "",
+                runRate: "0.00",
+                requiredRate: "N/A"
+            }
+        },
+        current: {
+            batsmen: ["Rahul", "Shreyash"],
+            bowler: "Ramesh",
+            thisOver: [1, 1, 1, 0, 3, 4],
+            partnership: "0 (0)",
+            lastOver: { runs: 0, wickets: 0 },
+            striker: 1,
+            nonStriker: 0
+        },
+        scorecard: {
+            team1: [
+                {
+                    name: "Rahul",
+                    runs: 22,
+                    balls: 9,
+                    fours: 1,
+                    sixes: 2,
+                    strikeRate: "244.44",
+                    isOut: false,
+                    dismissal: "Not Out"
+                },
+                {
+                    name: "Shreyash",
+                    runs: 10,
+                    balls: 4,
+                    fours: 1,
+                    sixes: 0,
+                    strikeRate: "250.00",
+                    isOut: false,
+                    dismissal: "Not Out"
+                }
+            ],
+            team2: []
+        },
+        bowlingcard: {
+            team1: [],
+            team2: [
+                {
+                    name: "Saurabh",
+                    overs: "1.2",
+                    maidens: 0,
+                    runs: 23,
+                    wickets: 0,
+                    economy: "19.17"
+                },
+                {
+                    name: "Ramesh",
+                    overs: "0.5",
+                    maidens: 0,
+                    runs: 9,
+                    wickets: 0,
+                    economy: "18.00"
+                }
+            ]
+        },
+        overs: {
+            team1: [
+                {
+                    number: 1,
+                    balls: [1, 2, 3, 4, 6, 6],
+                    runs: 22,
+                    wickets: 0
+                }
+            ],
+            team2: []
+        },
+        commentary: []
+    }
+};
+
+function Cricket({ data }) {
+  console.log("DATA",data)
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState("team1");
   const [activeTab, setActiveTab] = useState("scorecard");
   const [darkMode, setDarkMode] = useState(() => {
-    // Check if user has a theme preference in localStorage
     const savedTheme = localStorage.getItem('theme');
-    // Check system preference if no saved theme
     if (!savedTheme) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
     return savedTheme === 'dark';
   });
+
+  // Initialize all state variables with data from props or initialMatchData
+  const initialData = data || initialMatchData.data;
+  
+  const [matchData, setMatchData] = useState({ name: "Cricket", data: initialData });
+  const [teamData, setTeamData] = useState({
+    team1: {
+      name: initialData.teams.team1.name,
+      shortName: initialData.teams.team1.name.substring(0, 3).toUpperCase(),
+      logo: initialData.teams.team1.logo || "https://img.icons8.com/color/96/india.png",
+      score: initialData.teams.team1.score,
+      overs: initialData.teams.team1.overs,
+      runRate: initialData.teams.team1.runRate,
+      isBatting: initialData.teams.team1.score !== "0/0",
+      crr: initialData.teams.team1.runRate
+    },
+    team2: {
+      name: initialData.teams.team2.name,
+      shortName: initialData.teams.team2.name.substring(0, 3).toUpperCase(),
+      logo: initialData.teams.team2.logo || "https://img.icons8.com/color/96/australia.png",
+      score: initialData.teams.team2.score,
+      overs: initialData.teams.team2.overs,
+      runRate: initialData.teams.team2.runRate,
+      isBatting: initialData.teams.team2.score !== "0/0",
+      crr: initialData.teams.team2.runRate
+    }
+  });
+  const [scoreCard, setScoreCard] = useState(initialData.scorecard.team1);
+  const [bowlingCard, setBowlingCard] = useState(initialData.bowlingcard.team2);
+  const [commentary, setCommentary] = useState(initialData.commentary);
+  const [currentOver, setCurrentOver] = useState(initialData.current.thisOver);
+  const [lastOver, setLastOver] = useState(initialData.current.lastOver);
+  const [matchStatus, setMatchStatus] = useState(() => {
+    const team1Score = initialData.teams.team1.score;
+    const team2Score = initialData.teams.team2.score;
+    if (team1Score === "0/0" && team2Score === "0/0") {
+      return "Match not started";
+    } else if (team1Score !== "0/0" && team2Score === "0/0") {
+      return `${initialData.teams.team1.name} batting`;
+    } else if (team1Score !== "0/0" && team2Score !== "0/0") {
+      const [runs1, wickets1] = team1Score.split('/').map(Number);
+      const [runs2, wickets2] = team2Score.split('/').map(Number);
+      const remainingRuns = runs1 - runs2;
+      const remainingBalls = (initialData.basicInfo.maxOvers * 6) - 
+        (parseFloat(initialData.teams.team2.overs) * 6);
+      return `${initialData.teams.team2.name} need ${remainingRuns} runs in ${remainingBalls} balls`;
+    }
+    return "Match in progress";
+  });
+
+  // Update states when data prop changes
+  useEffect(() => {
+    if (data) {
+      setMatchData({ name: "Cricket", data });
+      setTeamData({
+        team1: {
+          name: data.teams.team1.name,
+          shortName: data.teams.team1.name.substring(0, 3).toUpperCase(),
+          logo: data.teams.team1.logo || "https://img.icons8.com/color/96/india.png",
+          score: data.teams.team1.score,
+          overs: data.teams.team1.overs,
+          runRate: data.teams.team1.runRate,
+          isBatting: data.teams.team1.score !== "0/0",
+          crr: data.teams.team1.runRate
+        },
+        team2: {
+          name: data.teams.team2.name,
+          shortName: data.teams.team2.name.substring(0, 3).toUpperCase(),
+          logo: data.teams.team2.logo || "https://img.icons8.com/color/96/australia.png",
+          score: data.teams.team2.score,
+          overs: data.teams.team2.overs,
+          runRate: data.teams.team2.runRate,
+          isBatting: data.teams.team2.score !== "0/0",
+          crr: data.teams.team2.runRate
+        }
+      });
+      setScoreCard(data.scorecard.team1);
+      setBowlingCard(data.bowlingcard.team2);
+      setCommentary(data.commentary);
+      setCurrentOver(data.current.thisOver);
+      setLastOver(data.current.lastOver);
+    }
+  }, [data]);
 
   // Effect to handle dark mode changes
   useEffect(() => {
@@ -33,132 +217,181 @@ function Cricket() {
     }
   }, [darkMode]);
 
-  // Add teamData state with dummy data
-  const [teamData, setTeamData] = useState({
-    team1: {
-      name: "India",
-      shortName: "IND",
-      logo: "https://img.icons8.com/color/96/india.png",
-      score: "187/5",
-      overs: "19.3",
-      runRate: "9.56",
-      isBatting: true,
-      crr: "9.56"
-    },
-    team2: {
-      name: "Australia",
-      shortName: "AUS",
-      logo: "https://img.icons8.com/color/96/australia.png",
-      score: "182/8",
-      overs: "20.0",
-      runRate: "9.10",
-      isBatting: false,
-      crr: "9.10"
-    }
-  });
-  
-  // Add scoreCard state with dummy data
-  const [scoreCard, setScoreCard] = useState([
-    {
-      name: "Virat Kohli",
-      runs: 72,
-      balls: 42,
-      fours: 6,
-      sixes: 3,
-      strikeRate: "171.42",
-      isOut: false,
-      dismissal: "Not Out"
-    },
-    {
-      name: "Rohit Sharma",
-      runs: 45,
-      balls: 30,
-      fours: 5,
-      sixes: 2,
-      strikeRate: "150.00",
-      isOut: true,
-      dismissal: "c Warner b Cummins"
-    },
-    {
-      name: "KL Rahul",
-      runs: 28,
-      balls: 20,
-      fours: 3,
-      sixes: 1,
-      strikeRate: "140.00",
-      isOut: true,
-      dismissal: "b Zampa"
-    },
-    {
-      name: "Rishabh Pant",
-      runs: 15,
-      balls: 10,
-      fours: 1,
-      sixes: 1,
-      strikeRate: "150.00",
-      isOut: true,
-      dismissal: "c Smith b Cummins"
-    },
-    {
-      name: "Hardik Pandya",
-      runs: 18,
-      balls: 12,
-      fours: 1,
-      sixes: 1,
-      strikeRate: "150.00",
-      isOut: false,
-      dismissal: "Not Out"
-    }
-  ]);
+  // Socket connection effect
+  useEffect(() => {
+    const newSocket = io(process.env.REACT_APP_BACKEND_URL);
+    setSocket(newSocket);
 
-  // Add bowling card data
-  const [bowlingCard, setBowlingCard] = useState([
-    {
-      name: "Pat Cummins",
-      overs: "4.0",
-      maidens: 0,
-      runs: 38,
-      wickets: 2,
-      economy: "9.50"
-    },
-    {
-      name: "Adam Zampa",
-      overs: "4.0",
-      maidens: 0,
-      runs: 32,
-      wickets: 1,
-      economy: "8.00"
-    },
-    {
-      name: "Mitchell Starc",
-      overs: "3.0",
-      maidens: 0,
-      runs: 28,
-      wickets: 1,
-      economy: "9.33"
-    },
-    {
-      name: "Glenn Maxwell",
-      overs: "3.0",
-      maidens: 0,
-      runs: 25,
-      wickets: 0,
-      economy: "8.33"
-    }
-  ]);
+    newSocket.on("connect", () => {
+      console.log("Connected to server");
+    });
 
-  const [commentary, setCommentary] = useState([
-    { over: 18.2, text: "SIX! Rohit launches this over long-on!", runs: 6 },
-    { over: 18.1, text: "OUT! Caught at deep mid-wicket", wickets: 1 },
-    { over: 18.0, text: "FOUR! Pulled away to the boundary", runs: 4 },
-    { over: 17.6, text: "Single taken", runs: 1 },
-    { over: 17.5, text: "OUT! Bowled! Middle stump uprooted", wickets: 1 },
-    { over: 17.4, text: "SIX! Over the bowler's head", runs: 6 },
-    { over: 17.3, text: "FOUR! Through the covers", runs: 4 },
-    { over: 17.2, text: "Dot ball", runs: 0 },
-    { over: 17.1, text: "FOUR! Down the ground", runs: 4 },
-    { over: 17.0, text: "FOUR! Through the leg side", runs: 4 },
-  ]);
+    newSocket.on("cricket_update", (updatedData) => {
+      setMatchData(updatedData);
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  // Functions to update match data
+  const updateBasicInfo = (field, value) => {
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        basicInfo: {
+          ...prev.data.basicInfo,
+          [field]: value
+        }
+      }
+    }));
+  };
+
+  const updateTeamInfo = (team, field, value) => {
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        teams: {
+          ...prev.data.teams,
+          [team]: {
+            ...prev.data.teams[team],
+            [field]: value
+          }
+        }
+      }
+    }));
+  };
+
+  const updateCurrentPlay = (field, value) => {
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        current: {
+          ...prev.data.current,
+          [field]: value
+        }
+      }
+    }));
+  };
+
+  const updateScorecard = (team, playerIndex, field, value) => {
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        scorecard: {
+          ...prev.data.scorecard,
+          [team]: prev.data.scorecard[team].map((player, index) => 
+            index === playerIndex ? { ...player, [field]: value } : player
+          )
+        }
+      }
+    }));
+  };
+
+  const updateBowlingCard = (team, bowlerIndex, field, value) => {
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        bowlingcard: {
+          ...prev.data.bowlingcard,
+          [team]: prev.data.bowlingcard[team].map((bowler, index) => 
+            index === bowlerIndex ? { ...bowler, [field]: value } : bowler
+          )
+        }
+      }
+    }));
+  };
+
+  const addCommentary = (comment) => {
+    const newComment = {
+      text: comment,
+      timestamp: new Date().toISOString(),
+      time: new Date().toLocaleTimeString(),
+      over: matchData.data.teams[selectedTeam].overs,
+      inning: matchData.data.teams.team1.score !== "0/0" ? "1st Innings" : "2nd Innings",
+      runs: 0,
+      wickets: 0
+    };
+
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        commentary: [newComment, ...prev.data.commentary]
+      }
+    }));
+  };
+
+  const updateOvers = (team, overNumber, balls) => {
+    setMatchData(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        overs: {
+          ...prev.data.overs,
+          [team]: prev.data.overs[team].map(over => 
+            over.number === overNumber ? { ...over, balls } : over
+          )
+        }
+      }
+    }));
+  };
+
+  // Function to handle ball updates
+  const handleBallUpdate = (runs, isWicket = false) => {
+    const currentTeam = selectedTeam;
+    const currentOver = matchData.data.teams[currentTeam].overs;
+    const [fullOvers, balls] = currentOver.split('.').map(Number);
+    
+    // Update current over
+    const newBalls = [...matchData.data.current.thisOver, runs];
+    updateCurrentPlay('thisOver', newBalls);
+
+    // Update score
+    const [currentScore, currentWickets] = matchData.data.teams[currentTeam].score.split('/').map(Number);
+    const newScore = `${currentScore + runs}/${currentWickets + (isWicket ? 1 : 0)}`;
+    updateTeamInfo(currentTeam, 'score', newScore);
+
+    // Update overs
+    const newBallsCount = balls + 1;
+    const newFullOvers = newBallsCount === 6 ? fullOvers + 1 : fullOvers;
+    const newBallsRemaining = newBallsCount === 6 ? 0 : newBallsCount;
+    const newOvers = `${newFullOvers}.${newBallsRemaining}`;
+    updateTeamInfo(currentTeam, 'overs', newOvers);
+
+    // Update run rate
+    const runRate = ((currentScore + runs) / (newFullOvers + newBallsRemaining/6)).toFixed(2);
+    updateTeamInfo(currentTeam, 'runRate', runRate);
+
+    // If over is complete, update overs array
+    if (newBallsCount === 6) {
+      updateOvers(currentTeam, newFullOvers, newBalls);
+      updateCurrentPlay('thisOver', []);
+    }
+
+    // Emit update to server
+    if (socket) {
+      socket.emit('cricket_update', matchData);
+    }
+  };
+
+  // Function to handle wicket
+  const handleWicket = () => {
+    handleBallUpdate(0, true);
+    // Additional wicket-specific logic can be added here
+  };
+
+  // Function to handle extra runs
+  const handleExtra = (runs) => {
+    handleBallUpdate(runs);
+    // Additional extra-specific logic can be added here
+  };
 
   const runRateData = [
     { over: 1, team1: 8, team2: 7 },
@@ -174,13 +407,6 @@ function Cricket() {
   ];
 
   const winProbability = 68; // Example value
-
-  // Current over data
-  const [currentOver, setCurrentOver] = useState([1, 0, 4, 6, 2, 'W']);
-  const [lastOver, setLastOver] = useState({ runs: 13, wickets: 1 });
-
-  // Match status
-  const [matchStatus, setMatchStatus] = useState("India need 12 runs in 3 balls");
 
   useEffect(() => {
     // Simulate loading data
@@ -231,7 +457,7 @@ function Cricket() {
           <h1 className="text-2xl font-bold text-center mb-2">
             {teamData.team1.name} vs {teamData.team2.name} - T20 International
           </h1>
-          <p className="text-center text-blue-100 dark:text-blue-200">Dubai International Stadium • 23 August 2023</p>
+          <p className="text-center text-blue-100 dark:text-blue-200">{initialMatchData.data.basicInfo.venue}, </p>
         </div>
 
         {/* Live Score Banner */}

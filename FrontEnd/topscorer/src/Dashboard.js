@@ -52,6 +52,7 @@ function Dashboard() {
         useEffect(()=>{
           socket.on("FullPayLoad",(payload)=>{
             setMatchD((payload));
+            console.log(matchD);
             console.log(payload.clients);
            
             console.log(matchD);
@@ -83,13 +84,13 @@ function Dashboard() {
 
       <Routes>
             
-            <Route path='cricket' element={<Cricket/>} ></Route>
+            <Route path='cricket' element={<Cricket data={matchD.Cricket_D.Cricket}/>} ></Route>
             <Route path='football' element={<Football/>} ></Route>
             <Route path='badminton' element={<Badminton bd={matchD.badminton.lastMessageBD} clients={ClientCount}/>} ></Route>
             <Route path='badminton_d' element={<Badminton_D bdoubles={matchD.badminton_double.lastMessageBDouble}/>} ></Route>
             <Route path='tennis' element={<Tennis  tt={matchD.tennis.TT} />} ></Route>
             <Route path='tennis_d' element={<Tennis_D ttd ={matchD.tennis_D.TTD} />} ></Route>
-            <Route path='kabaddi' element={<Kabaddi data={matchD.kabbadi_M.Kabb}/>} ></Route>
+            <Route path='kabaddi' element={<Kabaddi data={matchD.kabbadi_M.Kabb} kabb2={matchD}/>} ></Route>
             
             <Route path='tnc' element={<TermsAndConditions/>} ></Route>
             <Route path='dev++' element={<DevelopmentTeam/>} ></Route>

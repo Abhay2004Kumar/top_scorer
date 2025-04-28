@@ -5,10 +5,10 @@ import Options from '../../Components/Live_Upcoming/Options';
 import ChatComponent from '../../Components/Chat/Chat';
 import FireworksComponent from '../../Components/customAnimations/FireWork';
 
-function Kabaddi({ data, clients }) {
+function Kabaddi({ data, clients, kabb2 }) {
   const flag1_link = "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
   const flag2_link = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
-
+  console.log("DATA",kabb2)
   const defaultTeam = {
     name: "Team",
     player: "Player",

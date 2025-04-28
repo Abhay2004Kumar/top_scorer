@@ -44,7 +44,8 @@ const initialMatchData = {
         overs: {
             team1: [],
             team2: []
-        }
+        },
+        commentary: []
     }
 };
 
@@ -646,7 +647,7 @@ function Cricket() {
             return;
         }
         
-        socket.emit("Cricket", matchData);
+        socket.emit("data", matchData);
         console.log(matchData);
         toast.success("Update sent to all connected clients");
     };
@@ -1493,13 +1494,53 @@ function Cricket() {
                                     />
                                     <button 
                                         onClick={() => {
+                                            // Get current time in HH:MM:SS format
+                                            const now = new Date();
+                                            const timeString = now.toLocaleTimeString('en-US', { 
+                                                hour12: false, 
+                                                hour: '2-digit', 
+                                                minute: '2-digit',
+                                                second: '2-digit'
+                                            });
+                                            
+                                            // Determine current inning (1st or 2nd)
+                                            const currentInning = isFirstInningsComplete() ? "2nd Innings" : "1st Innings";
+                                            
+                                            // Get current over count
+                                            const battingTeam = getBattingTeam();
+                                            const currentOver = matchData.data.teams[battingTeam].overs;
+                                            
+                                            // Extract runs and wickets from the commentary text if possible
+                                            let runs = 0;
+                                            let wickets = 0;
+                                            
+                                            // Check for common patterns in commentary
+                                            if (newComment.includes("SIX") || newComment.includes("six")) {
+                                                runs = 6;
+                                            } else if (newComment.includes("FOUR") || newComment.includes("four")) {
+                                                runs = 4;
+                                            } else if (newComment.includes("THREE") || newComment.includes("three")) {
+                                                runs = 3;
+                                            } else if (newComment.includes("TWO") || newComment.includes("two")) {
+                                                runs = 2;
+                                            } else if (newComment.includes("ONE") || newComment.includes("one") || newComment.includes("SINGLE") || newComment.includes("single")) {
+                                                runs = 1;
+                                            } else if (newComment.includes("OUT") || newComment.includes("out") || newComment.includes("WICKET") || newComment.includes("wicket")) {
+                                                wickets = 1;
+                                            }
+                                            
                                             setMatchData(prev => ({
                                                 ...prev,
                                                 data: {
                                                     ...prev.data,
                                                     commentary: [...prev.data.commentary, {
                                                         text: newComment,
-                                                        timestamp: new Date().toISOString()
+                                                        timestamp: now.toISOString(),
+                                                        time: timeString,
+                                                        over: currentOver,
+                                                        inning: currentInning,
+                                                        runs: runs,
+                                                        wickets: wickets
                                                     }]
                                                 }
                                             }));
@@ -1510,6 +1551,31 @@ function Cricket() {
                                     >
                                         Add
                                     </button>
+                                </div>
+                                
+                                {/* Display commentary entries */}
+                                <div className="mt-4 max-h-60 overflow-y-auto">
+                                    {matchData.data.commentary.map((entry, index) => (
+                                        <div key={index} className="border-b py-2">
+                                            <div className="flex justify-between text-sm text-gray-500">
+                                                <span>{entry.time}</span>
+                                                <span>{entry.inning} - {entry.over} overs</span>
+                                            </div>
+                                            <div className="flex items-center mt-1">
+                                                <p className="flex-1">{entry.text}</p>
+                                                {entry.runs > 0 && (
+                                                    <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+                                                        {entry.runs} {entry.runs === 1 ? 'run' : 'runs'}
+                                                    </span>
+                                                )}
+                                                {entry.wickets > 0 && (
+                                                    <span className="ml-2 px-2 py-1 bg-red-100 text-red-800 rounded text-xs">
+                                                        Wicket
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 

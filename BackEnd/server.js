@@ -96,6 +96,15 @@ io.on("connection", (socket) => {
     connectedClient--; // ✅ Decrement on disconnect
     console.log("A user disconnected. Total clients:", connectedClient);
     io.emit("clientCount", connectedClient);
+
+    // Handle cricket updates
+    socket.on("cricket_update", (data) => {
+      console.log("Received cricket update:", data);
+      // Update the full payload
+      full_Payload.Cricket_D.Cricket = data;
+      // Broadcast to all clients
+      io.emit("cricket_update", data);
+    });
   });
 });
 
