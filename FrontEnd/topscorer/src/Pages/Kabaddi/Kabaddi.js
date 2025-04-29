@@ -187,7 +187,7 @@ function Kabaddi({ data, clients, kabb2 }) {
         </div>
 
         {/* Scoreboard */}
-        <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-gray-700 dark:to-gray-800 rounded-3xl p-6 w-full max-w-4xl mx-auto my-4 shadow-md border-2 border-gray-200 dark:border-gray-700">
+        <div className="flex justify-center h-[196px] bg-gradient-to-r from-orange-50 to-amber-50 dark:from-gray-700 dark:to-gray-800 rounded-3xl p-6 w-full max-w-4xl mx-auto my-4 shadow-md border-2 border-gray-200 dark:border-gray-700">
           <div className="grid grid-cols-3 gap-4 items-center">
             {/* Team A */}
             <div className={`flex flex-col items-center space-y-2 ${matchData.winner === 'teamA' ? 'ring-2 ring-yellow-400 rounded-lg p-2' : ''}`}>
@@ -244,11 +244,14 @@ function Kabaddi({ data, clients, kabb2 }) {
         </div>
 
         {/* Match Update */}
-        <div className="bg-orange-50 dark:bg-gray-700 rounded-xl p-4 mb-6">
-          <p className="text-center font-medium text-orange-800 dark:text-orange-200">
-            {matchData.latestUpdate}
-          </p>
+        <div className='flex justify-center items-center'>
+          <div className=" w-[90%]  bg-orange-50 dark:bg-gray-700 rounded-xl p-4 mb-6">
+                    <p className="text-center font-medium text-orange-800 dark:text-orange-200">
+                      {matchData.latestUpdate}
+                    </p>
+          </div>
         </div>
+       
 
         {/* Player Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
