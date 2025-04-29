@@ -784,31 +784,21 @@ function Cricket({ data }) {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white p-4 transition-colors duration-200">
       <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <FaTrophy className="text-3xl text-blue-500 mr-2" />
-            <h1 className="text-2xl font-bold">Cricket Live</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? (
-                <FaSun className="text-yellow-500 text-xl" />
-              ) : (
-                <FaMoon className="text-gray-700 text-xl" />
-              )}
-            </button>
-            <Options cur_link="/dashboard/cricket" archived="/dashboard/cricket_archived" />
-          </div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex items-center">
+          <FaTrophy className="text-3xl text-blue-500 mr-2" />
+          <h1 className="text-2xl font-bold">Cricket Live</h1>
         </div>
+        <div className="flex items-center space-x-4 mt-2">
+          <Options cur_link="/dashboard/cricket" archived="/dashboard/cricket_archived" />
+        </div>
+      </div>
+
 
         {/* Match Header */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-900 dark:to-indigo-900 p-6 rounded-xl shadow-lg border border-blue-500 dark:border-blue-700">
           <h1 className="text-2xl font-bold text-center mb-2">
-            {teamData.team1.name} vs {teamData.team2.name} - T20 International
+            {teamData.team1.name} vs {teamData.team2.name} 
           </h1>
           <p className="text-center text-blue-100 dark:text-blue-200">{initialMatchData.data.basicInfo.venue}, </p>
         </div>

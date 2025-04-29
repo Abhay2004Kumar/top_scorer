@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import style from "../Live_Upcoming/Options.module.css";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function Options({ cur_link, archived, upcoming }) {
@@ -12,43 +11,42 @@ function Options({ cur_link, archived, upcoming }) {
   };
 
   return (
-    <div className={style.box}>
+    <div className="flex space-x-4 justify-center items-center">
       {/* Live Button */}
       {cur_link && (
-        <div className=" flex">
+        <div className="flex items-center">
           <button
-            className={style.live}
+            className="flex items-center text-sm px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none transition duration-200"
             onClick={() => handleRedirect(cur_link)}
           >
             Live
-            {/* <div className={style.icon}></div> */}
+            <DotLottieReact
+              className="ml-2 w-6 h-6"
+              src="https://lottie.host/a1af2d3c-51de-4b7f-8318-ce94d9a9cb0d/7sDiG42bjH.lottie"
+              loop
+              autoplay
+            />
           </button>
-              <DotLottieReact
-              className="ml-[-10px]"
-                src="https://lottie.host/a1af2d3c-51de-4b7f-8318-ce94d9a9cb0d/7sDiG42bjH.lottie"
-                loop
-                autoplay
-              />
         </div>
       )}
 
       {/* Upcoming Button */}
       {upcoming && (
         <button
-          className={style.upcoming}
+          className="text-sm px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none transition duration-200"
           onClick={() => handleRedirect(upcoming)}
         >
-          <p>Upcoming</p>
+          Upcoming
         </button>
       )}
 
       {/* Archived Button */}
       {archived && (
         <button
-          className={style.archived}
+          className="text-sm px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none transition duration-200"
           onClick={() => handleRedirect(archived)}
         >
-          <p>Archived</p>
+          Archived
         </button>
       )}
     </div>

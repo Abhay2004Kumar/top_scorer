@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import style from '../SideBar/Sidebar.module.css';
 import { TiThMenu } from "react-icons/ti";
 import { IoIosCloseCircle } from "react-icons/io";
 import Game from '../Games/game';
 import { Link, useLocation } from 'react-router-dom';
-import { faFutbol, faTableTennis, faBaseballBall, faSpaceShuttle, faPersonRunning , faNewspaper  } from '@fortawesome/free-solid-svg-icons';
+import { faFutbol, faTableTennis, faBaseballBall, faSpaceShuttle, faPersonRunning, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -26,39 +25,27 @@ function Sidebar() {
   ];
 
   return (
-    <div className={style.sidemenu}>
-      {isOpen ? (
-        <div className={style.sport}>
-          <div className={style.sp}>
-            <div>
-              <h4>
-                Sports{' '}
-                <button onClick={toggleSidebar} className={style.close}>
-                  <IoIosCloseCircle className={style.close} />
-                </button>
-              </h4>
-            </div>
-            <div className={style.opt}>
-              {games.map((game) => (
-                <Link to={game.path} key={game.name}>
-                  <Game
-                    name={game.name}
-                    Icon={game.icon}
-                    isActive={location.pathname === game.path}
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className={style.space}></div>
-        </div>
-      ) : (
-        <div className={style.menu}>
-          <button onClick={toggleSidebar}>
-            <TiThMenu className={style.menu} />
-          </button>
-        </div>
-      )}
+    <div className={`h-full ${isOpen ? 'w-60' : 'w-14'} transition-all duration-300 bg-gray-100 dark:bg-gray-900 shadow-md`}>
+      <div className="flex items-center justify-between px-4 py-3 border-b dark:border-gray-700">
+        {isOpen && (
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Sports</h3>
+        )}
+        <button onClick={toggleSidebar} className="text-gray-600 dark:text-gray-300 text-xl">
+          {isOpen ? <IoIosCloseCircle /> : <TiThMenu />}
+        </button>
+      </div>
+      <div className="flex flex-col gap-2 p-3">
+        {games.map((game) => (
+          <Link to={game.path} key={game.name} className="group">
+            <Game
+              name={isOpen ? game.name : ''}
+              Icon={game.icon}
+              isActive={location.pathname === game.path}
+              isCollapsed={!isOpen}
+            />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
