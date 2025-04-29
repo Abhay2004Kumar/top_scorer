@@ -45,7 +45,7 @@
 .selected {
     background-color: #088977;
 }
-@media (max-width:570px){
+@media (max-width:639px){
     .scrollContainer{
         visibility: visible;
         height: fit-content;
