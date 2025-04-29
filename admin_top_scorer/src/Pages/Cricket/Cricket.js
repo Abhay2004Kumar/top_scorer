@@ -271,10 +271,11 @@ function Cricket() {
                 number: newFullOvers,
                 balls: matchData.data.current.thisOver,
                 runs: matchData.data.current.thisOver.reduce((sum, ball) => {
-                    if (ball === 'W') return sum;
-                    return sum + (parseInt(ball) || 0);
+                    // Handle the new ball object structure
+                    if (ball.isWicket) return sum;
+                    return sum + (parseInt(ball.value) || 0);
                 }, 0),
-                wickets: matchData.data.current.thisOver.filter(ball => ball === 'W').length
+                wickets: matchData.data.current.thisOver.filter(ball => ball.isWicket).length
             };
             
             addOver(team, overData);
@@ -291,30 +292,52 @@ function Cricket() {
                 }
             }));
             
-            // Ask for new bowler name when a new over starts
-            const newBowlerName = prompt("Enter name of new bowler for this over:");
-            if (newBowlerName) {
-                const bowlingTeam = team === "team1" ? "team2" : "team1";
-                
-                // Check if bowler already exists
-                const existingBowlerIndex = matchData.data.bowlingcard[bowlingTeam].findIndex(b => b.name === newBowlerName);
-                
-                if (existingBowlerIndex === -1) {
-                    // Add new bowler if not exists
-                    addBowler(bowlingTeam, newBowlerName);
-                }
-                
-                // Set as current bowler
+            // Check if this was the last over
+            const maxBalls = matchData.data.basicInfo.maxOvers * 6;
+            const totalBallsPlayed = (newFullOvers * 6) + newBalls;
+            
+            if (totalBallsPlayed >= maxBalls) {
+                // Update match status to completed
                 setMatchData(prev => ({
                     ...prev,
                     data: {
                         ...prev.data,
-                        current: {
-                            ...prev.data.current,
-                            bowler: newBowlerName
+                        basicInfo: {
+                            ...prev.data.basicInfo,
+                            status: "Completed"
                         }
                     }
                 }));
+                toast.success("Match completed - Maximum overs reached");
+                return;
+            }
+            
+            // Only ask for new bowler if there isn't one already set
+            if (!matchData.data.current.bowler) {
+                const newBowlerName = prompt("Enter name of new bowler for this over:");
+                if (newBowlerName) {
+                    const bowlingTeam = team === "team1" ? "team2" : "team1";
+                    
+                    // Check if bowler already exists
+                    const existingBowlerIndex = matchData.data.bowlingcard[bowlingTeam].findIndex(b => b.name === newBowlerName);
+                    
+                    if (existingBowlerIndex === -1) {
+                        // Add new bowler if not exists
+                        addBowler(bowlingTeam, newBowlerName);
+                    }
+                    
+                    // Set as current bowler
+                    setMatchData(prev => ({
+                        ...prev,
+                        data: {
+                            ...prev.data,
+                            current: {
+                                ...prev.data.current,
+                                bowler: newBowlerName
+                            }
+                        }
+                    }));
+                }
             }
             
             // Rotate strike at the end of over
@@ -325,9 +348,19 @@ function Cricket() {
         handleTeamChange(team, 'overs', `${newFullOvers}.${newBalls}`);
     };
 
-    const addBall = (value, isExtra = false) => {
+    const addBall = (value, isExtra = false, extraType = null, isWicket = false, dismissalType = null, dismissalInfo = null) => {
         // Determine which team is batting (the one with non-zero score)
         const battingTeam = matchData.data.teams.team1.score !== "0/0" ? "team1" : "team2";
+        
+        // Create ball object with detailed information
+        const ballObject = {
+            value: value,
+            type: extraType || (isWicket ? 'W' : 'normal'),
+            extra: isExtra,
+            isWicket: isWicket,
+            dismissalType: dismissalType,
+            dismissalInfo: dismissalInfo
+        };
         
         // Update the over only if it's not an extra
         if (!isExtra) {
@@ -341,7 +374,7 @@ function Cricket() {
                 ...prev.data,
                 current: {
                     ...prev.data.current,
-                    thisOver: [...prev.data.current.thisOver.slice(-5), value]
+                    thisOver: [...prev.data.current.thisOver, ballObject]
                 }
             }
         }));
@@ -379,26 +412,33 @@ function Cricket() {
     const addBowler = (team, name) => {
         if (!name) return;
         
-        setMatchData(prev => ({
-            ...prev,
-            data: {
-                ...prev.data,
-                bowlingcard: {
-                    ...prev.data.bowlingcard,
-                    [team]: [
-                        ...prev.data.bowlingcard[team],
-                        {
-                            name,
-                            overs: "0.0",
-                            maidens: 0,
-                            runs: 0,
-                            wickets: 0,
-                            economy: "0.00"
-                        }
-                    ]
-                }
+        setMatchData(prev => {
+            const newData = { ...prev };
+            const bowlingCard = [...newData.data.bowlingcard[team]];
+            
+            // Check if bowler already exists
+            const existingBowlerIndex = bowlingCard.findIndex(b => b.name === name);
+            if (existingBowlerIndex !== -1) {
+                // If bowler exists, set as current bowler
+                newData.data.current.bowler = name;
+                return newData;
             }
-        }));
+            
+            // Add new bowler
+            bowlingCard.push({
+                name,
+                overs: '0.0',
+                maidens: 0,
+                runs: 0,
+                wickets: 0,
+                economy: 0
+            });
+            
+            newData.data.bowlingcard[team] = bowlingCard;
+            newData.data.current.bowler = name;
+            
+            return newData;
+        });
     };
 
     // Update batsman statistics
@@ -425,25 +465,43 @@ function Cricket() {
     };
 
     // Update bowler statistics
-    const updateBowlerStats = (team, index, stats) => {
+    const updateBowlerStats = (team, bowlerName, ball) => {
         setMatchData(prev => {
-            const updatedBowlingcard = [...prev.data.bowlingcard[team]];
-            updatedBowlingcard[index] = {
-                ...updatedBowlingcard[index],
-                ...stats,
-                economy: parseFloat(stats.overs) > 0 ? (stats.runs / parseFloat(stats.overs)).toFixed(2) : "0.00"
-            };
+            const newData = { ...prev };
+            const bowlingCard = [...newData.data.bowlingcard[team]];
+            const bowlerIndex = bowlingCard.findIndex(b => b.name === bowlerName);
             
-            return {
-                ...prev,
-                data: {
-                    ...prev.data,
-                    bowlingcard: {
-                        ...prev.data.bowlingcard,
-                        [team]: updatedBowlingcard
-                    }
-                }
-            };
+            if (bowlerIndex === -1) return newData;
+            
+            const bowler = { ...bowlingCard[bowlerIndex] };
+            
+            // Update overs
+            const [whole, part] = bowler.overs.split('.');
+            const newPart = parseInt(part) + 1;
+            if (newPart === 6) {
+                bowler.overs = `${parseInt(whole) + 1}.0`;
+            } else {
+                bowler.overs = `${whole}.${newPart}`;
+            }
+            
+            // Update runs
+            if (!ball.extra) {
+                bowler.runs += ball.value;
+            }
+            
+            // Update wickets
+            if (ball.isWicket) {
+                bowler.wickets += 1;
+            }
+            
+            // Update economy
+            const overs = parseFloat(bowler.overs);
+            bowler.economy = overs > 0 ? (bowler.runs / overs).toFixed(2) : '0.00';
+            
+            bowlingCard[bowlerIndex] = bowler;
+            newData.data.bowlingcard[team] = bowlingCard;
+            
+            return newData;
         });
     };
 
@@ -477,7 +535,7 @@ function Cricket() {
     };
 
     // Update the quickScoreUpdate function to handle strike rotation and stats
-    const quickScoreUpdate = (team, runs, isWicket, isExtra = false) => {
+    const quickScoreUpdate = (team, runs, isWicket, isExtra = false, extraType = null, dismissalType = null, dismissalInfo = null) => {
         // Get current score or initialize if empty
         const currentScore = matchData.data.teams[team].score || "0/0";
         const [currentRuns, currentWickets] = currentScore.split('/').map(Number);
@@ -485,6 +543,28 @@ function Cricket() {
         // Calculate new values, handling NaN cases
         const newRuns = (isNaN(currentRuns) ? 0 : currentRuns) + runs;
         const newWickets = (isNaN(currentWickets) ? 0 : currentWickets) + (isWicket ? 1 : 0);
+
+        // Create ball object with detailed information
+        const ballObject = {
+            value: runs,
+            type: extraType || (isWicket ? 'W' : 'normal'),
+            extra: isExtra,
+            isWicket: isWicket,
+            dismissalType: dismissalType,
+            dismissalInfo: dismissalInfo
+        };
+
+        // Get current bowler info
+        const bowlingTeam = team === "team1" ? "team2" : "team1";
+        const currentBowler = matchData.data.current.bowler;
+        let bowlerStats = null;
+        
+        if (currentBowler) {
+            const bowlerIndex = matchData.data.bowlingcard[bowlingTeam].findIndex(b => b.name === currentBowler);
+            if (bowlerIndex !== -1) {
+                bowlerStats = { ...matchData.data.bowlingcard[bowlingTeam][bowlerIndex] };
+            }
+        }
 
         if (isWicket) {
             const strikerIndex = matchData.data.current.striker;
@@ -494,14 +574,12 @@ function Cricket() {
             const batsmanIndex = matchData.data.scorecard[team].findIndex(batsman => batsman.name === strikerName);
         
             if (batsmanIndex !== -1) {
-                // 🛑 FIRST, prompt OUTSIDE setMatchData
                 const newBatsmanName = prompt("Enter name of new batsman:");
                 if (!newBatsmanName) {
                     toast.error("New batsman name is required");
                     return;
                 }
         
-                // ✅ Now safe to update matchData
                 setMatchData(prev => {
                     const prevScorecard = [...prev.data.scorecard[team]];
                     
@@ -509,7 +587,7 @@ function Cricket() {
                     prevScorecard[batsmanIndex] = {
                         ...prevScorecard[batsmanIndex],
                         isOut: true,
-                        dismissal: "b " + prev.data.current.bowler
+                        dismissal: dismissalInfo || "b " + prev.data.current.bowler
                     };
         
                     // Create new batsman
@@ -531,20 +609,62 @@ function Cricket() {
                     const updatedBatsmen = wasStriker
                         ? [newBatsmanName, prev.data.current.batsmen[1]]
                         : [prev.data.current.batsmen[0], newBatsmanName];
-        
+                    
+                    // Update the over only if it's not an extra
+                    if (!isExtra) {
+                        updateOvers(team);
+                    }
+                    
+                    // Update bowler stats if exists
+                    let updatedBowlingCard = { ...prev.data.bowlingcard };
+                    if (bowlerStats) {
+                        const [fullOvers, balls] = bowlerStats.overs.split('.').map(Number);
+                        let newBalls = balls;
+                        let newFullOvers = fullOvers;
+                        
+                        if (!isExtra || extraType !== 'WD') {
+                            newBalls = (balls || 0) + 1;
+                            if (newBalls >= 6) {
+                                newFullOvers += 1;
+                                newBalls = 0;
+                            }
+                        }
+                        
+                        const updatedBowlerStats = {
+                            ...bowlerStats,
+                            overs: `${newFullOvers}.${newBalls}`,
+                            runs: bowlerStats.runs + runs,
+                            wickets: bowlerStats.wickets + 1,
+                            economy: ((bowlerStats.runs + runs) / (newFullOvers + newBalls/6)).toFixed(2)
+                        };
+                        
+                        updatedBowlingCard[bowlingTeam] = updatedBowlingCard[bowlingTeam].map(bowler => 
+                            bowler.name === currentBowler ? updatedBowlerStats : bowler
+                        );
+                    }
+                    
                     return {
                         ...prev,
                         data: {
                             ...prev.data,
+                            teams: {
+                                ...prev.data.teams,
+                                [team]: {
+                                    ...prev.data.teams[team],
+                                    score: `${newRuns}/${newWickets}`
+                                }
+                            },
                             scorecard: {
                                 ...prev.data.scorecard,
                                 [team]: updatedScorecard
                             },
+                            bowlingcard: updatedBowlingCard,
                             current: {
                                 ...prev.data.current,
                                 batsmen: updatedBatsmen,
                                 striker: 0,
-                                nonStriker: 1
+                                nonStriker: 1,
+                                thisOver: [...prev.data.current.thisOver, ballObject]
                             }
                         }
                     };
@@ -552,79 +672,90 @@ function Cricket() {
             } else {
                 console.error(`Striker batsman "${strikerName}" not found in scorecard!`);
             }
-        }
-        
-        
-        
-        // Update the score
-        handleTeamChange(team, 'score', `${newRuns}/${newWickets}`);
-        
-        // Add the ball to the current over if not an extra
-        if (!isExtra) {
-            addBall(runs, false);
-        }
-        
-        // Update batsman stats if not an extra and not a wicket
-        if (!isExtra && !isWicket) {
-            const strikerIndex = matchData.data.current.striker;
-            const strikerName = matchData.data.current.batsmen[strikerIndex];
-            
-            // Find batsman index by name
-            const batsmanIndex = matchData.data.scorecard[team].findIndex(batsman => batsman.name === strikerName);
-            
-            if (batsmanIndex !== -1) {
-                const currentBatsman = matchData.data.scorecard[team][batsmanIndex];
-                console.log("Some ",currentBatsman);
-                if (!currentBatsman.isOut) {
-                    const updatedStats = {
-                        runs: currentBatsman.runs + runs,
-                        balls: currentBatsman.balls + 1,
-                        fours: runs === 4 ? currentBatsman.fours + 1 : currentBatsman.fours,
-                        sixes: runs === 6 ? currentBatsman.sixes + 1 : currentBatsman.sixes,
-                        strikeRate: ((currentBatsman.runs + runs) / (currentBatsman.balls + 1) * 100).toFixed(2)
-                    };
-                    console.log("Some2",updatedStats);
-
+        } else {
+            setMatchData(prev => {
+                // Update the over only if it's not an extra
+                if (!isExtra) {
+                    updateOvers(team);
+                }
+                
+                // Update bowler stats if exists
+                let updatedBowlingCard = { ...prev.data.bowlingcard };
+                if (bowlerStats) {
+                    const [fullOvers, balls] = bowlerStats.overs.split('.').map(Number);
+                    let newBalls = balls;
+                    let newFullOvers = fullOvers;
                     
-                    updateBatsmanStats(team, batsmanIndex, updatedStats);
-        
-                    // Rotate strike on odd runs (1 or 3)
-                    if (runs === 1 || runs === 3) {
-                        rotateStrike();
+                    if (!isExtra || extraType !== 'WD') {
+                        newBalls = (balls || 0) + 1;
+                        if (newBalls >= 6) {
+                            newFullOvers += 1;
+                            newBalls = 0;
+                        }
                     }
-                }
-            } else {
-                console.error(`Striker batsman "${strikerName}" not found in scorecard!`);
-            }
-        }
-        
-        
-        // Update bowler stats if not an extra
-        if (!isExtra) {
-            const bowlingTeam = team === "team1" ? "team2" : "team1";
-            const currentBowler = matchData.data.current.bowler;
-            const bowlerIndex = matchData.data.bowlingcard[bowlingTeam].findIndex(b => b.name === currentBowler);
-            
-            if (bowlerIndex !== -1) {
-                const currentBowlerStats = matchData.data.bowlingcard[bowlingTeam][bowlerIndex];
-                const [fullOvers, balls] = currentBowlerStats.overs.split('.').map(Number);
-                
-                let newBalls = (balls || 0) + 1;
-                let newFullOvers = fullOvers;
-                
-                if (newBalls >= 6) {
-                    newFullOvers += 1;
-                    newBalls = 0;
+                    
+                    const updatedBowlerStats = {
+                        ...bowlerStats,
+                        overs: `${newFullOvers}.${newBalls}`,
+                        runs: bowlerStats.runs + runs,
+                        wickets: bowlerStats.wickets,
+                        economy: ((bowlerStats.runs + runs) / (newFullOvers + newBalls/6)).toFixed(2)
+                    };
+                    
+                    updatedBowlingCard[bowlingTeam] = updatedBowlingCard[bowlingTeam].map(bowler => 
+                        bowler.name === currentBowler ? updatedBowlerStats : bowler
+                    );
                 }
                 
-                const updatedStats = {
-                    overs: `${newFullOvers}.${newBalls}`,
-                    runs: currentBowlerStats.runs + runs,
-                    wickets: isWicket ? currentBowlerStats.wickets + 1 : currentBowlerStats.wickets,
-                    economy: ((currentBowlerStats.runs + runs) / (newFullOvers + newBalls/6)).toFixed(2)
+                return {
+                    ...prev,
+                    data: {
+                        ...prev.data,
+                        teams: {
+                            ...prev.data.teams,
+                            [team]: {
+                                ...prev.data.teams[team],
+                                score: `${newRuns}/${newWickets}`
+                            }
+                        },
+                        bowlingcard: updatedBowlingCard,
+                        current: {
+                            ...prev.data.current,
+                            thisOver: [...prev.data.current.thisOver, ballObject]
+                        }
+                    }
                 };
+            });
+            
+            // Update batsman stats if not an extra
+            if (!isExtra) {
+                const strikerIndex = matchData.data.current.striker;
+                const strikerName = matchData.data.current.batsmen[strikerIndex];
                 
-                updateBowlerStats(bowlingTeam, bowlerIndex, updatedStats);
+                // Find batsman index by name
+                const batsmanIndex = matchData.data.scorecard[team].findIndex(batsman => batsman.name === strikerName);
+                
+                if (batsmanIndex !== -1) {
+                    const currentBatsman = matchData.data.scorecard[team][batsmanIndex];
+                    if (!currentBatsman.isOut) {
+                        const updatedStats = {
+                            runs: currentBatsman.runs + runs,
+                            balls: currentBatsman.balls + 1,
+                            fours: runs === 4 ? currentBatsman.fours + 1 : currentBatsman.fours,
+                            sixes: runs === 6 ? currentBatsman.sixes + 1 : currentBatsman.sixes,
+                            strikeRate: ((currentBatsman.runs + runs) / (currentBatsman.balls + 1) * 100).toFixed(2)
+                        };
+                        
+                        updateBatsmanStats(team, batsmanIndex, updatedStats);
+        
+                        // Rotate strike on odd runs (1 or 3)
+                        if (runs === 1 || runs === 3) {
+                            rotateStrike();
+                        }
+                    }
+                } else {
+                    console.error(`Striker batsman "${strikerName}" not found in scorecard!`);
+                }
             }
         }
         
@@ -869,6 +1000,15 @@ function Cricket() {
         );
     };
 
+    // Add function to calculate remaining balls
+    const calculateRemainingBalls = () => {
+        const battingTeam = getBattingTeam();
+        const [fullOvers, balls] = matchData.data.teams[battingTeam].overs.split('.').map(Number);
+        const totalBallsPlayed = (fullOvers * 6) + (balls || 0);
+        const maxBalls = matchData.data.basicInfo.maxOvers * 6;
+        return Math.max(0, maxBalls - totalBallsPlayed);
+    };
+
     return (
         <div className="w-4/5 mx-auto my-5 p-6 bg-gray-100 rounded-lg shadow-lg">
             <div className="mb-6 flex justify-between items-center">
@@ -1111,6 +1251,20 @@ function Cricket() {
             {/* Step 3: Scoring */}
             {activeStep === 3 && (
                 <>
+                    {/* Add this inside the scoring section, before the Current Over section */}
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow border border-gray-200 dark:border-gray-700 mb-4">
+                        <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Balls Remaining</h3>
+                        <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+                            {(() => {
+                                const battingTeam = getBattingTeam();
+                                const [fullOvers, balls] = matchData.data.teams[battingTeam].overs.split('.').map(Number);
+                                const totalBallsPlayed = (fullOvers * 6) + (balls || 0);
+                                const maxBalls = matchData.data.basicInfo.maxOvers * 6;
+                                return Math.max(0, maxBalls - totalBallsPlayed);
+                            })()}
+                        </p>
+                    </div>
+
                     {/* Team Score Quick Update */}
                     <div className="grid md:grid-cols-2 gap-4 mb-6">
                         {/* Show batting team first */}
@@ -1278,23 +1432,29 @@ function Cricket() {
                             <div>
                                 <label className="block mb-1">Current Bowler</label>
                                 <div className="space-y-2">
-                                    <div className="flex items-center">
-                                        <span className="flex-1 p-2 border rounded bg-gray-50">
-                                            {matchData.data.current.bowler}
-                                        </span>
+                                    <div className="flex flex-col space-y-2">
+                                        <div className="flex items-center justify-between p-2 border rounded bg-gray-50">
+                                            <span className="font-medium">{matchData.data.current.bowler}</span>
+                                            {matchData.data.bowlingcard[getBowlingTeam()].find(b => b.name === matchData.data.current.bowler) && (
+                                                <div className="text-sm text-gray-600">
+                                                    {matchData.data.bowlingcard[getBowlingTeam()].find(b => b.name === matchData.data.current.bowler).overs} overs, 
+                                                    {matchData.data.bowlingcard[getBowlingTeam()].find(b => b.name === matchData.data.current.bowler).wickets} wickets
+                                                </div>
+                                            )}
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                const bowlingTeam = getBowlingTeam();
+                                                const newBowlerName = prompt("Enter new bowler name");
+                                                if (newBowlerName) {
+                                                    addBowler(bowlingTeam, newBowlerName);
+                                                }
+                                            }}
+                                            className="p-2 bg-blue-100 rounded hover:bg-blue-200 text-sm"
+                                        >
+                                            Change Bowler
+                                        </button>
                                     </div>
-                                    <button
-                                        onClick={() => {
-                                            const bowlingTeam = getBowlingTeam();
-                                            const newBowlerName = prompt("Enter new bowler name");
-                                            if (newBowlerName) {
-                                                addBowler(bowlingTeam, newBowlerName);
-                                            }
-                                        }}
-                                        className="mt-2 p-2 bg-blue-100 rounded hover:bg-blue-200 text-sm"
-                                    >
-                                        Add New Bowler
-                                    </button>
                                 </div>
                             </div>
                             
@@ -1302,26 +1462,34 @@ function Cricket() {
                                 <label className="block mb-1">This Over</label>
                                 <div className="flex flex-wrap gap-2">
                                     {matchData.data.current.thisOver.map((ball, i) => (
-                                        <span key={i} className="px-2 py-1 bg-gray-200 rounded">
-                                            {ball}
-                                        </span>
+                                        <div key={i} className="flex flex-col items-center">
+                                            <span className={`px-2 py-1 rounded ${
+                                                ball.isWicket ? 'bg-red-200' :
+                                                ball.extra ? 'bg-yellow-200' :
+                                                'bg-gray-200'
+                                            }`}>
+                                                {ball.type === 'W' ? 'W' : 
+                                                 ball.type === 'nb' ? 'NB' :
+                                                 ball.type === 'wd' ? 'WD' :
+                                                 ball.type === 'b' ? 'B' :
+                                                 ball.type === 'lb' ? 'LB' :
+                                                 ball.value}
+                                            </span>
+                                            {ball.dismissalType && (
+                                                <span className="text-xs text-gray-500">
+                                                    {ball.dismissalType}
+                                                </span>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
                                 <div className="mt-2 grid grid-cols-3 gap-2">
-                                    {[0, 1, 2, 3, 4, 6, 'W', 'N', 'Wd'].map(val => (
+                                    {[0, 1, 2, 3, 4, 6].map(val => (
                                         <button
                                             key={val}
                                             onClick={() => {
-                                                // Determine which team is batting
                                                 const battingTeam = getBattingTeam();
-                                                
-                                                if (val === 'W') {
-                                                    quickScoreUpdate(battingTeam, 0, true);
-                                                } else if (val === 'N' || val === 'Wd') {
-                                                    quickScoreUpdate(battingTeam, 1, false, true);
-                                                } else {
-                                                    quickScoreUpdate(battingTeam, val, false);
-                                                }
+                                                quickScoreUpdate(battingTeam, val, false);
                                             }}
                                             className="p-2 bg-blue-100 rounded hover:bg-blue-200"
                                         >
@@ -1329,42 +1497,61 @@ function Cricket() {
                                         </button>
                                     ))}
                                 </div>
+                                <div className="mt-2 grid grid-cols-3 gap-2">
+                                    <button
+                                        onClick={() => {
+                                            const battingTeam = getBattingTeam();
+                                            const dismissalType = prompt("Enter dismissal type (e.g., Bowled, Caught, LBW):");
+                                            if (dismissalType) {
+                                                const dismissalInfo = prompt("Enter dismissal info (e.g., b Bowler, c Fielder b Bowler):");
+                                                quickScoreUpdate(battingTeam, 0, true, false, null, dismissalType, dismissalInfo);
+                                            }
+                                        }}
+                                        className="p-2 bg-red-100 rounded hover:bg-red-200"
+                                    >
+                                        Wicket
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            const battingTeam = getBattingTeam();
+                                            const runs = parseInt(prompt("Enter runs scored (0-6):")) || 0;
+                                            quickScoreUpdate(battingTeam, runs, false, true, 'NB');
+                                        }}
+                                        className="p-2 bg-yellow-100 rounded hover:bg-yellow-200"
+                                    >
+                                        No Ball
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            const battingTeam = getBattingTeam();
+                                            const runs = parseInt(prompt("Enter runs scored (0-6):")) || 0;
+                                            quickScoreUpdate(battingTeam, runs, false, true, 'WD');
+                                        }}
+                                        className="p-2 bg-yellow-100 rounded hover:bg-yellow-200"
+                                    >
+                                        Wide
+                                    </button>
+                                </div>
                                 <div className="mt-2 grid grid-cols-2 gap-2">
                                     <button
                                         onClick={() => {
                                             const battingTeam = getBattingTeam();
-                                            quickScoreUpdate(battingTeam, 2, false, true);
+                                            const runs = parseInt(prompt("Enter runs scored (0-6):")) || 0;
+                                            quickScoreUpdate(battingTeam, runs, false, true, 'B');
                                         }}
                                         className="p-2 bg-yellow-100 rounded hover:bg-yellow-200"
                                     >
-                                        Wide +2
+                                        Bye
                                     </button>
                                     <button
                                         onClick={() => {
                                             const battingTeam = getBattingTeam();
-                                            quickScoreUpdate(battingTeam, 4, false, true);
-                                        }}
-                                        className="p-2 bg-yellow-100 rounded hover:bg-yellow-200"
-                                    >
-                                        Wide +4
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            const battingTeam = getBattingTeam();
-                                            quickScoreUpdate(battingTeam, 1, false, true);
+                                            const runs = parseInt(prompt("Enter runs scored (0-6):")) || 0;
+                                            quickScoreUpdate(battingTeam, runs, false, true, 'LB');
                                         }}
                                         className="p-2 bg-yellow-100 rounded hover:bg-yellow-200"
                                     >
                                         Leg Bye
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            const battingTeam = getBattingTeam();
-                                            quickScoreUpdate(battingTeam, 4, false, true);
-                                        }}
-                                        className="p-2 bg-yellow-100 rounded hover:bg-yellow-200"
-                                    >
-                                        Bye +4
                                     </button>
                                 </div>
                             </div>
@@ -1463,7 +1650,7 @@ function Cricket() {
                                                 <div className="flex flex-wrap gap-1">
                                                     {over.balls.map((ball, i) => (
                                                         <span key={i} className="px-1 py-0.5 bg-gray-200 rounded text-xs">
-                                                            {ball}
+                                                            {ball.value}
                                                         </span>
                                                     ))}
                                                 </div>
