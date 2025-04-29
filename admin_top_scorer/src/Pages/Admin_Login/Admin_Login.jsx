@@ -33,8 +33,8 @@ function Admin_Login({setChange,setusername}) {
         toast.success('Login Successful!');
         
         // Store tokens securely
-        localStorage.setItem('admin_accessToken', accessToken);
-        localStorage.setItem('admin_refreshToken', refreshToken);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
         
         setusername(user.username);
         setChange((prev) => !prev);

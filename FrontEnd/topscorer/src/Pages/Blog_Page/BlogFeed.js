@@ -47,7 +47,7 @@ const BlogFeed = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedBlog(null);
+    setSelectedBlog(null); 
   };
 
   const doLike = async () => {

@@ -3,6 +3,7 @@ import { FaSmile, FaPaperclip, FaTimes, FaPaperPlane } from 'react-icons/fa';
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import io from 'socket.io-client';
 import EmojiPicker from 'emoji-picker-react';
+import MyTimer from '../customAnimations/Timer';
 
 const ChatComponent = ({ sportName }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,8 @@ const ChatComponent = ({ sportName }) => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
 
   // Check if user is logged in
   useEffect(() => {
@@ -193,6 +196,8 @@ const ChatComponent = ({ sportName }) => {
         {isOpen ? (
           <>
             <h3 className="font-semibold text-sm sm:text-lg truncate">{sportName} Chat</h3>
+            <p className=' text-sm '>Free Chat for :</p>
+            <MyTimer expiryTimestamp={time}/>
             <button 
               onClick={() => setIsOpen(false)}
               className="p-1 rounded-full hover:bg-indigo-700 transition-colors"
