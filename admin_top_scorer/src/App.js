@@ -14,6 +14,7 @@ import AdminTennis from './Pages/Tennis/Tennis';
 import AdminTennis_D from './Pages/Tennis_D/Admin_Tennis_D';
 import Admin_Login from './Pages/Admin_Login/Admin_Login';
 import toast, { Toaster } from 'react-hot-toast';
+import Blog from './Pages/Blog/Blog';
 
 // Higher-Order Component for Protected Routes
 function ProtectedRoute({ isLogin, children }) {
@@ -25,14 +26,14 @@ function App() {
   const [change,setChange] = useState(false);
   // Initialize state with localStorage values
   const [isLogin, setIsLogin] = useState(
-    !!localStorage.getItem('admin_accessToken') && !!localStorage.getItem('admin_refreshToken')
+    !!localStorage.getItem('accessToken') && !!localStorage.getItem('refreshToken')
   );
   const [username, setUsername] = useState('');
 
   // Effect to handle login state changes (optional)
   useEffect(() => {
-    const accessToken = localStorage.getItem('admin_accessToken');
-    const refreshToken = localStorage.getItem('admin_refreshToken');
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     setIsLogin(!!accessToken && !!refreshToken);
   }, [change]);
 
@@ -118,6 +119,14 @@ function App() {
                 <ProtectedRoute isLogin={isLogin}>
                   <Cricket />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/blogs'
+              element={
+                // <ProtectedRoute isLogin={isLogin}>
+                  <Blog/>
+                // {/* </ProtectedRoute> */}
               }
             />
           </Routes>
