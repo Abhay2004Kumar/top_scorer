@@ -12,6 +12,7 @@ import FeedbackRouter from './routes/feedback.route.js';
 import paymentRouter from './routes/payment.route.js';
 import stripeRouter from './routes/webhook.route.js'
 import DonateRouter from './routes/donate.route.js';
+import { console } from 'inspector';
 
 const PORT = process.env.PORT;
 
@@ -49,6 +50,9 @@ let full_Payload = {
   },
   kabbadi_M: {
     "Kabb":false
+  },
+  Cricket_D: {
+    "Cricket":false
   }
 };
 let connectedClient = 0;
@@ -56,12 +60,13 @@ let connectedClient = 0;
 io.on("connection", (socket) => {
   connectedClient++; // ✅ Increment on connection
   console.log("A user connected. Total clients:", connectedClient);
-
+  
   // Broadcast connected client count
   io.emit("clientCount", connectedClient);
 
   // Send full payload
   socket.emit("FullPayLoad", full_Payload);
+  console.log(full_Payload)
 
   // Handle data updates
   socket.on("data", (payload) => {
@@ -76,6 +81,9 @@ io.on("connection", (socket) => {
     } else if (payload.name === "Kabaddi") {
       full_Payload.kabbadi_M.Kabb = payload.data;
     }
+    else if (payload.name==="Cricket"){
+      full_Payload.Cricket_D.Cricket = payload.data;
+    }
 
     // Optional: update payload with live client count
     full_Payload.clients = connectedClient;
@@ -88,6 +96,15 @@ io.on("connection", (socket) => {
     connectedClient--; // ✅ Decrement on disconnect
     console.log("A user disconnected. Total clients:", connectedClient);
     io.emit("clientCount", connectedClient);
+
+    // Handle cricket updates
+    socket.on("cricket_update", (data) => {
+      console.log("Received cricket update:", data);
+      // Update the full payload
+      full_Payload.Cricket_D.Cricket = data;
+      // Broadcast to all clients
+      io.emit("cricket_update", data);
+    });
   });
 });
 

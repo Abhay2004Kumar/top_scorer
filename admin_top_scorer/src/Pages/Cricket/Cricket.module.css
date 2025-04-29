@@ -1,3 +1,5 @@
+/* This file is kept for backward compatibility but all styles are now handled by Tailwind CSS */
+
 .maindiv {
     background-color: #004D40; /* Same as other pages */
     color: antiquewhite;
