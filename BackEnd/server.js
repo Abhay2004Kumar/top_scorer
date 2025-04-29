@@ -13,6 +13,8 @@ import paymentRouter from './routes/payment.route.js';
 import stripeRouter from './routes/webhook.route.js'
 import DonateRouter from './routes/donate.route.js';
 import { console } from 'inspector';
+import { cloudinaryConnect } from './utils/cloudinary.js';
+import fileupload from 'express-fileupload'
 
 const PORT = process.env.PORT;
 
@@ -23,6 +25,12 @@ app.use(cors({
   optionsSuccessStatus: 200,
   credentials: true,
 }));
+app.use(fileupload(
+  {
+      useTempFiles : true,
+      tempFileDir : '/tmp/'
+  }
+));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -231,4 +239,5 @@ server.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`); 
 });
 
+cloudinaryConnect();
 connectDB();
