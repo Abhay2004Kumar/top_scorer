@@ -9,7 +9,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 function Tennis_D({ ttd, clients }) {
   const [wdth, setWidth] = useState(50);
-  const [cracker, setCracker] = useState(true);
+  const [cracker, setCracker] = useState(false);
   const [animateScore, setAnimateScore] = useState({ teamA: false, teamB: false });
   const [winner, setWinner] = useState(null);
   const prevScores = useRef({ teamA: 0, teamB: 0 });
@@ -50,8 +50,11 @@ function Tennis_D({ ttd, clients }) {
       
       if (teamASetsWon > teamBSetsWon) {
         setWinner('teamA');
+        setCracker(true)
       } else {
         setWinner('teamB');
+        setCracker(true)
+
       }
     } else {
       setWinner(null);
@@ -88,11 +91,11 @@ function Tennis_D({ ttd, clients }) {
     }
   }, [matchData]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCracker(false);
-    }, 4000);
-  }, []);
+  if(cracker){
+    setTimeout(()=>{
+      setCracker(false)
+    },4000)
+  }
 
   // Function to calculate sets won by each team
   const calculateSetsWon = () => {

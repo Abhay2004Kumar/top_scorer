@@ -98,7 +98,7 @@ function Dashboard() {
                 path="badminton_d"
                 element={
                   <Badminton_D
-                    bdoubles={matchD.badminton_double.lastMessageBDouble}
+                    bddoubles={matchD.badminton_double.lastMessageBDouble}
                   />
                 }
               ></Route>

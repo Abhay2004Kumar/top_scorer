@@ -14,7 +14,7 @@ function Tennis({ tt, clients }) {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
 
   const [wdth, setWidth] = useState(50);
-  const [cracker, setCracker] = useState(true);
+  const [cracker, setCracker] = useState(false);
   const [animateScore, setAnimateScore] = useState({ teamA: false, teamB: false });
   const [winner, setWinner] = useState(null);
   const prevScores = useRef({ teamA: 0, teamB: 0 });
@@ -76,11 +76,13 @@ function Tennis({ tt, clients }) {
     }
   }, [matchData]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCracker(false);
-    }, 4000);
-  }, []);
+    if(cracker){
+
+        setTimeout(() => {
+          setCracker(false);
+        }, 4000);
+    }
+ 
 
   // Function to calculate sets won by each team
   const calculateSetsWon = () => {
@@ -114,12 +116,12 @@ function Tennis({ tt, clients }) {
           />
         </div>
       </div>
-      {winner && <FireworksComponent />}
+      {cracker && <FireworksComponent />}
         
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">
         {/* Scoreboard Section */}
-        <ChatComponent sportName={"Badminton"} />
+        <ChatComponent sportName={"Tennis"} />
         <div className="flex items-center justify-center space-x-3">
           <GiTennisRacket className="text-2xl md:text-4xl text-green-600 dark:text-green-400" />
           <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white">

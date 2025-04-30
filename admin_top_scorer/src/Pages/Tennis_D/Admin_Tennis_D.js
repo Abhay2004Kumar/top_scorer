@@ -18,7 +18,7 @@ function Tennis_D() {
         flag: "",
         ranking: "" 
       },
-      teamB: { 
+      teamB: {  
         name: "", 
         player1: "", 
         player2: "",

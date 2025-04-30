@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { IoMdFootball } from "react-icons/io";
 import Options from '../../Components/Live_Upcoming/Options';
 import ChatComponent from '../../Components/Chat/Chat';
+import FireworksComponent from '../../Components/customAnimations/FireWork';
 
 const Football = ({ data }) => {
   const [matchData, setMatchData] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
+  const [cracker,setCracker]   = useState(false);
   
   // Default data structure
   const defaultData = {
@@ -79,6 +81,9 @@ const Football = ({ data }) => {
         isMatchFinished: data.isMatchFinished || false
       };
       setMatchData(formattedData);
+      if(formattedData.isMatchFinished){
+        setCracker(true)
+      }
       // Set current time based on received timer value
       setCurrentTime(parseTimeToSeconds(data.timer || "00:00"));
     } else {
@@ -93,6 +98,12 @@ const Football = ({ data }) => {
       Loading match data...
     </div>
   );
+
+  if(cracker){
+    setTimeout(()=>{
+      setCracker(false)
+    },4000)
+  }
 
   // Determine winner
   const getWinner = () => {
@@ -123,7 +134,7 @@ const Football = ({ data }) => {
           />
         </div>
       </div>
-
+      {cracker && <FireworksComponent/>}
       {/* Main Content */}
       <div className="max-w-7xl mx-auto space-y-4">
         {/* Score Board */}

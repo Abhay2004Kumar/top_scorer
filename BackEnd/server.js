@@ -140,11 +140,11 @@ const chatRooms = {
     users: [],
     messages: [] 
   },
-  Tennis_D: { 
+  Tennis_Doubles: { 
     users: [],
     messages: [] 
   },
-  Kabbadi: { 
+  Kabaddi: { 
     users: [],
     messages: [] 
   },
