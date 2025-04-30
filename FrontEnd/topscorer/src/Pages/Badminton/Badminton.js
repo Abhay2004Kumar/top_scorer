@@ -27,7 +27,7 @@ function Badminton({ bd, clients }) {
     currentSet: 1,
     latestUpdate: "NA",
   };
-
+  console.log("DATA:",bd);
   // Calculate winner if all sets are finished
   useEffect(() => {
     if (matchData.tmA_score.length >= 3 && matchData.tmB_score.length >= 3) {
@@ -39,8 +39,10 @@ function Badminton({ bd, clients }) {
       
       if (teamASetsWon > teamBSetsWon && teamASets+teamBSets==3) {
         setWinner('teamA');
+        setCracker(true);
       } else if (teamASets+teamBSets==3) {
         setWinner('teamB');
+        setCracker(true)
       }
     } else {
       setWinner(null);
@@ -76,11 +78,11 @@ function Badminton({ bd, clients }) {
     }
   }, [matchData]);
 
-  useEffect(() => {
+  if(cracker){
     setTimeout(() => {
-      setCracker(false);
+      setCracker(false)
     }, 4000);
-  }, []);
+  }
 
   // Function to calculate sets won by each team
   const calculateSetsWon = () => {
@@ -114,7 +116,7 @@ function Badminton({ bd, clients }) {
           />
         </div>
       </div>
-      {winner && <FireworksComponent />}
+      {cracker && <FireworksComponent  />}
         
       {/* Main Content Container */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-3xl shadow-lg border-2 border-gray-200 dark:border-gray-700">

@@ -77,11 +77,11 @@ function Badminton_Doubles({ bdoubles, clients }) {
     }
   }, [matchData]);
 
-  useEffect(() => {
+  if(cracker){
     setTimeout(() => {
-      setCracker(false);
+      setCracker(false)
     }, 4000);
-  }, []);
+  }
 
   // Function to calculate sets won by each team
   const calculateSetsWon = () => {
