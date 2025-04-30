@@ -44,7 +44,7 @@ function BlogCard({ title, content, image, onEdit, onDelete }) {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">{title}</h3>
+        <h3 dangerouslySetInnerHTML={{ __html: title }} className="text-xl font-bold text-gray-800 mb-2 line-clamp-2"></h3>
         <div 
           className="prose prose-sm max-w-none text-gray-600 line-clamp-3"
           dangerouslySetInnerHTML={{ __html: content }}

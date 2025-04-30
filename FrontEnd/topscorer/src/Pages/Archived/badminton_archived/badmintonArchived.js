@@ -112,7 +112,7 @@ function BadmintonArchived() {
   return (
     <div className={styles.MainDiv}>
       <div className={styles.opn}>
-        <Options cur_link="/badminton" archived="/badminton_archived" />
+        <Options cur_link="/dashboard/badminton" archived="/dashboard/badminton_archived" />
       </div>
 
       {selectedMatch ? (

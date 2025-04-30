@@ -22,6 +22,7 @@ function Sidebar() {
 
   const games = [
     { name: "Cricket", icon: faBaseballBall, path: "/dashboard/cricket" },
+    { name: "Football", icon: faFutbol, path: "/dashboard/football" },
     { name: "Badminton", icon: faSpaceShuttle, path: "/dashboard/badminton" },
     { name: "Blogs", icon: faNewspaper, path: "/dashboard/blog" },
     {
@@ -36,7 +37,6 @@ function Sidebar() {
       path: "/dashboard/tennis_d",
     },
     { name: "Kabaddi", icon: faPersonRunning, path: "/dashboard/kabaddi" },
-    { name: "Football", icon: faFutbol, path: "/dashboard/football" },
   ];
 
   return (

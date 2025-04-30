@@ -7,27 +7,38 @@ import { FaEye, FaTrophy } from "react-icons/fa";
 import FireworksComponent from "../../Components/customAnimations/FireWork";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-function Badminton_Doubles({ bdoubles, clients }) {
-  const flag1_link =
-    "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png";
-  const flag2_link =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
-
+function Badminton_Doubles({ bddoubles, clients }) {
+  console.log("bddoueels",bddoubles)
   const [wdth, setWidth] = useState(50);
-  const [cracker, setCracker] = useState(true);
+  const [cracker, setCracker] = useState(false);
   const [animateScore, setAnimateScore] = useState({ teamA: false, teamB: false });
   const [winner, setWinner] = useState(null);
   const prevScores = useRef({ teamA: 0, teamB: 0 });
+  
 
-  const matchData = bdoubles || {
-    teamA: { name: "NA", player1: "NA", player2: "NA" },
-    teamB: { name: "NA", player1: "NA", player2: "NA" },
+  const matchData = bddoubles || {
+    teamA: { 
+      name: "", 
+      player1: "", 
+      player2: "",
+      flag: "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/640px-Flag_of_India.svg.png" 
+    },
+    teamB: { 
+      name: "", 
+      player1: "", 
+      player2: "",
+      flag:  "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png" 
+    },
     tmA_score: [],
     tmB_score: [],
     currentSet: 1,
-    latestUpdate: "NA",
-    notLive: "true",
-  };
+    latestUpdate: "",
+    matchDetails: {
+      tournament: "",
+      courtType: "Hard",
+      surface: "Outdoor"
+    }
+  }
 
   // Calculate winner if all sets are finished
   useEffect(() => {
@@ -40,12 +51,16 @@ function Badminton_Doubles({ bdoubles, clients }) {
       
       if (teamASetsWon > teamBSetsWon) {
         setWinner('teamA');
+        setCracker(true)
       } else {
         setWinner('teamB');
+        setCracker(true)
+
       }
     } else {
       setWinner(null);
     }
+    console.log("bddoubles",bddoubles);
   }, [matchData.tmA_score, matchData.tmB_score]);
 
   // Calculate probability and set width based on scores
@@ -78,9 +93,9 @@ function Badminton_Doubles({ bdoubles, clients }) {
   }, [matchData]);
 
   if(cracker){
-    setTimeout(() => {
+    setTimeout(()=>{
       setCracker(false)
-    }, 4000);
+    },4000)
   }
 
   // Function to calculate sets won by each team
@@ -104,39 +119,39 @@ function Badminton_Doubles({ bdoubles, clients }) {
 
   const { teamASets, teamBSets } = calculateSetsWon();
 
-  if (matchData?.notLive === "true") {
-    return (
-      <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-sans p-3 rounded-3xl shadow-lg">
-        <div className="text-center mb-8">
-          <div className="flex justify-center items-center mt-2">
-            <Options
-              cur_link="/dashboard/badminton_doubles"
-              archived="/dashboard/badminton_doubles_archived"
-            />
-          </div>
-        </div>
-        <div className="flex justify-center items-center">
-          <DotLottieReact
-            className="h-[350px]"
-            src="https://lottie.host/6b8c2746-c6c1-42b1-aa6d-806f5b888165/dkdaxQB4jr.lottie"
-            loop
-            autoplay
-          />
-        </div>
-        <p className="text-center text-gray-900 dark:text-white">No live match.</p>
-      </div>
-    );
-  }
+  // if (matchData?.notLive === "true") {
+  //   return (
+  //     <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-sans p-3 rounded-3xl shadow-lg">
+  //       <div className="text-center mb-8">
+  //         <div className="flex justify-center items-center mt-2">
+  //           <Options
+  //             cur_link="/dashboard/badminton_doubles"
+  //             archived="/dashboard/badminton_doubles_archived"
+  //           />
+  //         </div>
+  //       </div>
+  //       <div className="flex justify-center items-center">
+  //         <DotLottieReact
+  //           className="h-[350px]"
+  //           src="https://lottie.host/6b8c2746-c6c1-42b1-aa6d-806f5b888165/dkdaxQB4jr.lottie"
+  //           loop
+  //           autoplay
+  //         />
+  //       </div>
+  //       <p className="text-center text-gray-900 dark:text-white">No live match.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-sans p-3 rounded-3xl shadow-lg">
       {/* Header Section */}
       <div className="text-center mb-8">
         <div className="flex justify-center items-center mt-2">
-          <Options
-            cur_link="/dashboard/badminton_doubles"
-            archived="/dashboard/badminton_doubles_archived"
-          />
+        <Options
+              cur_link="/dashboard/badminton_doubles"
+              archived="/dashboard/badminton_doubles_archived"
+            />
         </div>
       </div>
       {cracker && <FireworksComponent />}
@@ -165,7 +180,7 @@ function Badminton_Doubles({ bdoubles, clients }) {
             {/* Team A */}
             <div className={`flex flex-col items-center space-y-3 ${winner === 'teamA' ? 'ring-2 ring-yellow-400 rounded-lg p-2' : ''}`}>
               <img
-                src={flag1_link}
+                src={matchData.teamA.flag}
                 alt="Team A"
                 className="w-20 h-14 object-contain rounded-lg shadow-sm border-2 border-gray-200 dark:border-gray-700"
               />
@@ -254,7 +269,7 @@ function Badminton_Doubles({ bdoubles, clients }) {
             {/* Team B */}
             <div className={`flex flex-col items-center space-y-3 ${winner === 'teamB' ? 'ring-2 ring-yellow-400 rounded-lg p-2' : ''}`}>
               <img
-                src={flag2_link}
+                src={matchData.teamB.flag}
                 alt="Team B"
                 className="w-20 h-14 object-contain rounded-lg shadow-sm border-2 border-gray-200 dark:border-gray-700"
               />
@@ -320,7 +335,7 @@ function Badminton_Doubles({ bdoubles, clients }) {
                 <tr className="border-b border-gray-200 dark:border-gray-700">
                   <td className="px-4 py-3 border-2 border-gray-200 dark:border-gray-700">
                     <img
-                      src={flag1_link}
+                      src={matchData.teamA.flag}
                       alt="Flag 1"
                       className="w-8 h-6 mx-auto rounded"
                     />
@@ -356,7 +371,7 @@ function Badminton_Doubles({ bdoubles, clients }) {
                 <tr>
                   <td className="px-4 py-3 border-2 border-gray-200 dark:border-gray-700">
                     <img
-                      src={flag2_link}
+                      src={matchData.teamB.flag}
                       alt="Flag 2"
                       className="w-8 h-6 mx-auto rounded"
                     />

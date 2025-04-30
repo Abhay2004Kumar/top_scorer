@@ -14,7 +14,7 @@ function Badminton({ bd, clients }) {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png";
 
   const [wdth, setWidth] = useState(50);
-  const [cracker, setCracker] = useState(true);
+  const [cracker, setCracker] = useState(false);
   const [animateScore, setAnimateScore] = useState({ teamA: false, teamB: false });
   const [winner, setWinner] = useState(null);
   const prevScores = useRef({ teamA: 0, teamB: 0 });

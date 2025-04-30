@@ -41,7 +41,7 @@ function DevelopmentTeam() {
       <p className={styles.college}>All members are from <a href="https://iiitu.ac.in" className={styles.link}>IIIT Una</a></p>
       <div className={styles.team}>
         {teamMembers.map((member, index) => (
-          <div key={index} className={styles.member}>
+          <div key={index} className={styles.member} >
             <img src={member.photo} alt={member.name} className={styles.photo} />
             <h2 className={styles.name}>{member.name}</h2>
             <p className={styles.role}>{member.role}</p>

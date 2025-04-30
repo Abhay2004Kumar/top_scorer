@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import style from "../Header/Header.module.css"
 
 function Header({ username }) {
   const navigateTo = (path) => {
@@ -10,7 +9,6 @@ function Header({ username }) {
 
   const handleLogout = async () => {
     try {
-      // Send logout request to the API
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) {
         toast.error('No access token found. You are already logged out.');
@@ -19,7 +17,7 @@ function Header({ username }) {
       }
 
       const response = await axios.post(
-        'http://localhost:5000/api/v1/admin/logOutAdmin',
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/logOutAdmin`,
         {},
         {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -28,10 +26,9 @@ function Header({ username }) {
 
       if (response.data.statusCode === 200) {
         toast.success('Successfully logged out.');
-        // Clear tokens and navigate to sign-in page
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        navigateTo('/signin'); 
+        navigateTo('/signin');
       } else {
         toast.error('Logout failed. Please try again.');
       }
@@ -60,58 +57,26 @@ function Header({ username }) {
         </nav>
       </header>
 
-      {/* Horizontal Bar for Sports Options */}
-      <div className={style.Sports_Bar}>
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/kabbadi')}
-        >
-          Kabbadi
-        </button>
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/football')}
-        >
-          Football
-        </button>
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/Badminton')}
-        >
-          Badminton
-        </button>
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/BadmintonDoubles')}
-        >
-          Badminton_D
-        </button>
-
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/tennis')}
-        >
-          Tennis
-        </button>
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/tennis_D')}
-        >
-          Tennis_D
-        </button>
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/cricket')}
-        >
-          Cricket
-        </button>
-
-        <button
-          className={style.Sports_Button}
-          onClick={() => navigateTo('/blogs')}
-        >
-          Blogs
-        </button>
+      {/* Sports Navigation Bar */}
+      <div className="bg-gray-100 dark:bg-gray-800 flex justify-evenly flex-wrap  gap-2 px-4 py-3 shadow-sm">
+        {[
+          { label: 'Kabbadi', path: '/kabbadi' },
+          { label: 'Football', path: '/football' },
+          { label: 'Badminton', path: '/Badminton' },
+          { label: 'Badminton_D', path: '/BadmintonDoubles' },
+          { label: 'Tennis', path: '/tennis' },
+          { label: 'Tennis_D', path: '/tennis_D' },
+          { label: 'Cricket', path: '/cricket' },
+          { label: 'Blogs', path: '/blogs' },
+        ].map((sport) => (
+          <button
+            key={sport.label}
+            onClick={() => navigateTo(sport.path)}
+            className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition"
+          >
+            {sport.label}
+          </button>
+        ))}
       </div>
     </>
   );

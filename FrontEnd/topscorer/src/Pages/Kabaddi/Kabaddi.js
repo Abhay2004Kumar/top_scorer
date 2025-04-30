@@ -141,7 +141,7 @@ function Kabaddi({ data, clients, kabb2 }) {
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-sans p-4 rounded-3xl shadow-lg">
-      {cracker && <FireworksComponent />}
+      {/* {cracker && <FireworksComponent />} */}
       
       {/* Header Section */}
       <div className="text-center mb-6">

@@ -196,7 +196,7 @@ const ChatComponent = ({ sportName }) => {
         {isOpen ? (
           <>
             <h3 className="font-semibold text-sm sm:text-lg truncate">{sportName} Chat</h3>
-            <p className=' text-sm '>Free Chat for :</p>
+            {/* <p className=' text-sm '>Free Chat for :</p> */}
             {/* <MyTimer expiryTimestamp={time}/> */}
             <button 
               onClick={() => setIsOpen(false)}
