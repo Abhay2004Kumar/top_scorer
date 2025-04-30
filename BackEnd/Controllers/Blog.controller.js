@@ -83,65 +83,57 @@ export const likeBlog = async (req, res) => {
 };
 
 export const updateBlog = async (req, res) => {
-    try {
-      const { title, content, id } = req.body;
-  
-      if (!id) {
-        return res.status(400).json({ message: "Blog ID is required for update." });
-      }
-  
-      let imageUrl = "";
+  try {
+    const { title, content, id } = req.body;
 
-      if (req.files && req.files.imagefile) {
-        const file = req.files.imagefile;
-      
-        // Check if the image is a blob (new upload from frontend)
-        if (!file.name.includes('cloudinary')) {
-          try {
-            const cloud = await imageupload(file);
-            imageUrl = cloud.secure_url;
-          } catch (err) {
-            return res.status(500).json({
-              message: "Image Uploading Failed",
-              error: err.message || err,
-            });
-          }
-        } else {
-          // If not a blob, assume it's a regular file with a public URL (already hosted)
-          imageUrl = file.name;
-        }
-      }  else if (req.body.imagefile && !req.body.imagefile.includes('blob')) {
-        // Direct image URL passed from client (public already)
-        imageUrl = req.body.imagefile;
-      }
-      
-  
-      // Now update the blog in DB
-      const updatedBlog = await Blog.findByIdAndUpdate(
-        id,
-        {
-          title,
-          content,
-          imageUrl: imageUrl,
-        },
-        { new: true }
-      );
-  
-      if (!updatedBlog) {
-        return res.status(404).json({ message: "Blog not found" });
-      }
-  
-      res.status(200).json({
-        message: "Blog updated successfully",
-        blog: updatedBlog,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        message: "Blog Updation Failed",
-        error: err.message || err,
-      });
+    if (!id) {
+      return res.status(400).json({ message: "Blog ID is required for update." });
     }
-  };
+
+    // Get the current blog first to preserve existing image if not changed
+    const currentBlog = await Blog.findById(id);
+    if (!currentBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    let imageUrl = currentBlog.imageUrl; // Default to existing image
+
+    // Handle new image upload if provided
+    if (req.files && req.files.imagefile) {
+      const file = req.files.imagefile;
+      try {
+        const cloud = await imageupload(file);
+        imageUrl = cloud.url || cloud.secure_url;
+      } catch (err) {
+        return res.status(500).json({
+          message: "Image Uploading Failed",
+          error: err.message || err,
+        });
+      }
+    }
+
+    // Update the blog
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      {
+        title,
+        content,
+        imageUrl: imageUrl,
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Blog updated successfully",
+      blog: updatedBlog,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Blog Update Failed",
+      error: err.message || err,
+    });
+  }
+};
   
   export const deleteBlog = async (req, res) => {
     try {

@@ -6,58 +6,67 @@ function BlogCard({ title, content, image, onEdit, onDelete }) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
-    <div className="relative w-[300px] h-[360px] border-2 border-blue-400 rounded-md overflow-hidden mb-4">
+    <div className="relative w-full max-w-sm bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Confirmation Dialog */}
       {showConfirm && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-20">
-          <div className="bg-white p-4 rounded shadow-md flex flex-col gap-3 items-center">
-            <p>Are you sure you want to delete?</p>
-            <div className="flex gap-4">
+        <div className="absolute inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white p-4 rounded-lg shadow-xl max-w-xs w-full">
+            <p className="text-gray-800 mb-4">Are you sure you want to delete this blog?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+              >
+                Cancel
+              </button>
               <button
                 onClick={() => {
                   setShowConfirm(false);
                   onDelete();
                 }}
-                className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
-                Yes
-              </button>
-              <button
-                onClick={() => setShowConfirm(false)}
-                className="bg-green-400 px-4 py-1 rounded hover:bg-green-600"
-              >
-                No
+                Delete
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Edit & Delete Buttons */}
-      <div className="absolute bottom-[6px] right-1 flex gap-3 z-10">
+      {/* Image */}
+      <div className="h-48 w-full overflow-hidden">
+        <img 
+          src={image || "https://via.placeholder.com/400x200?text=No+Image"} 
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="p-4">
+        <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">{title}</h3>
+        <div 
+          className="prose prose-sm max-w-none text-gray-600 line-clamp-3"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      </div>
+
+      {/* Action Buttons */}
+      <div className="absolute top-2 right-2 flex gap-2">
         <button
           onClick={onEdit}
-          className="p-1 bg-white rounded-full shadow-md hover:bg-blue-100 border border-blue-500"
+          className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50 text-blue-600"
+          aria-label="Edit blog"
         >
           <CiEdit size={20} />
         </button>
         <button
           onClick={() => setShowConfirm(true)}
-          className="p-1 bg-white rounded-full shadow-md hover:bg-red-100 border border-blue-500"
+          className="p-2 bg-white rounded-full shadow-md hover:bg-red-50 text-red-600"
+          aria-label="Delete blog"
         >
           <MdDeleteForever size={20} />
         </button>
-      </div>
-
-      {/* Image */}
-      <div className="h-[60%] bg-gray-100">
-        <img src={image} alt="blog" className="w-full h-full object-cover" />
-      </div>
-
-      {/* Title & Content */}
-      <div className="h-[35%] overflow-y-auto border-t-2 border-blue-400 p-2">
-        <h4 className="font-bold">{title}</h4>
-        <p className="text-sm">{content}</p>
       </div>
     </div>
   );

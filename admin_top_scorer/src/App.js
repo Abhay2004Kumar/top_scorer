@@ -124,9 +124,9 @@ function App() {
             <Route
               path='/blogs'
               element={
-                // <ProtectedRoute isLogin={isLogin}>
+                <ProtectedRoute isLogin={isLogin}>
                   <Blog/>
-                // {/* </ProtectedRoute> */}
+                </ProtectedRoute>
               }
             />
           </Routes>
