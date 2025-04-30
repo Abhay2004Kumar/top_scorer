@@ -197,7 +197,7 @@ const ChatComponent = ({ sportName }) => {
           <>
             <h3 className="font-semibold text-sm sm:text-lg truncate">{sportName} Chat</h3>
             <p className=' text-sm '>Free Chat for :</p>
-            <MyTimer expiryTimestamp={time}/>
+            {/* <MyTimer expiryTimestamp={time}/> */}
             <button 
               onClick={() => setIsOpen(false)}
               className="p-1 rounded-full hover:bg-indigo-700 transition-colors"
