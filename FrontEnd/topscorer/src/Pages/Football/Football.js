@@ -106,153 +106,128 @@ const Football = ({ data }) => {
   const isDraw = winner === 'draw';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-4 md:p-6 transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 px-2 md:p-6 transition-colors">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div className="flex items-center gap-3">
-          <IoMdFootball className="text-3xl text-green-600 dark:text-green-400" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
+        <div className="flex items-center gap-2">
+          <IoMdFootball className="text-2xl md:text-3xl text-green-600 dark:text-green-400" />
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
             Live Football Match
           </h1>
         </div>
-        <Options 
-          cur_link="/dashboard/football"
-          archived="/dashboard/football_archived"
-        />
+        
+        <div className="w-full md:w-auto">
+          <Options 
+            cur_link="/dashboard/football"
+            archived="/dashboard/football_archived"
+          />
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-4">
         {/* Score Board */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Team A */}
-            <div className={`flex-1 text-center transition-all duration-300 ${
-              winner === 'A' ? 'ring-4 ring-green-500 rounded-lg p-4' : ''
-            }`}>
-              <img 
-                src={matchData.teamA.logo} 
-                alt={matchData.teamA.name}
-                className="w-16 h-16 md:w-24 md:h-24 object-contain mx-auto mb-4"
-              />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {matchData.teamA.name}
-              </h2>
-              <div className="text-4xl font-bold text-green-600 dark:text-green-400 mt-2">
-                {matchData.teamA.score}
-              </div>
-              {winner === 'A' && (
-                <div className="mt-2 text-green-500 font-bold">
-                  Winner 🏆
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-3 md:p-6 shadow-lg">
+          <div className="flex flex-col items-center justify-between gap-4">
+            {/* Teams Row */}
+            <div className="w-full flex flex-row items-center justify-between gap-2">
+              {/* Team A */}
+              <div className={`flex-1 text-center ${
+                winner === 'A' ? 'ring-4 ring-green-500 rounded-lg p-2' : ''
+              }`}>
+                <img 
+                  src={matchData.teamA.logo} 
+                  alt={matchData.teamA.name}
+                  className="w-12 h-12 md:w-24 md:h-24 object-contain mx-auto mb-2"
+                />
+                <h2 className="text-sm md:text-lg font-semibold text-gray-900 dark:text-white truncate">
+                  {matchData.teamA.name}
+                </h2>
+                <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mt-1">
+                  {matchData.teamA.score}
                 </div>
-              )}
+              </div>
+
+              {/* VS Separator */}
+              <div className="text-xl font-bold text-gray-500 dark:text-gray-400 mx-2">
+                VS
+              </div>
+
+              {/* Team B */}
+              <div className={`flex-1 text-center ${
+                winner === 'B' ? 'ring-4 ring-green-500 rounded-lg p-2' : ''
+              }`}>
+                <img 
+                  src={matchData.teamB.logo} 
+                  alt={matchData.teamB.name}
+                  className="w-12 h-12 md:w-24 md:h-24 object-contain mx-auto mb-2"
+                />
+                <h2 className="text-sm md:text-lg font-semibold text-gray-900 dark:text-white truncate">
+                  {matchData.teamB.name}
+                </h2>
+                <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mt-1">
+                  {matchData.teamB.score}
+                </div>
+              </div>
             </div>
 
             {/* Match Info */}
-            <div className="flex flex-col items-center space-y-2">
-              <div className="text-2xl md:text-3xl font-mono font-bold text-gray-900 dark:text-white">
+            <div className="w-full flex flex-col items-center space-y-2">
+              <div className="text-xl md:text-3xl font-mono font-bold text-gray-900 dark:text-white">
                 {formatTime(currentTime)}
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm ${
+              <span className={`px-2 py-1 rounded-full text-xs md:text-sm ${
                 matchData.isMatchFinished 
-                  ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+                  ? 'bg-gray-100 dark:bg-gray-700'
                   : matchData.isTimerRunning 
-                    ? 'bg-red-100 dark:bg-red-800 text-red-600 dark:text-red-100'
-                    : 'bg-yellow-100 dark:bg-yellow-800 text-yellow-600 dark:text-yellow-100'
+                    ? 'bg-red-100 dark:bg-red-800'
+                    : 'bg-yellow-100 dark:bg-yellow-800'
               }`}>
-                {matchData.isMatchFinished ? 'Match Finished' : matchData.isTimerRunning ? 'Live' : 'Paused'}
+                {matchData.isMatchFinished ? 'Finished' : matchData.isTimerRunning ? 'Live' : 'Paused'}
               </span>
             </div>
-
-            {/* Team B */}
-            <div className={`flex-1 text-center transition-all duration-300 ${
-              winner === 'B' ? 'ring-4 ring-green-500 rounded-lg p-4' : ''
-            }`}>
-              <img 
-                src={matchData.teamB.logo} 
-                alt={matchData.teamB.name}
-                className="w-16 h-16 md:w-24 md:h-24 object-contain mx-auto mb-4"
-              />
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {matchData.teamB.name}
-              </h2>
-              <div className="text-4xl font-bold text-green-600 dark:text-green-400 mt-2">
-                {matchData.teamB.score}
-              </div>
-              {winner === 'B' && (
-                <div className="mt-2 text-green-500 font-bold">
-                  Winner 🏆
-                </div>
-              )}
-            </div>
           </div>
-          {isDraw && matchData.isMatchFinished && (
-            <div className="text-center mt-4 text-yellow-500 font-bold">
-              Match Ended in a Draw
-            </div>
-          )}
         </div>
 
         {/* Player Stats */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-semibold mb-6 text-green-600 dark:text-green-400">
+        <div className="bg-white dark:bg-gray-800 p-3 md:p-6 rounded-xl shadow-md">
+          <h3 className="text-md md:text-lg font-semibold mb-4 text-green-600 dark:text-green-400">
             ⭐ Key Players
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                Home Striker
-              </h4>
-              <p className="font-semibold text-gray-900 dark:text-white">
-                {matchData.teamA.striker}
-              </p>
-            </div>
-            
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                Home Keeper
-              </h4>
-              <p className="font-semibold text-gray-900 dark:text-white">
-                {matchData.teamA.keeper}
-              </p>
-            </div>
-
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                Away Striker
-              </h4>
-              <p className="font-semibold text-gray-900 dark:text-white">
-                {matchData.teamB.striker}
-              </p>
-            </div>
-
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                Away Keeper
-              </h4>
-              <p className="font-semibold text-gray-900 dark:text-white">
-                {matchData.teamB.keeper}
-              </p>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+            {/* Player cards */}
+            {[['Home Striker', matchData.teamA.striker], 
+              ['Home Keeper', matchData.teamA.keeper],
+              ['Away Striker', matchData.teamB.striker],
+              ['Away Keeper', matchData.teamB.keeper]].map(([title, name]) => (
+              <div key={title} className="p-2 md:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <h4 className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                  {title}
+                </h4>
+                <p className="text-sm md:text-base font-semibold text-gray-900 dark:text-white truncate">
+                  {name}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Commentaries Section */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-          <h3 className="text-lg font-semibold mb-4 text-green-600 dark:text-green-400">
+        <div className="bg-white dark:bg-gray-800 p-3 md:p-6 rounded-xl shadow-md">
+          <h3 className="text-md md:text-lg font-semibold mb-3 text-green-600 dark:text-green-400">
             📢 Live Commentary
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-2">
             {matchData.commentaries.map((commentary, index) => (
               <div
                 key={index}
-                className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                className="p-2 md:p-3 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm"
               >
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-sm text-gray-600 dark:text-gray-300">
+                <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3">
+                  <span className="font-mono text-xs md:text-sm text-gray-600 dark:text-gray-300">
                     {commentary.time}
                   </span>
-                  <span className="text-gray-900 dark:text-white">
+                  <span className="text-gray-900 dark:text-white break-words">
                     {commentary.text}
                   </span>
                 </div>
@@ -268,4 +243,4 @@ const Football = ({ data }) => {
   );
 };
 
-export default Football;
+export default Football
