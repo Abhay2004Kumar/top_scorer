@@ -42,6 +42,7 @@ function Dashboard() {
     tennis_D: false,
     kabbadi_M: false,
     Cricket_D: false,
+    Football: false,
   });
 
   const [ClientCount, setClientCount] = useState(0);
@@ -82,8 +83,8 @@ function Dashboard() {
               <Route
                 path="cricket"
                 element={<Cricket data={matchD.Cricket_D.Cricket} />}
-              ></Route>
-              <Route path="football" element={<Football />}></Route>
+              />
+              <Route path="football" element={<Football data={matchD.Football.Foot} />} />
               <Route
                 path="badminton"
                 element={

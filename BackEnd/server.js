@@ -61,6 +61,9 @@ let full_Payload = {
   },
   Cricket_D: {
     "Cricket":false
+  },
+  Football:{
+    "Foot":false
   }
 };
 let connectedClient = 0;
@@ -91,6 +94,9 @@ io.on("connection", (socket) => {
     }
     else if (payload.name==="Cricket"){
       full_Payload.Cricket_D.Cricket = payload.data;
+    }
+    else if (payload.name==="Football"){
+      full_Payload.Football.Foot = payload.data;
     }
 
     // Optional: update payload with live client count
