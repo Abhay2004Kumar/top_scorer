@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoExitOutline } from "react-icons/io5";
 import toast from 'react-hot-toast';
 import icons from '../../Project_Icon/Dark.png';
@@ -57,7 +57,7 @@ function Header({ islogin, setislogin }) {
 
       </div>
       <nav className="flex items-center space-x-6">
-        <a href="/" className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">Home</a>
+        <Link to={"/"} className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">Home</Link>
         {isUser ? (
           <div className="flex items-center space-x-3">
             <span className="text-sm font-medium">{isUser}</span>

@@ -138,13 +138,20 @@ const LandingPage = () => {
 
         {/* CTA Button */}
         <motion.div variants={itemVariants}>
-          <button
-            onClick={() => navigate("/dashboard/cricket")}
+          {/* <button
+            onClick={() => navigate("/dashboard")}
             className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-900 font-bold text-lg rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50"
           >
             Get Started
             <span className="ml-2">→</span>
-          </button>
+          </button> */}
+          <a
+            href="/dashboard/cricket"
+            className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-900 font-bold text-lg rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50"
+          >
+            Get Started
+            <span className="ml-2">→</span>
+          </a>
         </motion.div>
 
         {/* Additional Info */}

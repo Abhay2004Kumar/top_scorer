@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from '../SignUp/SignUp.module.css';
 import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,6 +13,8 @@ const SignupPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const navigate = useNavigate();
 
     const images = [
         "https://p.imgci.com/db/PICTURES/CMS/357400/357408.jpg",
@@ -32,6 +35,7 @@ const SignupPage = () => {
             toast.error("Passwords do not match!");
             return;
         }
+        
 
         try {
             const userData = { username, fullname, email, password };
@@ -40,6 +44,7 @@ const SignupPage = () => {
 
             console.log(response.data);
             toast.success('Signup successful! You can now log in.');
+            navigate('/dashboard/login');
 
         } catch (error) {
             console.error("Signup error:", error.message);
@@ -115,9 +120,9 @@ const SignupPage = () => {
 
                 <p className={styles.footerText}>
                     Already have an account?{" "}
-                    <a className={styles.footerLink} href="/login">
+                    <Link to={"/dashboard/login"} className={styles.footerLink} >
                         Login
-                    </a>
+                    </Link>
                 </p>
             </div>
 
