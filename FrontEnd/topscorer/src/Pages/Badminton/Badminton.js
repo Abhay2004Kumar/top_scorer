@@ -27,7 +27,7 @@ function Badminton({ bd, clients }) {
     currentSet: 1,
     latestUpdate: "NA",
   };
-  console.log("DATA:",bd);
+  // console.log("DATA:",bd);
   // Calculate winner if all sets are finished
   useEffect(() => {
     if (matchData.tmA_score.length >= 3 && matchData.tmB_score.length >= 3) {
@@ -110,6 +110,7 @@ function Badminton({ bd, clients }) {
       {/* Header Section */}
       <div className="text-center mb-8">
         <div className="flex justify-center items-center mt-2">
+      <button>Pin</button>
           <Options
             cur_link="/dashboard/badminton"
             archived="/dashboard/badminton_archived"

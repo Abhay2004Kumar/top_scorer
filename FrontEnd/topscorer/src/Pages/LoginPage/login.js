@@ -83,15 +83,15 @@ const Login = ({ setislogin }) => {
     const carouselImages = [
         'https://e0.pxfuel.com/wallpapers/649/530/desktop-wallpaper-cricket-cricket-iphone.jpg',
         'https://i.pinimg.com/736x/57/dd/90/57dd90c62e0de08a2774bf2b3b919bcb.jpg',
-        'https://w0.peakpx.com/wallpaper/400/122/HD-wallpaper-chess-board-greetings-happy-paris-tumblr-twilight-zen.jpg',
+        'https://img.freepik.com/free-photo/badminton-concept-with-dramatic-lighting_23-2149940937.jpg',
     ];
 
     return (
         <div className="flex flex-col md:flex-row h-[700px] w-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
 
             {/* Left Section with Carousel */}
-            <div className="relative hidden md:flex w-1/3 overflow-hidden rounded-r-3xl shadow-sm ">
-            <Slider {...carouselSettings} className="w-full h-full rounded-r-3xl">
+            <div className="relative hidden md:flex w-1/3  overflow-hidden rounded-r-3xl shadow-sm ">
+            <Slider {...carouselSettings} className="w-full rounded-r-3xl">
                 {carouselImages.map((image, index) => (
                     <div key={index} className="w-full h-full">
                         <img
@@ -103,14 +103,14 @@ const Login = ({ setislogin }) => {
                     </div>
                 ))}
             </Slider>
-            <h1 className="absolute bottom-10 left-10 text-white text-4xl font-bold animate-slide-in-left">
+            <h1 className="absolute bottom-[-10] left-10 text-white text-4xl font-bold animate-slide-in-left">
                 Live The Spirit
             </h1>
         </div>
 
             {/* Right Section with Form */}
-            {/* Right Section with Form */}
-            <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full p-6">
+            
+            <div className="flex flex-col  items-center w-full md:w-1/2 h-full p-6">
 
 
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 animate-fade-in">
@@ -118,7 +118,7 @@ const Login = ({ setislogin }) => {
                 </h1>
 
                 {/* Login Form */}
-                <form onSubmit={handleSubmit} className="mt-6 w-full max-w-sm space-y-4 animate-fade-in-up">
+                <form onSubmit={handleSubmit} className="   mt-6 w-full max-w-sm space-y-4 animate-fade-in-up">
                     <input 
                         className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-400 transition-all duration-300 hover:shadow-lg"
                         type='text' 
@@ -130,21 +130,21 @@ const Login = ({ setislogin }) => {
                     <input 
                         className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-400 transition-all duration-300 hover:shadow-lg"
                         type="password" 
-                        placeholder='Password or OTP'
+                        placeholder='Password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                     <button 
                         type="submit" 
-                        className="w-full p-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-transform transform hover:scale-105 active:scale-95"
+                        className="w-[30%] ml-[38%] p-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-transform transform hover:scale-105 active:scale-95"
                     >
                         Login
                     </button>
                 </form>
 
                 {/* Google Login */}
-                <div className="mt-4 flex flex-col items-center animate-fade-in-up">
+                <div className="mt-4 ml-4 flex flex-col items-center animate-fade-in-up">
                     <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={() => {
@@ -158,13 +158,13 @@ const Login = ({ setislogin }) => {
                 <div className="mt-4 text-center animate-fade-in-up">
                     <p className="text-gray-600 dark:text-gray-400">
                         Don't have an account?{' '}
-                        <Link to="/sign_up" className="text-blue-500 hover:underline transition-all duration-300 hover:text-blue-600">
+                        <Link to="/dashboard/sign_up" className="text-blue-500 hover:underline transition-all duration-300 hover:text-blue-600">
                             Sign Up
                         </Link>
                     </p>
                     <p className="text-gray-600 dark:text-gray-400">
                         By logging in, you agree to our{' '}
-                        <Link to="/tnc" className="text-blue-500 hover:underline transition-all duration-300 hover:text-blue-600">
+                        <Link to="/dashboard/tnc" className="text-blue-500 hover:underline transition-all duration-300 hover:text-blue-600">
                             Terms and Conditions
                         </Link>.
                     </p>

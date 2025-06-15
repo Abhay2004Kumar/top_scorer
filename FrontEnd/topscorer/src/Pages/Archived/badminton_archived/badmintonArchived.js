@@ -9,11 +9,8 @@ function BadmintonArchived() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMatch, setSelectedMatch] = useState(null);
-  const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
 
-  // Fetching match data from the API
   useEffect(() => {
     const fetchMatches = async () => {
       try {
@@ -25,7 +22,6 @@ function BadmintonArchived() {
         }
         const data = await response.json();
 
-        // Sorting matches in reverse order (newest match first)
         const sortedMatches = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -41,13 +37,11 @@ function BadmintonArchived() {
     fetchMatches();
   }, []);
 
-  // Function to handle card click and display match details
   const handleCardClick = (matchId) => {
     const match = matches.find((m) => m._id === matchId);
     if (match) setSelectedMatch(match);
   };
 
-  // Function to format the date into a readable format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -57,52 +51,28 @@ function BadmintonArchived() {
       day: "numeric",
     });
   };
-  // Function to format the date in DD/MM/YY format
+
   const formatDate2 = (dateString) => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0"); // Get day (01-31)
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (01-12)
-    const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year (YY)
-
-    return `${day}/${month}/${year}`; // Return in DD/MM/YY format
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}/${month}/${year}`;
   };
 
-  const handleSetPage = (indx) => {
-    setPage(indx + 1);
-  };
-
-  const movePage = (val) => {
-    setPage((prev) => prev + val);
-  };
-
-  const handleItemPerPage = (quantity) => {
-    setPage(1);
-    setItemPerPage(quantity);
-  };
-
-  // Loading and error states
   if (loading) {
     return (
-      <div className=" w-[100%] h-[100%] flex items-center justify-center">
-        <Grid
-          visible={true}
-          height="80"
-          width="80"
-          color="#4fa94d"
-          ariaLabel="grid-loading"
-          radius="12.5"
-          wrapperStyle={{}}
-          wrapperClass="grid-wrapper"
-        />
+      <div className="w-full h-screen flex items-center justify-center">
+        <Grid visible={true} height="80" width="80" color="#4fa94d" ariaLabel="grid-loading" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="w-full h-[90%] flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <MdErrorOutline className="text-white w-[100px] h-[100px]" />
+          <MdErrorOutline className="text-red-500 w-24 h-24" />
           <p className="text-white mt-2">Error! Please refresh the page</p>
         </div>
       </div>
@@ -110,136 +80,77 @@ function BadmintonArchived() {
   }
 
   return (
-    <div className={styles.MainDiv}>
-      <div className={styles.opn}>
+    <div className="min-h-screen bg-gray-900 text-white p-6">
+      <div className="mb-6">
         <Options cur_link="/dashboard/badminton" archived="/dashboard/badminton_archived" />
       </div>
 
       {selectedMatch ? (
-        <div className={styles.MatchDetail}>
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg animate-fade-in">
           <button
-            className={styles.BackButton}
+            className="mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow"
             onClick={() => setSelectedMatch(null)}
           >
-            Back to Matches
+            ⬅ Back to Matches
           </button>
 
-          <div className={styles.math_info}>
-            <div className={styles.MatchTeams}>
-              <div className={styles.TeamDetails}>
-                <h3>{selectedMatch.teamA.name}</h3>
-                <p>{selectedMatch.teamA.player}</p>
-              </div>
-              <div className={styles.TeamDetails}>
-                <h3>Vs</h3>
-              </div>
-              <div className={styles.TeamDetails}>
-                <h3>{selectedMatch.teamB.name}</h3>
-                <p>{selectedMatch.teamB.player}</p>
-              </div>
+          <div className="text-center mb-4">
+            <h2 className="text-2xl font-bold mb-2">{selectedMatch.teamA.name} vs {selectedMatch.teamB.name}</h2>
+            <p className="text-sm italic">{formatDate(selectedMatch.createdAt)}</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 text-center mb-4">
+            <div>
+              <h3 className="text-lg font-semibold">{selectedMatch.teamA.name}</h3>
+              <p>{selectedMatch.teamA.player}</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">{selectedMatch.teamB.name}</h3>
+              <p>{selectedMatch.teamB.player}</p>
             </div>
           </div>
 
-          <p className={styles.MatchUpdate}>{selectedMatch.latestUpdate}</p>
-
-          <div className={styles.Scoreboard}>
-            <h3>Scoreboard</h3>
-            <table>
+          <div className="bg-white text-black rounded-lg p-4 mb-4 overflow-x-auto">
+            <h3 className="text-lg font-bold mb-2">Scoreboard</h3>
+            <table className="w-full text-left border-collapse">
               <thead>
                 <tr>
-                  <th>Set</th>
-                  <th>{selectedMatch.teamA.name}</th>
-                  <th>{selectedMatch.teamB.name}</th>
+                  <th className="border-b p-2">Set</th>
+                  <th className="border-b p-2">{selectedMatch.teamA.name}</th>
+                  <th className="border-b p-2">{selectedMatch.teamB.name}</th>
                 </tr>
               </thead>
               <tbody>
                 {selectedMatch.tmA_score.map((score, index) => (
                   <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{score}</td>
-                    <td>{selectedMatch.tmB_score[index]}</td>
+                    <td className="border-b p-2">{index + 1}</td>
+                    <td className="border-b p-2">{score}</td>
+                    <td className="border-b p-2">{selectedMatch.tmB_score[index]}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <div className={styles.MatchSummary}>
-            {/* <h4>Match Summary:</h4>
-            <p><strong>Current Set: </strong>{selectedMatch.currentSet}</p>
-            <p><strong>Last Set Score: </strong>{selectedMatch.tmA_score.at(-1)} - {selectedMatch.tmB_score.at(-1)}</p>
-            <p><strong>Latest Update: </strong>{selectedMatch.latestUpdate}</p> */}
-            <br></br>
-            <p>
-              <strong>Match Date : </strong>
-              {formatDate(selectedMatch.createdAt)}
-            </p>
+          <div className="text-sm text-gray-300 italic text-center">
+            {selectedMatch.latestUpdate}
           </div>
         </div>
       ) : (
-        <div className={styles.MatchList}>
-          <span className={styles.Heading2}>Archived Matches</span>
-          <select
-            name="optn"
-            className=" text-black float-right"
-            onChange={(e) => handleItemPerPage(e.target.value)}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={30}>30</option>
-            <option value={40}>40</option>
-            <option value={50}>50</option>
-          </select>
-          <div className=" mt-2 flex flex-wrap justify-start h-[500px] overflow-y-auto">
-            {matches
-              .slice(page * itemPerPage - itemPerPage, page * itemPerPage)
-              .map((match) => (
-                <div
-                  key={match._id}
-                  className=" cursor-pointer hover:translate-y-2 animate-slide-in-left flex-col items-center justify-center m-2 p-2 rounded-md w-[200px] bg-white"
-                  onClick={() => handleCardClick(match._id)}
-                >
-                  <h3 className=" text-center">
-                    {match.teamA.name} vs {match.teamB.name}
-                  </h3>
-                  <p className={styles.MatchUpdate}>{match.latestUpdate}</p>
-
-                  <div className={styles.CardScore}>
-                    <p>
-                      Last Set: {match.tmA_score.at(-1)} -{" "}
-                      {match.tmB_score.at(-1)}
-                    </p>
-                    {/* <p>Current Set: {match.currentSet}</p> */}
-                  </div>
-                  <p
-                    className={styles.MatchCreatedAt}
-                    style={{ color: "grey" }}
-                  >
-                    Date: {formatDate2(match.createdAt)}
-                  </p>
-                </div>
-              ))}
-          </div>
-          <div className="flex mt-10 justify-between ">
-            {page > 1 && <button onClick={() => movePage(-1)}>Prev</button>}
-            {[...Array(Math.round(matches.length / itemPerPage))].map(
-              (_, indx) => {
-                return (
-                  <div
-                    key={indx}
-                    onClick={() => handleSetPage(indx)}
-                    className={`${
-                      indx + 1 === page ? "bg-slate-600" : "bg-black"
-                    } w-full text-center border-2 rounded-md m-1 hover:cursor-pointer hover:bg-slate-600`}
-                  >
-                    {indx + 1}
-                  </div>
-                );
-              }
-            )}
-            {page < Math.round(matches.length / itemPerPage) && (
-              <button onClick={() => movePage(1)}>Next</button>
-            )}
+        <div>
+          <h2 className="text-3xl font-bold mb-4">📂 Archived Matches</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {matches.slice(0, itemPerPage).map((match) => (
+              <div
+                key={match._id}
+                className="cursor-pointer transform transition-transform hover:-translate-y-1 bg-white text-black rounded-xl p-4 shadow-lg"
+                onClick={() => handleCardClick(match._id)}
+              >
+                <h3 className="text-lg font-semibold text-center">{match.teamA.name} vs {match.teamB.name}</h3>
+                <p className="text-sm text-gray-700 text-center">Last Set: {match.tmA_score.at(-1)} - {match.tmB_score.at(-1)}</p>
+                <p className="text-xs text-gray-500 text-center">📅 {formatDate2(match.createdAt)}</p>
+              </div>
+            ))}
           </div>
         </div>
       )}

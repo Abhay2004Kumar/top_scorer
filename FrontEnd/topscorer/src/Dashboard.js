@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Sidebar from "./Components/SideBar/Sidebar";
 import Login from "./Pages/LoginPage/login";
@@ -34,6 +34,8 @@ import Comment_Box from "./Components/Comment_Box/Comment_Box";
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function Dashboard() {
+
+
   const [islogin, setislogin] = useState(false);
   const [matchD, setMatchD] = useState({
     badminton: false,
@@ -44,25 +46,28 @@ function Dashboard() {
     Cricket_D: false,
     Football: false,
   });
-
   const [ClientCount, setClientCount] = useState(0);
 
+  // Setup listeners once
   useEffect(() => {
     socket.on("FullPayLoad", (payload) => {
       setMatchD(payload);
-      console.log(matchD);
-      console.log(payload.clients);
-
-      console.log(matchD);
+      console.log("full data: ",payload);
     });
+
     socket.on("clientCount", (count) => {
       setClientCount(count);
     });
 
     return () => {
+      socket.off("FullPayLoad");
       socket.off("clientCount");
     };
   }, []);
+
+
+
+
 
   return (
     <>
@@ -73,7 +78,7 @@ function Dashboard() {
 
           <div
             style={{
-              width: "100vw",
+              width: "94vw",
               backgroundColor: "rgb(17 24 39 / var(--tw-bg-opacity, 1))",
             }}
           >
