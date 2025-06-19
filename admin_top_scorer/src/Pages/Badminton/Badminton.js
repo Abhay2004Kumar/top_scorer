@@ -11,7 +11,7 @@ function AdminBadminton() {
   const [popup, setPopup] = useState(false);
   const [matchData, setMatchData] = useState({
     name: "Badminton",
-    islive:true,
+    
     data: {
       teamA: {
         name: "",
@@ -65,7 +65,7 @@ function AdminBadminton() {
   //To submit match data as archieve in DB.
   const submitMatchData = async()=>{
     setMatchData((prev)=>{
-      return {...prev,islive:false}
+      return {...prev}
     })
     console.log(matchData);
     socket.emit('data',matchData)

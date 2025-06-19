@@ -60,9 +60,27 @@ const getBDSingle = async(req,res) => {
         // console.log(error);
     }
 }
+const getRecentBDSingle = async (req, res) => {
+    try {
+        const recentMatch = await BDSingle.findOne().sort({ createdAt: -1 });
+
+        if (!recentMatch) {
+            return res.status(404).json({ 
+                message: "No match found",
+                success:false
+            });
+        }
+
+        res.status(200).json(recentMatch);
+    } catch (err) {
+        console.error("Error fetching recent BDSingle:", err);
+        res.status(500).json({ message: "Server Error" });
+    }
+};
 
 
 export {
     createBDSingle,
-    getBDSingle
+    getBDSingle,
+    getRecentBDSingle
 }

@@ -137,7 +137,7 @@ const initialMatchData = {
 function Cricket({ data }) {
   console.log("DATA",data)
   const [socket, setSocket] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState("team1");
   const [activeTab, setActiveTab] = useState("scorecard");
   const [darkMode, setDarkMode] = useState(() => {
