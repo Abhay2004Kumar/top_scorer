@@ -1,5 +1,5 @@
 import express from 'express'
-import { createBDSingle, getBDSingle } from '../Controllers/BDSingle.controller.js'
+import { createBDSingle, getBDSingle, getRecentBDSingle } from '../Controllers/BDSingle.controller.js'
 import { createBDDoubles, getBDDoubles } from '../Controllers/BDDouble.controller.js';
 import { 
   createKabaddiMatch, 
@@ -19,12 +19,14 @@ import {
     updateInnings,
     finishMatch,
     getLiveMatches
-  } from "../Controllers/Cricket.controller.js"
+  } from "../Controllers/Cricket.controller.js" 
 
 const routes = express.Router();
- 
+ //bd single routes
 routes.post('/bdsingle',createBDSingle);
 routes.post('/bdDouble',createBDDoubles);
+routes.get('/getRecentBDSingle',getRecentBDSingle);
+
 routes.post('/Createkabaddi',createKabaddiMatch)
 routes.get('/getbdsingle',getBDSingle);
 routes.get('/getBDDouble',getBDDoubles);
