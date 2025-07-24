@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 function Header({ username }) {
   const navigateTo = (path) => {
@@ -69,13 +70,14 @@ function Header({ username }) {
           { label: 'Cricket', path: '/cricket' },
           { label: 'Blogs', path: '/blogs' },
         ].map((sport) => (
-          <button
+          <Link
             key={sport.label}
-            onClick={() => navigateTo(sport.path)}
+            // onClick={() => navigateTo(sport.path)}
+            to={sport.path}
             className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition"
           >
             {sport.label}
-          </button>
+          </Link>
         ))}
       </div>
     </>

@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import styles from './Admin.module.css';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import styles from "./Admin.module.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 
-const image = "https://images.pexels.com/photos/9153468/pexels-photo-9153468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-function Admin_Login({setChange,setusername}) {
-  
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+const image =
+  "https://images.pexels.com/photos/9153468/pexels-photo-9153468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+function Admin_Login({ setChange, setusername }) {
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,50 +20,54 @@ function Admin_Login({setChange,setusername}) {
     setFormData({ ...formData, [name]: value });
   };
 
-
+  const handleDemoUser = async () => {
+    setFormData({ username: "abhay", password: "1234" });
+    await handleSubmit();
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    
+    if (e) {
+      e.preventDefault();
+    }
+    setError("");
+    setSuccess("");
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/loginAdmin`, formData);
-      
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/loginAdmin`,
+        formData
+      );
+
       if (response.data && response.data.success) {
         const { user, accessToken, refreshToken } = response.data.data;
-        toast.success('Login Successful!');
-        
+        toast.success("Login Successful!");
+
         // Store tokens securely
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+
         setusername(user.username);
         setChange((prev) => !prev);
-        
-        console.log('Navigating to /badminton');
-        navigate('/badminton');
-        window.location.reload(); // Force a refresh to re-render the app
 
+        console.log("Navigating to /badminton");
+        navigate("/badminton");
+        window.location.reload(); // Force a refresh to re-render the app
       } else {
-        toast.error('Login failed. Please try again.');
+        toast.error("Login failed. Please try again.");
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      toast.error('An error occurred during login. Please try again.');
+      console.error("Error during login:", error);
+      toast.error("An error occurred during login. Please try again.");
     }
- };
-
+    setLoading(false);
+  };
 
   return (
     <div className={styles.container}>
       {/* Left side: Image */}
       <div className={styles.carousel}>
-        <img
-          src={image}
-          alt="Carousel"
-          className={styles.image}
-        />
+        <img src={image} alt="Carousel" className={styles.image} />
       </div>
 
       {/* Right side: Login Form */}
@@ -69,7 +75,9 @@ function Admin_Login({setChange,setusername}) {
         <h2 className={styles.header}>Welcome to Admin Panel</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label htmlFor="username" className={styles.label}>Username</label>
+            <label htmlFor="username" className={styles.label}>
+              Username
+            </label>
             <input
               type="text"
               id="username"
@@ -82,7 +90,9 @@ function Admin_Login({setChange,setusername}) {
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.label}>Password</label>
+            <label htmlFor="password" className={styles.label}>
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -94,15 +104,18 @@ function Admin_Login({setChange,setusername}) {
               onChange={handleChange}
             />
           </div>
-          <button type="submit" className={styles.submitBtn}>
-            Login
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
+            {loading ? <PropagateLoader className="mb-[4%] p-2" /> : "Login"}
           </button>
         </form>
         {error && <p className={styles.error}>{error}</p>}
         {success && <p className={styles.success}>{success}</p>}
         <div className={styles.info}>
-          If you don't know credentials please contact site owners. The score updation requires
-          admin username and password.
+          If you don't know credentials please contact site owners. The score
+          updation requires admin username and password.<br></br>
+          <button className=" underline text-blue-600" onClick={handleDemoUser}>
+            Enter as Demo User
+          </button>
         </div>
       </div>
     </div>
