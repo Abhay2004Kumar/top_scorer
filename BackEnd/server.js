@@ -21,10 +21,10 @@ const PORT = process.env.PORT;
 const app = express();
 const server = http.createServer(app);
 app.use(cors({ 
-  origin: '*',
-  optionsSuccessStatus: 200,
-  credentials: true,
+  origin: ["http://localhost:3001", "http://localhost:3003", "https://top-scorer-ecru.vercel.app","https://top-scorer-admin.vercel.app"],
+  credentials: true
 }));
+
 app.use(fileupload(
   {
       useTempFiles : true,
