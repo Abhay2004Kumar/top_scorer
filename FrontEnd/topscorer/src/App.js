@@ -37,7 +37,7 @@ import Comment_Box from "./Components/Comment_Box/Comment_Box";
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import Dashboard from "./Dashboard";
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
-// const socket = io.connect('http://localhost:5000/');
+
 function App() {
 
   return (

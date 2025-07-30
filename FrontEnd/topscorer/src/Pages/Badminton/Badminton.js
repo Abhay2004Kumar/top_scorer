@@ -8,6 +8,7 @@ import { FaEye, FaTrophy } from "react-icons/fa";
 import FireworksComponent from "../../Components/customAnimations/FireWork";
 import axios from "axios";
 import { IoWarning } from "react-icons/io5";
+import { Grid } from "react-loader-spinner";
 
 function Badminton({ bd, clients }) {
   const flag1_link =
@@ -24,32 +25,44 @@ function Badminton({ bd, clients }) {
     teamB: false,
   });
   const [winner, setWinner] = useState(null);
-  const [lastMatchData, setLastMatchData] = useState(null);
+  const [lastmatchData, setLastmatchData] = useState(null);
   const prevScores = useRef({ teamA: 0, teamB: 0 });
+
+  
 
  useEffect(() => {
   if (!bd) {
-    const getLastData = async () => {
+    setLoading(true);
+    setTimeout(()=>{
+      const getLastData = async () => {
       try {
-        setLoading(true);
         const res = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/getRecentBDSingle`
         );
-        setLastMatchData(res.data);
-        setLoading(false);
+        setLastmatchData(res.data);
       } catch (err) {
         console.log("Error fetching data:", err);
         setError(true);
-        setLoading(false);
       }
     };
-    getLastData();
+    // if(!bd){
+      console.log("no match data")
+      getLastData();
+      
+    // }
+  },4000)
+  setTimeout(()=>{
+    setLoading(false);
+  },4000)
+    
   }
-}, [bd]); // Add bd as a dependency
+}, []); 
+
+
   const matchData = bd
     ? bd
-    : lastMatchData
-    ? lastMatchData
+    : lastmatchData
+    ? lastmatchData
     : {
         teamA: { name: "", player: "" },
         teamB: { name: "", player: "" },
@@ -61,10 +74,10 @@ function Badminton({ bd, clients }) {
       
   // Calculate winner if all sets are finished
   useEffect(() => {
-    if (matchData.tmA_score.length >= 3 && matchData.tmB_score.length >= 3) {
-      const teamASetsWon = matchData.tmA_score.reduce((acc, score, index) => {
+    if (matchData?.tmA_score.length >= 3 && matchData?.tmB_score.length >= 3) {
+      const teamASetsWon = matchData?.tmA_score.reduce((acc, score, index) => {
         return (
-          acc + (parseInt(score) > parseInt(matchData.tmB_score[index]) ? 1 : 0)
+          acc + (parseInt(score) > parseInt(matchData?.tmB_score[index]) ? 1 : 0)
         );
       }, 0);
 
@@ -80,17 +93,17 @@ function Badminton({ bd, clients }) {
     } else {
       setWinner(null);
     }
-  }, [matchData.tmA_score, matchData.tmB_score]);
+  }, [matchData?.tmA_score, matchData?.tmB_score]);
 
   // Calculate probability and set width based on scores
   useEffect(() => {
     const score1 =
-      matchData.tmA_score.length > 0
-        ? parseInt(matchData.tmA_score[matchData.tmA_score.length - 1], 10)
+      matchData?.tmA_score.length > 0
+        ? parseInt(matchData?.tmA_score[matchData?.tmA_score.length - 1], 10)
         : 0;
     const score2 =
-      matchData.tmB_score.length > 0
-        ? parseInt(matchData.tmB_score[matchData.tmB_score.length - 1], 10)
+      matchData?.tmB_score.length > 0
+        ? parseInt(matchData?.tmB_score[matchData?.tmB_score.length - 1], 10)
         : 0;
 
     // Check if scores have changed to trigger animations
@@ -149,11 +162,30 @@ function Badminton({ bd, clients }) {
   };
 
   const { teamASets, teamBSets } = calculateSetsWon();
-  if(loading){
-        return (
-          <div className="text-lg h-full flex justify-center items-center"><div className="flex justify-center items-center text-white font-semibold">Loading...</div></div>
-        ) 
-  }
+  if (loading) {
+      return (
+        <>
+        
+        <div className=" w-[100%] h-[100%] flex items-center justify-center">
+          <div className="flex flex-col items-center">
+
+          <Grid
+            visible={true}
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="grid-loading"
+            radius="12.5"
+            wrapperStyle={{}}
+            wrapperClass="grid-wrapper"
+          />
+          
+          {/* <h2 className="text-white">Hold On...</h2> */}
+          </div>
+        </div>
+        </>
+      );
+    }
   if(error){
     return (
       <div className="text-lg h-full flex justify-center items-center"><div className="flex justify-center items-center text-white font-semibold"><IoWarning className=" mr-4"/> Error ,Please refresh page</div></div>
@@ -207,10 +239,10 @@ function Badminton({ bd, clients }) {
                 className="w-20 h-14 object-contain rounded-lg shadow-sm border-2 border-gray-200 dark:border-gray-700"
               />
               <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                {matchData.teamA.name}
+                {matchData?.teamA.name}
               </p>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                {matchData.teamA.player}(P)
+                {matchData?.teamA.player}(P)
               </p>
               {winner === "teamA" && (
                 <div className="flex items-center text-yellow-500 dark:text-yellow-300">
@@ -229,8 +261,8 @@ function Badminton({ bd, clients }) {
                     <FaTrophy className="text-yellow-500 dark:text-yellow-300 mr-2" />
                     <span className="font-bold text-yellow-800 dark:text-yellow-200 text-center">
                       {winner === "teamA"
-                        ? matchData.teamA.name
-                        : matchData.teamB.name}{" "}
+                        ? matchData?.teamA.name
+                        : matchData?.teamB.name}{" "}
                       wins the match!
                     </span>
                   </div>
@@ -247,7 +279,7 @@ function Badminton({ bd, clients }) {
                           : "text-gray-900 dark:text-white transition-all duration-300"
                       }`}
                     >
-                      {matchData.tmA_score.at(-1) || 0}
+                      {matchData?.tmA_score.at(-1) || 0}
                     </span>
                     <span className="text-4xl font-bold mx-2">-</span>
                     <span
@@ -257,16 +289,16 @@ function Badminton({ bd, clients }) {
                           : "text-gray-900 dark:text-white transition-all duration-300"
                       }`}
                     >
-                      {matchData.tmB_score.at(-1) || 0}
+                      {matchData?.tmB_score.at(-1) || 0}
                     </span>
                   </div>
                   <p className="text-sm text-gray-700 dark:text-gray-300 text-center">
-                    Set {matchData.tmA_score.length}
+                    Set {matchData?.tmA_score.length}
                   </p>
                 </div>
               )}
 
-              {matchData.tmA_score.length > 0 && (
+              {matchData?.tmA_score.length > 0 && (
                 <div className="flex justify-center items-center my-2">
                   <div
                     className={`px-3 py-1 rounded-full text-sm font-semibold ${
@@ -306,10 +338,10 @@ function Badminton({ bd, clients }) {
                 className="w-20 h-14 object-contain rounded-lg shadow-sm border-2 border-gray-200 dark:border-gray-700"
               />
               <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                {matchData.teamB.name}
+                {matchData?.teamB.name}
               </p>
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                {matchData.teamB.player}(P)
+                {matchData?.teamB.player}(P)
               </p>
               {winner === "teamB" && (
                 <div className="flex items-center text-yellow-500 dark:text-yellow-300">
@@ -330,7 +362,7 @@ function Badminton({ bd, clients }) {
             ></div>
           </div>
           <p className="mt-4 text-center text-lg text-gray-900 dark:text-gray-300">
-            {matchData.latestUpdate}
+            {matchData?.latestUpdate}
           </p>
         </div>
 
@@ -373,37 +405,37 @@ function Badminton({ bd, clients }) {
                     />
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    {matchData.teamA.player}
+                    {matchData?.teamA.player}
                   </td>
                   <td
                     className={`px-4 py-3 text-sm ${
-                      parseInt(matchData.tmA_score[0]) >
-                      parseInt(matchData.tmB_score[0])
+                      parseInt(matchData?.tmA_score[0]) >
+                      parseInt(matchData?.tmB_score[0])
                         ? "font-bold text-green-600 dark:text-green-400"
                         : "text-gray-900 dark:text-white"
                     }`}
                   >
-                    {matchData.tmA_score[0]}
+                    {matchData?.tmA_score[0]}
                   </td>
                   <td
                     className={`px-4 py-3 text-sm ${
-                      parseInt(matchData.tmA_score[1]) >
-                      parseInt(matchData.tmB_score[1])
+                      parseInt(matchData?.tmA_score[1]) >
+                      parseInt(matchData?.tmB_score[1])
                         ? "font-bold text-green-600 dark:text-green-400"
                         : "text-gray-900 dark:text-white"
                     }`}
                   >
-                    {matchData.tmA_score[1]}
+                    {matchData?.tmA_score[1]}
                   </td>
                   <td
                     className={`px-4 py-3 text-sm ${
-                      parseInt(matchData.tmA_score[2]) >
-                      parseInt(matchData.tmB_score[2])
+                      parseInt(matchData?.tmA_score[2]) >
+                      parseInt(matchData?.tmB_score[2])
                         ? "font-bold text-green-600 dark:text-green-400"
                         : "text-gray-900 dark:text-white"
                     }`}
                   >
-                    {matchData.tmA_score[2]}
+                    {matchData?.tmA_score[2]}
                   </td>
                   <td className="px-4 py-3 text-sm font-bold text-green-600 dark:text-green-400">
                     {teamASets}
@@ -418,37 +450,37 @@ function Badminton({ bd, clients }) {
                     />
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    {matchData.teamB.player}
+                    {matchData?.teamB.player}
                   </td>
                   <td
                     className={`px-4 py-3 text-sm ${
-                      parseInt(matchData.tmB_score[0]) >
-                      parseInt(matchData.tmA_score[0])
+                      parseInt(matchData?.tmB_score[0]) >
+                      parseInt(matchData?.tmA_score[0])
                         ? "font-bold text-green-600 dark:text-green-400"
                         : "text-gray-900 dark:text-white"
                     }`}
                   >
-                    {matchData.tmB_score[0]}
+                    {matchData?.tmB_score[0]}
                   </td>
                   <td
                     className={`px-4 py-3 text-sm ${
-                      parseInt(matchData.tmB_score[1]) >
-                      parseInt(matchData.tmA_score[1])
+                      parseInt(matchData?.tmB_score[1]) >
+                      parseInt(matchData?.tmA_score[1])
                         ? "font-bold text-green-600 dark:text-green-400"
                         : "text-gray-900 dark:text-white"
                     }`}
                   >
-                    {matchData.tmB_score[1]}
+                    {matchData?.tmB_score[1]}
                   </td>
                   <td
                     className={`px-4 py-3 text-sm ${
-                      parseInt(matchData.tmB_score[2]) >
-                      parseInt(matchData.tmA_score[2])
+                      parseInt(matchData?.tmB_score[2]) >
+                      parseInt(matchData?.tmA_score[2])
                         ? "font-bold text-green-600 dark:text-green-400"
                         : "text-gray-900 dark:text-white"
                     }`}
                   >
-                    {matchData.tmB_score[2]}
+                    {matchData?.tmB_score[2]}
                   </td>
                   <td className="px-4 py-3 text-sm font-bold text-green-600 dark:text-green-400">
                     {teamBSets}
