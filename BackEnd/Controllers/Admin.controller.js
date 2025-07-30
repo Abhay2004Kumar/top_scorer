@@ -142,6 +142,11 @@ const logOutAdmin = asyncHandler(async (req,res) => {
         .json(new ApiResponse(200, {}, "Admin logged Out"))
 })
 
+const validateToken = asyncHandler(async (req, res) => {
+    const user = req.user; // from verifyAdminJWT middleware
+    res.status(200).json(new ApiResponse(200, { user }, "Token is valid"));
+});
+
 export{
-    logOutAdmin,loginAdmin,registerAdmin
+    logOutAdmin,loginAdmin,registerAdmin,validateToken
 }
