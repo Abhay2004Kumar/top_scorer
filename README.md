@@ -16,21 +16,39 @@
 
 ## 🚀 Features in Detail
 
-### Admin Panel
-Manage events, participants, and scores with an intuitive admin interface.
-<img src="IMGs/Admin.png" alt="Admin Panel" width="400">
+<div align="center">
 
-### Live Match Center
-Real-time match updates and statistics.
-<img src="IMGs/Crick.png" alt="Cricket UI" width="400">
+<table>
+  <tr>
+    <td align="center">
+      <img src="IMGs/Admin.png" alt="Admin Panel" width="300"/><br>
+      <b>Admin Panel</b><br>
+      Manage events, participants, and scores with an intuitive interface.
+    </td>
+    <td align="center">
+      <img src="IMGs/Crick.png" alt="Cricket UI" width="300"/><br>
+      <b>Live Match Center</b><br>
+      Real-time match updates and statistics.
+    </td>
+  </tr>
+  <tr><td height="20"></td></tr> <!-- Spacer row -->
 
-### Blog Platform
-Stay updated with the latest sports events and news.
-<img src="IMGs/Blog.png" alt="Blog Page" width="400">
+  <tr>
+    <td align="center">
+      <img src="IMGs/Blog.png" alt="Blog Page" width="300"/><br>
+      <b>Blog Platform</b><br>
+      Stay updated with the latest sports events and news.
+    </td>
+    <td align="center">
+      <img src="IMGs/Match.png" alt="Match UI" width="300"/><br>
+      <b>User Dashboard</b><br>
+      Track your favorite teams and players.
+    </td>
+  </tr>
+</table>
 
-### User Dashboard
-Track your favorite teams and players.
-<img src="IMGs/Match.png" alt="Match UI" width="400">
+</div>
+
 
 ## 🛠️ Installation
 
