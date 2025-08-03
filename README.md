@@ -5,7 +5,6 @@
 ## ✨ Key Features
 
 - **Real-time Match Updates** - Live scores and statistics
-- **Match Winning Prediction** - AI-powered match predictions
 - **Interactive Chat** - Real-time chat for authenticated users
 - **Comprehensive Admin Panel** - Full control over events and participants
 - **Blog Platform** - Latest sports news and updates
