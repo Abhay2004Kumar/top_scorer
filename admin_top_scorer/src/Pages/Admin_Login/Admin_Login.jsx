@@ -172,14 +172,7 @@ function Admin_Login({ setChange, setusername }) {
             className={`${styles.demoButton} ${loading ? styles.disabled : ''}`}
             disabled={loading}
           >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <PropagateLoader color="#ffffff" size={8} />
-                <span className="ml-2">Logging in...</span>
-              </div>
-            ) : (
-              ''
-            )}
+           
           </button>
         </form>
         {error && <p className={styles.error}>{error}</p>}
