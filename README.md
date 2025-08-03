@@ -12,7 +12,7 @@
 
 ## 🏗️ System Architecture
 
-![Top Scorer Architecture](top_Scorrer.png)
+![Top Scorer Architecture](top_Scorrer.png) 
 
 ## 🚀 Features in Detail
 
@@ -26,7 +26,7 @@
       Manage events, participants, and scores with an intuitive interface.
     </td>
     <td align="center">
-      <img src="IMGs/Crick.png" alt="Cricket UI" width="300"/><br>
+      <img src="IMGs/Match.png" alt="Cricket UI" width="300"/><br>
       <b>Live Match Center</b><br>
       Real-time match updates and statistics.
     </td>
@@ -36,13 +36,13 @@
   <tr>
     <td align="center">
       <img src="IMGs/Blog.png" alt="Blog Page" width="300"/><br>
-      <b>Blog Platform</b><br>
+      <b>Blogs</b><br>
       Stay updated with the latest sports events and news.
     </td>
     <td align="center">
-      <img src="IMGs/Match.png" alt="Match UI" width="300"/><br>
-      <b>User Dashboard</b><br>
-      Track your favorite teams and players.
+      <img src="IMGs/feedback.png" alt="Match UI" width="300"/><br>
+      <b>Feedback</b><br>
+      Provide valuable feedback for improvments.
     </td>
   </tr>
 </table>
