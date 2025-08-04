@@ -133,7 +133,7 @@ const BlogFeed = () => {
             />
             <h3 className="text-lg font-bold mt-2">{blog.title}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Posted by {blog.author?.fullname || "Unknown"} on{" "}
+              Posted by {blog.author?.username || "Unknown"} on{" "}
               {new Date(blog.createdAt).toLocaleDateString()}
             </p>
             <p
@@ -169,7 +169,7 @@ const BlogFeed = () => {
             <div className="w-full md:w-2/3 flex flex-col overflow-y-auto">
               <h3 className="text-xl font-bold">{selectedBlog.title}</h3>
               <p className="text-gray-500 dark:text-gray-400">
-                By {selectedBlog.author?.fullname || "Unknown"} on{" "}
+                By {selectedBlog.author?.username || "Unknown"} on{" "}
                 {new Date(selectedBlog.createdAt).toLocaleDateString()}
               </p>
               <img

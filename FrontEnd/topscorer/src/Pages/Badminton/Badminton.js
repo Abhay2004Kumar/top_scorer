@@ -50,10 +50,10 @@ function Badminton({ bd, clients }) {
       getLastData();
       
     // }
-  },4000)
+  },2000)
   setTimeout(()=>{
     setLoading(false);
-  },4000)
+  },2000)
     
   }
 }, []); 
