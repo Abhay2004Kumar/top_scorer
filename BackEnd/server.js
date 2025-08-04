@@ -12,7 +12,7 @@ import FeedbackRouter from './routes/feedback.route.js';
 import paymentRouter from './routes/payment.route.js';
 import stripeRouter from './routes/webhook.route.js'
 import DonateRouter from './routes/donate.route.js';
-import { console } from 'inspector';
+
 import { cloudinaryConnect } from './utils/cloudinary.js';
 import fileupload from 'express-fileupload'
 
