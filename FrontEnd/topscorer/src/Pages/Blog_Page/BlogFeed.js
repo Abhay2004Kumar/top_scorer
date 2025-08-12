@@ -3,7 +3,7 @@ import { FaThumbsUp, FaComment } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import toast from "react-hot-toast";
 import { Grid } from "react-loader-spinner";
-import axios from "axios";
+import axios from "../../utils/axiosUtil";
 import Comment_Box from "../../Components/Comment_Box/Comment_Box";
 
 const BlogFeed = () => {
@@ -57,17 +57,17 @@ const BlogFeed = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/likeBlog`,
         {
           blogId: selectedBlog._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         }
       );
       fetchBlogs();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to like blog");
+      if (err.response?.status === 401) {
+        toast.error("Please log in to like this blog");
+        window.location.href = '/login';
+      } else {
+        toast.error("Failed to like blog");
+      }
     }
   };
 
@@ -80,11 +80,6 @@ const BlogFeed = () => {
         {
           blogId: selectedBlog._id,
           content: comment,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         }
       );
       setComment("");
@@ -92,7 +87,12 @@ const BlogFeed = () => {
       toast.success("Comment added successfully");
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add comment");
+      if (err.response?.status === 401) {
+        toast.error("Please log in to comment");
+        window.location.href = '/login';
+      } else {
+        toast.error("Failed to add comment");
+      }
     }
   };
 
@@ -133,7 +133,7 @@ const BlogFeed = () => {
             />
             <h3 className="text-lg font-bold mt-2">{blog.title}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Posted by {blog.author?.fullname || "Unknown"} on{" "}
+              Posted by {blog.author?.username || "Unknown"} on{" "}
               {new Date(blog.createdAt).toLocaleDateString()}
             </p>
             <p
@@ -169,7 +169,7 @@ const BlogFeed = () => {
             <div className="w-full md:w-2/3 flex flex-col overflow-y-auto">
               <h3 className="text-xl font-bold">{selectedBlog.title}</h3>
               <p className="text-gray-500 dark:text-gray-400">
-                By {selectedBlog.author?.fullname || "Unknown"} on{" "}
+                By {selectedBlog.author?.username || "Unknown"} on{" "}
                 {new Date(selectedBlog.createdAt).toLocaleDateString()}
               </p>
               <img
