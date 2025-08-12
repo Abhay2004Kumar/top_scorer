@@ -765,31 +765,12 @@ function Cricket() {
 
     const submitData = async () => {
         try {
-            // Prepare data with required fields
-            const dataToSubmit = {
-                ...matchData,
-                gameType: matchData.data?.basicInfo?.matchType || 'T20',
-                venue: matchData.data?.basicInfo?.venue || 'Unknown Venue',
-                matchDate: matchData.data?.basicInfo?.date || new Date(),
-                matchTitle: `${matchData.data?.teams?.team1?.name || 'Team 1'} vs ${matchData.data?.teams?.team2?.name || 'Team 2'}`,
-                status: 'Scheduled' // Default status
-            };
-
-            const response = await axios.post(
-                `${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/cricketMatch`, 
-                dataToSubmit
-            );
-            
-            toast.success("Match data saved successfully!");
-            return response.data;
+            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/cricket`, matchData);
+            toast.success("Match data saved!");
         } catch (error) {
-            console.error('Error saving match:', error);
-            const errorMessage = error.response?.data?.message || 'Error saving match data';
-            toast.error(errorMessage);
-            throw error;
+            toast.error("Error saving data");
         }
     };
-
 
     const sendSocketUpdate = () => {
         if (!isConnected) {

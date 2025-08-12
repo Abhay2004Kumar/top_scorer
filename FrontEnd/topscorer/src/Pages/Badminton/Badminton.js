@@ -50,10 +50,10 @@ function Badminton({ bd, clients }) {
       getLastData();
       
     // }
-  },2000)
+  },4000)
   setTimeout(()=>{
     setLoading(false);
-  },2000)
+  },4000)
     
   }
 }, []); 
@@ -215,10 +215,10 @@ function Badminton({ bd, clients }) {
           <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white">
             Badminton
           </h1>
-          {/* <div className="absolute right-10 flex justify-center items-center">
+          <div className="absolute right-10 flex justify-center items-center">
             <FaEye />
             <span className="ml-1">{clients}</span>
-          </div> */}
+          </div>
         </div>
 
         {/* Sets indicator */}
