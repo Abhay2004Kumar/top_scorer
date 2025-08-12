@@ -63,7 +63,7 @@ export const createBlog = async (req, res) => {
 export const likeBlog = async (req, res) => {
     try {
         const { blogId } = req.body;
-        const blog = await Blog.findById(blogId).populate("author", "username");
+        const blog = await Blog.findById(blogId).populate("author", "username fullname");
 
         if (!blog || !blog.author) {
             return res.status(404).json({ message: "Blog not found or author is invalid" });
@@ -76,8 +76,6 @@ export const likeBlog = async (req, res) => {
         }
 
         await blog.save();
-        console.log(blog);
-        
         res.status(200).json({ message: "Blog like updated", blog });
     } catch (error) {
         res.status(500).json({ message: error.message });
