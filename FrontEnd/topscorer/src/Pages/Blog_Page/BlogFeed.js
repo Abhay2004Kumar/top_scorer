@@ -3,7 +3,7 @@ import { FaThumbsUp, FaComment } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import toast from "react-hot-toast";
 import { Grid } from "react-loader-spinner";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import Comment_Box from "../../Components/Comment_Box/Comment_Box";
 
 const BlogFeed = () => {
@@ -57,17 +57,17 @@ const BlogFeed = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/likeBlog`,
         {
           blogId: selectedBlog._id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         }
       );
       fetchBlogs();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to like blog");
+      if (err.response?.status === 401) {
+        toast.error("Please log in to like this blog");
+        window.location.href = '/login';
+      } else {
+        toast.error("Failed to like blog");
+      }
     }
   };
 
@@ -80,11 +80,6 @@ const BlogFeed = () => {
         {
           blogId: selectedBlog._id,
           content: comment,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
         }
       );
       setComment("");
@@ -92,7 +87,12 @@ const BlogFeed = () => {
       toast.success("Comment added successfully");
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add comment");
+      if (err.response?.status === 401) {
+        toast.error("Please log in to comment");
+        window.location.href = '/login';
+      } else {
+        toast.error("Failed to add comment");
+      }
     }
   };
 
