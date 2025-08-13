@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from "react-hot-toast";
 import { FaCricket, FaPlus, FaTrash, FaSave, FaUndo, FaRedo, FaHistory, FaUpload, FaDownload, FaSync, FaTrophy, FaClock, FaUsers } from 'react-icons/fa';
 
-const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
+// Socket initialization will be moved inside the component
 
 const initialMatchData = {
     name: "Cricket",
@@ -21,8 +21,8 @@ const initialMatchData = {
             matchResult: ""
         },
         teams: {
-            team1: { name: "", score: "0/0", overs: "0.0", logo: "" },
-            team2: { name: "", score: "0/0", overs: "0.0", logo: "" }
+            team1: { name: "", score: "0/0", overs: "0.0", logo: "", _id: `temp_${Date.now()}_1` },
+            team2: { name: "", score: "0/0", overs: "0.0", logo: "", _id: `temp_${Date.now()}_2` }
         },
         current: {
             batsmen: ["", ""],
@@ -54,6 +54,7 @@ function Cricket() {
     const [newComment, setNewComment] = useState("");
     const [showAdvanced, setShowAdvanced] = useState(false);
     const [lastSaved, setLastSaved] = useState(null);
+    const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
     const [currentBalls, setCurrentBalls] = useState(0);
     const [activeStep, setActiveStep] = useState(1); // 1: Team Setup, 2: Match Settings, 3: Scoring
@@ -79,24 +80,78 @@ function Cricket() {
 
     // Socket connection status
     useEffect(() => {
+        if (!process.env.REACT_APP_BACKEND_URL) {
+            console.error("Backend URL is not configured");
+            return;
+        }
+
+        // Create socket connection inside the effect
+        const newSocket = io(process.env.REACT_APP_BACKEND_URL, {
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            timeout: 10000,
+            transports: ['websocket'],
+            upgrade: false
+        });
+
         const handleConnect = () => {
+            console.log("Connected to WebSocket server");
             setIsConnected(true);
             toast.success('Connected to server');
         };
         
-        const handleDisconnect = () => {
+        const handleDisconnect = (reason) => {
+            console.log("Disconnected from WebSocket server:", reason);
             setIsConnected(false);
-            toast.error('Disconnected from server');
+            
+            if (reason === 'io server disconnect') {
+                // The disconnection was initiated by the server, try to reconnect
+                socket.connect();
+            } else {
+                toast.error('Disconnected from server');
+            }
+        };
+
+        const handleConnectError = (error) => {
+            console.error("WebSocket connection error:", error);
+            toast.error(`Connection error: ${error.message}`);
         };
         
-        socket.on('connect', handleConnect);
-        socket.on('disconnect', handleDisconnect);
+        // Set up event listeners
+        newSocket.on('connect', handleConnect);
+        newSocket.on('disconnect', handleDisconnect);
+        newSocket.on('connect_error', handleConnectError);
         
+        // Store the socket in state
+        setSocket(newSocket);
+        
+        // Add a ping/pong handler to keep the connection alive
+        const pingInterval = setInterval(() => {
+            if (newSocket.connected) {
+                newSocket.emit('ping');
+            }
+        }, 30000); // Ping every 30 seconds
+        
+        // Cleanup function
         return () => {
-            socket.off('connect', handleConnect);
-            socket.off('disconnect', handleDisconnect);
+            clearInterval(pingInterval);
+            
+            // Remove all event listeners
+            newSocket.off('connect', handleConnect);
+            newSocket.off('disconnect', handleDisconnect);
+            newSocket.off('connect_error', handleConnectError);
+            
+            // Only disconnect if we're still connected
+            if (newSocket.connected) {
+                newSocket.disconnect();
+            }
+            
+            // Clear the socket from state
+            setSocket(null);
         };
-    }, []);
+    }, []); // Empty dependency array means this effect runs once on mount
 
     // Load saved data on component mount
     useEffect(() => {
@@ -159,13 +214,66 @@ function Cricket() {
         loadSavedData();
     }, []);
 
-    // Auto-save to localStorage whenever matchData changes
+    // Calculate required run rate
+    const calculateRequiredRunRate = (battingTeam, bowlingTeam) => {
+        if (battingTeam.score === "0/0") return "N/A";
+        
+        const [runsScored, wickets] = battingTeam.score.split('/').map(Number);
+        const [targetRuns] = bowlingTeam.score.split('/').map(Number);
+        const oversBowled = parseFloat(battingTeam.overs) || 0;
+        const totalOvers = parseFloat(matchData.data.basicInfo.maxOvers) || 20;
+        const ballsBowled = Math.floor(oversBowled) * 6 + ((oversBowled % 1) * 10);
+        const ballsRemaining = (totalOvers * 6) - ballsBowled;
+        
+        if (ballsRemaining <= 0) return "Match Over";
+        
+        const runsNeeded = targetRuns - runsScored + 1;
+        if (runsNeeded <= 0) return "0.00";
+        
+        const requiredRate = (runsNeeded / (ballsRemaining / 6)).toFixed(2);
+        return requiredRate;
+    };
+
+    // Function to emit match updates to the server
+    const emitMatchUpdate = (updatedData) => {
+        if (isConnected && socket) {
+            try {
+                // Calculate required run rates before sending
+                const team1RR = calculateRequiredRunRate(updatedData.data.teams.team1, updatedData.data.teams.team2);
+                const team2RR = calculateRequiredRunRate(updatedData.data.teams.team2, updatedData.data.teams.team1);
+                
+                // Update the data with calculated RRR
+                const dataWithRR = {
+                    ...updatedData,
+                    data: {
+                        ...updatedData.data,
+                        teams: {
+                            team1: { ...updatedData.data.teams.team1, requiredRate: team1RR },
+                            team2: { ...updatedData.data.teams.team2, requiredRate: team2RR }
+                        }
+                    }
+                };
+                
+                socket.emit('cricket_update', dataWithRR);
+            } catch (error) {
+                console.error('Error emitting update:', error);
+                toast.error('Failed to send update to server');
+            }
+        }
+    };
+
+    // Auto-save to localStorage and emit updates whenever matchData changes
     useEffect(() => {
         try {
             localStorage.setItem('cricketMatchData', JSON.stringify(matchData));
             setLastSaved(new Date().toISOString());
+            
+            // Only emit updates if we're connected
+            if (isConnected) {
+                emitMatchUpdate(matchData);
+            }
         } catch (error) {
-            console.error('Error saving to localStorage:', error);
+            console.error('Error saving data:', error);
             toast.error('Error saving data');
         }
     }, [matchData]);
@@ -764,11 +872,222 @@ function Cricket() {
     };
 
     const submitData = async () => {
+        // Helper function to validate MongoDB ObjectId
+        const isValidObjectId = (id) => /^[0-9a-fA-F]{24}$/.test(id);
+        
         try {
-            await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/cricket`, matchData);
-            toast.success("Match data saved!");
+            const statusMap = {
+                'Not Started': 'Not Started',
+                'In Progress': 'In Progress',
+                'Completed': 'Completed'
+            };
+
+            // Map toss decision to lowercase for enum validation
+            const decisionMap = {
+                'Bat': 'bat',
+                'Bowl': 'bowl'
+            };
+
+            // Prepare team data with proper references
+            const team1 = matchData.data.teams.team1;
+            const team2 = matchData.data.teams.team2;
+            
+            // Ensure both teams have valid MongoDB ObjectIds
+            if (!team1._id || !isValidObjectId(team1._id)) {
+                toast.error('Please save Team 1 first before saving the match');
+                return;
+            }
+            if (!team2._id || !isValidObjectId(team2._id)) {
+                toast.error('Please save Team 2 first before saving the match');
+                return;
+            }
+            
+            // Get the winning team's ID with more robust comparison
+            let tossWinnerId = null;
+            const selectedTossWinner = (matchData.data.basicInfo.toss || '').trim().toLowerCase();
+            const team1Name = (team1.name || '').trim().toLowerCase();
+            const team2Name = (team2.name || '').trim().toLowerCase();
+            
+            if (selectedTossWinner === team1Name) {
+                tossWinnerId = team1._id;
+            } else if (selectedTossWinner === team2Name) {
+                tossWinnerId = team2._id;
+            }
+            
+            console.log('Team and toss data:', {
+                team1: { name: team1.name, id: team1._id },
+                team2: { name: team2.name, id: team2._id },
+                selectedTossWinner,
+                tossWinnerId,
+                basicInfo: matchData.data.basicInfo
+            });
+            
+            // Validate teams have names
+            if (!team1.name || !team2.name) {
+                toast.error("Both teams must have names before saving");
+                return;
+            }
+            
+            // Validate toss winner is one of the teams
+            if (!tossWinnerId) {
+                console.error('Toss winner validation failed. Current state:', {
+                    selectedTossWinner: matchData.data.basicInfo.toss,
+                    team1: { name: team1.name, id: team1._id },
+                    team2: { name: team2.name, id: team2._id },
+                    basicInfo: matchData.data.basicInfo
+                });
+                toast.error(`Please select a valid toss winner from the playing teams. Current selection: "${matchData.data.basicInfo.toss || 'none'}"`);
+                return;
+            }
+            
+            // Prepare team data for the backend
+            const teamData = {
+                team1: {
+                    _id: team1._id,
+                    name: team1.name,
+                    score: team1.score,
+                    overs: team1.overs,
+                    logo: team1.logo || ''
+                },
+                team2: {
+                    _id: team2._id,
+                    name: team2.name,
+                    score: team2.score,
+                    overs: team2.overs,
+                    logo: team2.logo || ''
+                }
+            };
+
+            // Prepare the data with all required fields
+            const dataToSave = {
+                ...matchData,
+                gameType: (matchData.data.basicInfo.matchType || 'T20').toUpperCase(),
+                venue: matchData.data.basicInfo.venue || 'Unknown Venue',
+                matchDate: matchData.data.basicInfo.date || new Date().toISOString(),
+                matchTitle: `${team1.name || 'Team 1'} vs ${team2.name || 'Team 2'}`,
+                status: statusMap[matchData.data.basicInfo.status] || 'Scheduled',
+                toss: {
+                    winner: tossWinnerId,
+                    decision: decisionMap[matchData.data.basicInfo.decision] || 'bat'
+                },
+                teams: teamData,
+                basicInfo: matchData.data.basicInfo,
+                current: matchData.data.current,
+                scorecard: matchData.data.scorecard,
+                bowlingcard: matchData.data.bowlingcard,
+                overs: matchData.data.overs,
+                commentary: matchData.data.commentary || []
+            };
+            
+            console.log("Saving match data:", dataToSave);
+            
+            try {
+                const response = await axios.post(
+                    `${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/cricketMatch`,
+                    dataToSave
+                );
+                
+                if (response.data.success) {
+                    toast.success("Match data saved successfully!");
+                    // Update the match data with any server-generated fields (like _id)
+                    if (response.data.match) {
+                        setMatchData(prev => ({
+                            ...prev,
+                            ...response.data.match
+                        }));
+                    }
+                    setLastSaved(new Date());
+                } else {
+                    toast.error(response.data.message || "Failed to save match data");
+                }
+            } catch (error) {
+                console.error('Error saving match data:', error);
+                toast.error(error.response?.data?.message || "Error saving match data");
+            }
+
+            // Validate required fields
+            if (!dataToSave.gameType) {
+                toast.error("Please set the match type in Basic Info");
+                return;
+            }
+            if (!dataToSave.venue) {
+                toast.error("Please set the venue in Basic Info");
+                return;
+            }
+            if (!dataToSave.matchDate) {
+                toast.error("Please set the match date in Basic Info");
+                return;
+            }
+
+            // Validate teams have names
+            if (!team1.name || !team2.name) {
+                toast.error("Both teams must have names before saving");
+                return;
+            }
+            
+            // Validate toss winner is one of the teams and has a valid ObjectId
+            if (!tossWinnerId) {
+                console.error('Toss winner validation failed. No toss winner selected. Current state:', {
+                    selectedTossWinner: matchData.data.basicInfo.toss,
+                    team1: { name: team1.name, id: team1._id },
+                    team2: { name: team2.name, id: team2._id },
+                    basicInfo: matchData.data.basicInfo
+                });
+                toast.error('Please select a toss winner');
+                return;
+            }
+            
+            // Verify tossWinnerId is a valid MongoDB ObjectId
+            if (!isValidObjectId(tossWinnerId)) {
+                console.error('Invalid toss winner ID format:', tossWinnerId);
+                toast.error('Invalid team selection. Please try again.');
+                return;
+            }
+            
+            // Verify tossWinnerId matches one of the team IDs
+            if (tossWinnerId !== team1._id && tossWinnerId !== team2._id) {
+                console.error('Toss winner ID does not match either team ID:', {
+                    tossWinnerId,
+                    team1Id: team1._id,
+                    team2Id: team2._id
+                });
+                toast.error('Invalid team selection. Please select a valid team.');
+                return;
+            }
+            
+            // Save data to server
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/cricketMatch`, dataToSave);
+                
+                if (response.data.success) {
+                    toast.success('Match data saved successfully!');
+                    // Update the match data with any server-generated fields (like _id)
+                    if (response.data.match) {
+                        setMatchData(prev => ({
+                            ...prev,
+                            _id: response.data.match._id,
+                            ...response.data.match
+                        }));
+                    }
+                } else {
+                    toast.error(response.data.message || "Error saving match data");
+                }
+            } catch (error) {
+                console.error('Error saving match data:', error);
+                toast.error(error.response?.data?.message || "Error saving match data");
+            }
         } catch (error) {
-            toast.error("Error saving data");
+            console.error("Error saving match data:", error);
+            const errorMessage = error.response?.data?.message || "Error saving data";
+            toast.error(errorMessage);
+            
+            // Log detailed error information
+            if (error.response?.data?.errors) {
+                console.error("Validation errors:", error.response.data.errors);
+                Object.values(error.response.data.errors).forEach(err => {
+                    toast.error(err.message);
+                });
+            }
         }
     };
 

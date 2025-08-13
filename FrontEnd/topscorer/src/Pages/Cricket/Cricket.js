@@ -197,10 +197,46 @@ function Cricket({ data }) {
     return "Match in progress";
   });
 
+  // Calculate required run rate
+  const calculateRequiredRunRate = (battingTeam, bowlingTeam) => {
+    if (battingTeam.score === "0/0") return "N/A";
+    
+    const [runsScored, wickets] = battingTeam.score.split('/').map(Number);
+    const [targetRuns] = bowlingTeam.score.split('/').map(Number);
+    const oversBowled = parseFloat(battingTeam.overs) || 0;
+    const totalOvers = parseFloat(matchData.data.basicInfo.maxOvers) || 20;
+    const ballsBowled = Math.floor(oversBowled) * 6 + ((oversBowled % 1) * 10);
+    const ballsRemaining = (totalOvers * 6) - ballsBowled;
+    
+    if (ballsRemaining <= 0) return "Match Over";
+    
+    const runsNeeded = targetRuns - runsScored + 1;
+    if (runsNeeded <= 0) return "0.00";
+    
+    const requiredRate = (runsNeeded / (ballsRemaining / 6)).toFixed(2);
+    return requiredRate;
+  };
+
   // Update states when data prop changes
   useEffect(() => {
     if (data) {
-      setMatchData({ name: "Cricket", data });
+      const updatedData = { ...data };
+      
+      // Calculate required run rates
+      const team1RR = calculateRequiredRunRate(data.teams.team1, data.teams.team2);
+      const team2RR = calculateRequiredRunRate(data.teams.team2, data.teams.team1);
+      
+      setMatchData({ 
+        name: "Cricket", 
+        data: {
+          ...updatedData,
+          teams: {
+            team1: { ...updatedData.teams.team1, requiredRate: team1RR },
+            team2: { ...updatedData.teams.team2, requiredRate: team2RR }
+          }
+        } 
+      });
+      
       setTeamData({
         team1: {
           name: data.teams.team1.name,
@@ -209,6 +245,7 @@ function Cricket({ data }) {
           score: data.teams.team1.score,
           overs: data.teams.team1.overs,
           runRate: data.teams.team1.runRate,
+          requiredRate: team1RR,
           isBatting: data.teams.team1.score !== "0/0",
           crr: data.teams.team1.runRate
         },
@@ -219,15 +256,44 @@ function Cricket({ data }) {
           score: data.teams.team2.score,
           overs: data.teams.team2.overs,
           runRate: data.teams.team2.runRate,
+          requiredRate: team2RR,
           isBatting: data.teams.team2.score !== "0/0",
           crr: data.teams.team2.runRate
         }
       });
+      
+      // Filter out empty commentary entries
+      const validCommentary = Array.isArray(data.commentary) 
+        ? data.commentary.filter(comment => 
+            comment && 
+            (comment.text || '').trim() !== '' && 
+            (comment.time || '').trim() !== ''
+          )
+        : [];
+      
       setScoreCard(data.scorecard.team1);
       setBowlingCard(data.bowlingcard.team2);
-      setCommentary(data.commentary);
+      setCommentary(validCommentary);
       setCurrentOver(data.current.thisOver);
       setLastOver(data.current.lastOver);
+      
+      // Update match status
+      const team1Score = data.teams.team1.score;
+      const team2Score = data.teams.team2.score;
+      if (team1Score === "0/0" && team2Score === "0/0") {
+        setMatchStatus("Match not started");
+      } else if (team1Score !== "0/0" && team2Score === "0/0") {
+        setMatchStatus(`${data.teams.team1.name} batting`);
+      } else if (team1Score !== "0/0" && team2Score !== "0/0") {
+        const [runs1] = team1Score.split('/').map(Number);
+        const [runs2] = team2Score.split('/').map(Number);
+        const remainingRuns = runs1 - runs2;
+        const remainingBalls = (data.basicInfo.maxOvers * 6) - 
+          (parseFloat(data.teams.team2.overs) * 6);
+        setMatchStatus(`${data.teams.team2.name} need ${remainingRuns} runs in ${remainingBalls} balls`);
+      } else {
+        setMatchStatus("Match in progress");
+      }
     }
   }, [data]);
 
@@ -242,21 +308,123 @@ function Cricket({ data }) {
     }
   }, [darkMode]);
 
-  // Socket connection effect
+  // Socket connection effect with error handling
   useEffect(() => {
-    const newSocket = io(process.env.REACT_APP_BACKEND_URL);
+    if (!process.env.REACT_APP_BACKEND_URL) {
+      console.error("Backend URL is not configured");
+      return;
+    }
+
+    const newSocket = io(process.env.REACT_APP_BACKEND_URL, {
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      timeout: 10000,
+      transports: ['websocket']
+    });
+
+    const onConnect = () => {
+      console.log("Connected to WebSocket server");
+    };
+
+    const onDisconnect = (reason) => {
+      console.log("Disconnected from WebSocket server:", reason);
+      if (reason === 'io server disconnect') {
+        newSocket.connect();
+      }
+    };
+
+    const onConnectError = (error) => {
+      console.error("WebSocket connection error:", error);
+    };
+
+    const onCricketUpdate = (updatedData) => {
+      try {
+        // Use the requiredRate from the server if available, otherwise calculate it
+        const team1RR = updatedData.data.teams.team1.requiredRate || 
+                       calculateRequiredRunRate(updatedData.data.teams.team1, updatedData.data.teams.team2);
+        const team2RR = updatedData.data.teams.team2.requiredRate || 
+                       calculateRequiredRunRate(updatedData.data.teams.team2, updatedData.data.teams.team1);
+        
+        // Ensure requiredRate is included in the data
+        const updatedWithRR = {
+          ...updatedData,
+          data: {
+            ...updatedData.data,
+            teams: {
+              team1: { 
+                ...updatedData.data.teams.team1, 
+                requiredRate: team1RR 
+              },
+              team2: { 
+                ...updatedData.data.teams.team2, 
+                requiredRate: team2RR 
+              }
+            }
+          }
+        };
+        
+        setMatchData(updatedWithRR);
+        
+        // Update team data with required run rates
+        setTeamData({
+          team1: {
+            ...updatedData.data.teams.team1,
+            requiredRate: team1RR,
+            shortName: updatedData.data.teams.team1.name.substring(0, 3).toUpperCase(),
+            isBatting: updatedData.data.teams.team1.score !== "0/0"
+          },
+          team2: {
+            ...updatedData.data.teams.team2,
+            requiredRate: team2RR,
+            shortName: updatedData.data.teams.team2.name.substring(0, 3).toUpperCase(),
+            isBatting: updatedData.data.teams.team2.score !== "0/0"
+          }
+        });
+        
+        // Update other states
+        setScoreCard(updatedData.data.scorecard.team1);
+        setBowlingCard(updatedData.data.bowlingcard.team2);
+        
+        // Filter out empty commentary entries
+        const validCommentary = Array.isArray(updatedData.data.commentary) 
+          ? updatedData.data.commentary.filter(comment => 
+              comment && 
+              (comment.text || '').trim() !== '' && 
+              (comment.time || '').trim() !== ''
+            )
+          : [];
+        
+        setCommentary(validCommentary);
+        setCurrentOver(updatedData.data.current.thisOver);
+        setLastOver(updatedData.data.current.lastOver);
+        
+      } catch (error) {
+        console.error("Error processing update:", error);
+      }
+    };
+
+    // Set up event listeners
+    newSocket.on('connect', onConnect);
+    newSocket.on('disconnect', onDisconnect);
+    newSocket.on('connect_error', onConnectError);
+    newSocket.on('cricket_update', onCricketUpdate);
+
     setSocket(newSocket);
 
-    newSocket.on("connect", () => {
-      console.log("Connected to server");
-    });
-
-    newSocket.on("cricket_update", (updatedData) => {
-      setMatchData(updatedData);
-    });
-
+    // Cleanup function
     return () => {
-      newSocket.disconnect();
+      if (newSocket) {
+        newSocket.off('connect', onConnect);
+        newSocket.off('disconnect', onDisconnect);
+        newSocket.off('connect_error', onConnectError);
+        newSocket.off('cricket_update', onCricketUpdate);
+        
+        if (newSocket.connected) {
+          newSocket.disconnect();
+        }
+      }
     };
   }, []);
 
@@ -334,23 +502,37 @@ function Cricket({ data }) {
   };
 
   const addCommentary = (comment) => {
+    if (!comment || comment.trim() === '') return;
+    
+    const now = new Date();
+    const currentInning = matchData.data.teams.team1.score !== "0/0" ? "1st Innings" : "2nd Innings";
+    const currentOver = matchData.data.teams[selectedTeam].overs;
+    
     const newComment = {
-      text: comment,
-      timestamp: new Date().toISOString(),
-      time: new Date().toLocaleTimeString(),
-      over: matchData.data.teams[selectedTeam].overs,
-      inning: matchData.data.teams.team1.score !== "0/0" ? "1st Innings" : "2nd Innings",
+      text: comment.trim(),
+      timestamp: now.toISOString(),
+      time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      over: currentOver,
+      inning: currentInning,
       runs: 0,
       wickets: 0
     };
+
+    // Filter out any empty or invalid comments before adding new one
+    const currentCommentary = Array.isArray(matchData.data.commentary) 
+      ? matchData.data.commentary.filter(c => c && c.text && c.time)
+      : [];
 
     setMatchData(prev => ({
       ...prev,
       data: {
         ...prev.data,
-        commentary: [newComment, ...prev.data.commentary]
+        commentary: [newComment, ...currentCommentary].slice(0, 50) // Keep last 50 comments
       }
     }));
+    
+    // Also update the local commentary state
+    setCommentary(prev => [newComment, ...prev].slice(0, 50));
   };
 
   const updateOvers = (team, overNumber, balls) => {
@@ -1040,20 +1222,46 @@ function Cricket({ data }) {
             <div>
               <h3 className="text-xl font-bold mb-4 text-blue-600 dark:text-blue-300">Live Commentary</h3>
               <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
-                {commentary.map((item, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-16 text-sm font-medium text-blue-600 dark:text-blue-300">Over {item.over}</div>
-                    <div className={`flex-1 p-3 rounded-lg ${
-                      item.wickets 
-                        ? 'bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800' 
-                        : 'bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600'
-                    }`}>
-                      <p className="text-sm">{item.text}</p>
-                      {item.runs && <span className="text-xs text-green-600 dark:text-green-400">+{item.runs} runs</span>}
-                      {item.wickets && <span className="text-xs text-red-600 dark:text-red-400">-{item.wickets} wicket</span>}
-                    </div>
+                {commentary.length > 0 ? (
+                  commentary.map((item, index) => {
+                    // Skip rendering if the item is empty or contains only zeros
+                    if (!item || (item.text === '00' && !item.runs && !item.wickets)) {
+                      return null;
+                    }
+                    
+                    // Format the over display to show only the over number without trailing .00
+                    const overDisplay = item.over ? `Over ${item.over.toString().replace(/\.00$/, '')}` : '';
+                    
+                    return (
+                      <div key={index} className="flex items-start space-x-3">
+                        <div className="w-16 text-sm font-medium text-blue-600 dark:text-blue-300">
+                          {overDisplay}
+                        </div>
+                        <div className={`flex-1 p-3 rounded-lg ${
+                          item.wickets 
+                            ? 'bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800' 
+                            : 'bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600'
+                        }`}>
+                          <p className="text-sm">{item.text}</p>
+                          {item.runs > 0 && (
+                            <span className="text-xs text-green-600 dark:text-green-400 mr-2">
+                              +{item.runs} run{item.runs !== 1 ? 's' : ''}
+                            </span>
+                          )}
+                          {item.wickets > 0 && (
+                            <span className="text-xs text-red-600 dark:text-red-400">
+                              -{item.wickets} wicket{item.wickets !== 1 ? 's' : ''}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+                    No commentary available yet.
                   </div>
-                ))}
+                )}
               </div>
             </div>
           )}
