@@ -6,10 +6,6 @@ import axios from "axios"
 
 
 
-
-
-
-
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [donateAmount, setDonateAmount] = useState("");

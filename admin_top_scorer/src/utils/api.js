@@ -20,6 +20,11 @@ axiosInstance.interceptors.request.use(
       config.headers['Cache-Control'] = 'max-age=300'; // 5 minutes cache
     }
     
+    // Don't set Content-Type for FormData (let browser set it with boundary)
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
     return config;
   },
   (error) => {
@@ -57,7 +62,7 @@ axiosInstance.interceptors.response.use(
           throw new Error('No refresh token available');
         }
 
-        // Try to refresh the token
+        // Try to refresh the token (admin uses same refresh endpoint as users)
         const response = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/refresh-token`,
           { refreshToken },
@@ -82,7 +87,7 @@ axiosInstance.interceptors.response.use(
         console.error('Token refresh failed:', error);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        window.location.href = '/signin';
         toast.error('Your session has expired. Please log in again.');
         return Promise.reject(error);
       }
@@ -99,46 +104,41 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// API helper functions
-export const api = {
-  // User authentication
-  register: (userData) => axiosInstance.post('/api/v1/users/registerUser', userData),
-  login: (credentials) => axiosInstance.post('/api/v1/users/loginUser', credentials),
-  googleLogin: (googleData) => axiosInstance.post('/api/v1/users/google-login', googleData),
-  logout: () => axiosInstance.post('/api/v1/users/logoutUser'),
-  getCurrentUser: () => axiosInstance.get('/api/v1/users/current-user'),
-  updateProfile: (userData) => axiosInstance.put('/api/v1/users/update-account', userData),
-  changePassword: (passwordData) => axiosInstance.post('/api/v1/users/change-password', passwordData),
+// API helper functions for admin
+export const adminApi = {
+  // Admin authentication
+  login: (credentials) => axiosInstance.post('/api/v1/admin/login', credentials),
+  validateToken: () => axiosInstance.get('/api/v1/admin/validateToken'),
+  logout: () => axiosInstance.post('/api/v1/admin/logout'),
+  getCurrentAdmin: () => axiosInstance.get('/api/v1/admin/current-admin'),
   
-  // Blog operations
-  getAllBlogs: (forceRefresh = false) => {
-    const url = forceRefresh ? '/api/v1/users/getAllblogs?refresh=true' : '/api/v1/users/getAllblogs';
-    return axiosInstance.get(url);
-  },
+  // Blog management
+  getAllBlogs: () => axiosInstance.get('/api/v1/users/getAllblogs'),
   getBlogById: (id) => axiosInstance.get(`/api/v1/users/blog/${id}`),
   createBlog: (blogData) => axiosInstance.post('/api/v1/users/createBlog', blogData),
   updateBlog: (blogData) => axiosInstance.put('/api/v1/users/updateBlog', blogData),
   deleteBlog: (id) => axiosInstance.delete(`/api/v1/users/deleteBlog/${id}`),
-  likeBlog: (blogId) => axiosInstance.put('/api/v1/users/likeBlog', { blogId }),
-  addComment: (commentData) => axiosInstance.post('/api/v1/users/commentBlog', commentData),
-  getComments: (blogId) => axiosInstance.get(`/api/v1/users/comments/${blogId}`),
-  deleteComment: (commentId) => axiosInstance.delete(`/api/v1/users/comment/${commentId}`),
   getBlogStats: () => axiosInstance.get('/api/v1/users/blog-stats'),
   
-  // Payment operations
-  createPaymentIntent: (paymentData) => axiosInstance.post('/api/v1/payment/create-payment-intent', paymentData),
-  confirmPayment: (paymentData) => axiosInstance.post('/api/v1/payment/confirm-payment', paymentData),
-  getPaymentHistory: () => axiosInstance.get('/api/v1/payment/payment-history'),
-  getPaymentStats: () => axiosInstance.get('/api/v1/payment/payment-stats'),
-  createSubscription: (subscriptionData) => axiosInstance.post('/api/v1/payment/create-subscription', subscriptionData),
-  cancelSubscription: (subscriptionId) => axiosInstance.delete(`/api/v1/payment/cancel-subscription/${subscriptionId}`),
-  
-  // Health check
-  healthCheck: () => axiosInstance.get('/health'),
-  
-  // Sports data (existing endpoints)
+  // Sports management
   getSportsData: () => axiosInstance.get('/api/v1/sports'),
   updateMatchData: (sportType, data) => axiosInstance.post('/api/v1/sports/update', { sportType, data }),
+  
+  // User management
+  getAllUsers: () => axiosInstance.get('/api/v1/admin/users'),
+  getUserById: (id) => axiosInstance.get(`/api/v1/admin/users/${id}`),
+  updateUser: (id, userData) => axiosInstance.put(`/api/v1/admin/users/${id}`, userData),
+  deleteUser: (id) => axiosInstance.delete(`/api/v1/admin/users/${id}`),
+  
+  // Payment management
+  getPaymentStats: () => axiosInstance.get('/api/v1/payment/payment-stats'),
+  getPaymentHistory: () => axiosInstance.get('/api/v1/payment/payment-history'),
+  
+  // System health
+  healthCheck: () => axiosInstance.get('/health'),
+  
+  // Statistics
+  getSystemStats: () => axiosInstance.get('/api/v1/admin/stats'),
 };
 
 export default axiosInstance;

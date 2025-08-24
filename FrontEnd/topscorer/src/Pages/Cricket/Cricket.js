@@ -12,7 +12,7 @@ const initialMatchData = {
     data: {
         basicInfo: {
             status: "In Progress",
-            venue: "IIIT Una Ground",
+            venue: "",
             date: "2025-04-29",
             toss: "IIIT Una",
             decision: "Bat",
@@ -982,7 +982,9 @@ function Cricket({ data }) {
           <h1 className="text-2xl font-bold text-center mb-2">
             {teamData.team1.name} vs {teamData.team2.name} 
           </h1>
-          <p className="text-center text-blue-100 dark:text-blue-200">{initialMatchData.data.basicInfo.venue}, </p>
+          <p className="text-center text-blue-100 dark:text-blue-200">
+            {matchData.data.basicInfo.venue || 'Venue not set'}, 
+          </p>
         </div>
 
         {/* Live Score Banner */}
