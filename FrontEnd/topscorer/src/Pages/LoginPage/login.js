@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { api } from '../../util/axiosUtil';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,29 +11,47 @@ import 'slick-carousel/slick/slick-theme.css';
 const Login = ({ setislogin }) => {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/loginUser`, {
-                login: emailOrUsername,
-                password: password
-            });
+            // Determine if input is email or username
+            const isEmail = emailOrUsername.includes('@');
+            const credentials = isEmail 
+                ? { email: emailOrUsername, password }
+                : { username: emailOrUsername, password };
 
-            const { accessToken, refreshToken } = response.data.data;
+            const response = await api.login(credentials);
+
+            const { accessToken, refreshToken, user } = response.data.data;
+            
+            // Store tokens
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
 
-            document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure`;
-            document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800; Secure`;
+            // Set cookies for better security
+            document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
+            document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800; Secure; SameSite=Strict`;
+
+            // Dispatch auth change event
+            window.dispatchEvent(new Event('authChange'));
 
             setislogin(true);
-            toast.success(`Welcome, ${response.data.data.user.username}!`);
-            navigate('/');
+            toast.success(`Welcome back, ${user.username}!`);
+            navigate('/dashboard');
         } catch (err) {
-            console.error(err);
-            toast.error('Login failed');
+            console.error('Login error:', err);
+            if (err.response?.data?.message) {
+                toast.error(err.response.data.message);
+            } else {
+                toast.error('Login failed. Please check your credentials.');
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -42,23 +60,33 @@ const Login = ({ setislogin }) => {
             const decodedToken = jwtDecode(credentialResponse.credential);
 
             try {
-                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/users/google-login`, {
+                const response = await api.googleLogin({
                     credential: credentialResponse.credential,
                 });
 
                 const { accessToken, refreshToken, user } = response.data.data;
+                
+                // Store tokens
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
 
-                document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure`;
-                document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800; Secure`;
+                // Set cookies for better security
+                document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
+                document.cookie = `refreshToken=${refreshToken}; path=/; max-age=604800; Secure; SameSite=Strict`;
+
+                // Dispatch auth change event
+                window.dispatchEvent(new Event('authChange'));
 
                 setislogin(true);
                 toast.success(`Welcome, ${user.username}!`);
-                navigate('/');
+                navigate('/dashboard');
             } catch (error) {
                 console.error("Google login error:", error);
-                toast.error("Google login failed");
+                if (error.response?.data?.message) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("Google login failed");
+                }
             }
         } else {
             console.error("No credential received");
@@ -87,87 +115,127 @@ const Login = ({ setislogin }) => {
     ];
 
     return (
-        <div className="flex flex-col md:flex-row h-[700px] w-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
+        <div className="flex flex-col md:flex-row min-h-screen w-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
 
             {/* Left Section with Carousel */}
-            <div className="relative hidden md:flex w-1/3  overflow-hidden rounded-r-3xl shadow-sm ">
+            <div className="relative hidden md:flex w-1/3 overflow-hidden rounded-r-3xl shadow-sm">
             <Slider {...carouselSettings} className="w-full rounded-r-3xl">
                 {carouselImages.map((image, index) => (
                     <div key={index} className="w-full h-full">
                         <img
                             src={image}
                             alt={`Carousel Image ${index + 1}`}
-                            className="w-full h-full object-cover object-center rounded-r-3xl" // Emphasize the center of the image
+                            className="w-full h-full object-cover object-center rounded-r-3xl"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/10 to-black/20 rounded-r-3xl"></div>
                     </div>
                 ))}
             </Slider>
-            <h1 className="absolute bottom-[-10] left-10 text-white text-4xl font-bold animate-slide-in-left">
-                Live The Spirit
-            </h1>
-        </div>
+            </div>
 
-            {/* Right Section with Form */}
-            
-            <div className="flex flex-col  items-center w-full md:w-1/2 h-full p-6">
+            {/* Right Section with Login Form */}
+            <div className="flex-1 flex items-center justify-center px-3 sm:px-4 lg:px-8 py-8">
+                <div className="max-w-md w-full space-y-6 sm:space-y-8">
+                    <div>
+                        <h2 className="mt-6 text-center text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                            Sign in to your account
+                        </h2>
+                        <p className="mt-2 text-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                            Or{' '}
+                            <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                create a new account
+                            </Link>
+                        </p>
+                    </div>
+                    <form className="mt-6 sm:mt-8 space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
+                        <div className="rounded-md shadow-sm space-y-3 sm:space-y-0 sm:-space-y-px">
+                            <div>
+                                <label htmlFor="emailOrUsername" className="sr-only">
+                                    Email or Username
+                                </label>
+                                <input
+                                    id="emailOrUsername"
+                                    name="emailOrUsername"
+                                    type="text"
+                                    required
+                                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:rounded-none sm:rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                                    placeholder="Email or Username"
+                                    value={emailOrUsername}
+                                    onChange={(e) => setEmailOrUsername(e.target.value)}
+                                    disabled={isLoading}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="password" className="sr-only">
+                                    Password
+                                </label>
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:rounded-none sm:rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    disabled={isLoading}
+                                />
+                            </div>
+                        </div>
 
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isLoading ? (
+                                    <span className="flex items-center">
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Signing in...
+                                    </span>
+                                ) : (
+                                    'Sign in'
+                                )}
+                            </button>
+                        </div>
 
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 animate-fade-in">
-                    Join Us!
-                </h1>
+                        <div className="flex items-center justify-center">
+                            <div className="text-sm">
+                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                    Forgot your password?
+                                </a>
+                            </div>
+                        </div>
 
-                {/* Login Form */}
-                <form onSubmit={handleSubmit} className="   mt-6 w-full max-w-sm space-y-4 animate-fade-in-up">
-                    <input 
-                        className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-400 transition-all duration-300 hover:shadow-lg"
-                        type='text' 
-                        placeholder='Username or Email'
-                        value={emailOrUsername}
-                        onChange={(e) => setEmailOrUsername(e.target.value)}
-                        required
-                    />
-                    <input 
-                        className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-400 transition-all duration-300 hover:shadow-lg"
-                        type="password" 
-                        placeholder='Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button 
-                        type="submit" 
-                        className="w-[30%] ml-[38%] p-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-transform transform hover:scale-105 active:scale-95"
-                    >
-                        Login
-                    </button>
-                </form>
+                        <div className="mt-4 sm:mt-6">
+                            <div className="relative">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+                                </div>
+                                <div className="relative flex justify-center text-xs sm:text-sm">
+                                    <span className="px-2 bg-gray-100 dark:bg-gray-900 text-gray-500 dark:text-gray-400">Or continue with</span>
+                                </div>
+                            </div>
 
-                {/* Google Login */}
-                <div className="mt-4 ml-4 flex flex-col items-center animate-fade-in-up">
-                    <GoogleLogin
-                        onSuccess={handleGoogleSuccess}
-                        onError={() => {
-                            console.error("Google Login Failed");
-                            toast.error("Google Login Failed");
-                        }}
-                    />
-                </div>
-
-                {/* Footer Links */}
-                <div className="mt-4 text-center animate-fade-in-up">
-                    <p className="text-gray-600 dark:text-gray-400">
-                        Don't have an account?{' '}
-                        <Link to="/dashboard/sign_up" className="text-blue-500 hover:underline transition-all duration-300 hover:text-blue-600">
-                            Sign Up
-                        </Link>
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-400">
-                        By logging in, you agree to our{' '}
-                        <Link to="/dashboard/tnc" className="text-blue-500 hover:underline transition-all duration-300 hover:text-blue-600">
-                            Terms and Conditions
-                        </Link>.
-                    </p>
+                            <div className="mt-4 sm:mt-6 flex justify-center">
+                                <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={() => {
+                                        console.log('Login Failed');
+                                        toast.error('Google login failed');
+                                    }}
+                                    useOneTap
+                                    theme="filled_blue"
+                                    size="large"
+                                    text="signin_with"
+                                    shape="rectangular"
+                                />
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import io from "socket.io-client";
-import axios from 'axios';
+import { adminApi } from '../../utils/api';
 import toast from "react-hot-toast";
 import { FaCricket, FaPlus, FaTrash, FaSave, FaUndo, FaRedo, FaHistory, FaUpload, FaDownload, FaSync, FaTrophy, FaClock, FaUsers } from 'react-icons/fa';
 
@@ -155,8 +155,64 @@ function Cricket() {
 
     // Load saved data on component mount
     useEffect(() => {
-        const loadSavedData = () => {
+        const loadSavedData = async () => {
             try {
+                // First try to load from server
+                try {
+                    const response = await adminApi.getSportsData();
+                    if (response.data && response.data.Cricket_D && response.data.Cricket_D.Cricket) {
+                        const serverData = response.data.Cricket_D.Cricket;
+                        
+                        // Ensure all required fields exist
+                        const completeData = {
+                            ...initialMatchData,
+                            ...serverData,
+                            data: {
+                                ...initialMatchData.data,
+                                ...serverData.data,
+                                scorecard: {
+                                    team1: serverData.data.scorecard?.team1 || [],
+                                    team2: serverData.data.scorecard?.team2 || []
+                                },
+                                bowlingcard: {
+                                    team1: serverData.data.bowlingcard?.team1 || [],
+                                    team2: serverData.data.bowlingcard?.team2 || []
+                                },
+                                overs: {
+                                    team1: serverData.data.overs?.team1 || [],
+                                    team2: serverData.data.overs?.team2 || []
+                                },
+                                current: {
+                                    ...initialMatchData.data.current,
+                                    ...serverData.data.current,
+                                    striker: serverData.data.current?.striker || 0,
+                                    nonStriker: serverData.data.current?.nonStriker || 1
+                                }
+                            }
+                        };
+                        
+                        setMatchData(completeData);
+                        setLastSaved(new Date().toISOString());
+                        
+                        // Calculate current balls from overs
+                        const currentTeam = completeData.data.teams.team1.score !== "0/0" ? "team1" : "team2";
+                        const overs = completeData.data.teams[currentTeam].overs;
+                        const [fullOvers, balls] = overs.split('.').map(Number);
+                        setCurrentBalls(fullOvers * 6 + (balls || 0));
+                        
+                        // Set active step based on data
+                        if (completeData.data.teams.team1.name && completeData.data.teams.team2.name) {
+                            setActiveStep(2);
+                        }
+                        
+                        toast.success('Loaded match data from server');
+                        return;
+                    }
+                } catch (serverError) {
+                    console.log('No server data available, trying localStorage');
+                }
+                
+                // Fallback to localStorage
                 const savedMatchData = localStorage.getItem('cricketMatchData');
                 if (savedMatchData) {
                     const parsedData = JSON.parse(savedMatchData);
@@ -203,11 +259,11 @@ function Cricket() {
                         setActiveStep(2);
                     }
                     
-                    toast.success('Loaded saved match data');
+                    toast.success('Loaded saved match data from localStorage');
                 }
             } catch (error) {
-                console.error('Error parsing saved data:', error);
-                toast.error('Error loading saved data');
+                console.error('Error loading data:', error);
+                toast.error('Error loading match data');
             }
         };
         
@@ -982,10 +1038,8 @@ function Cricket() {
             console.log("Saving match data:", dataToSave);
             
             try {
-                const response = await axios.post(
-                    `${process.env.REACT_APP_BACKEND_URL}/api/v1/sports/cricketMatch`,
-                    dataToSave
-                );
+                // Use the adminApi utility for consistent error handling
+                const response = await adminApi.updateMatchData('cricket', dataToSave);
                 
                 if (response.data.success) {
                     toast.success("Match data saved successfully!");
@@ -1057,7 +1111,7 @@ function Cricket() {
             
             // Save data to server
             try {
-                const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/cricketMatch`, dataToSave);
+                const response = await adminApi.updateMatchData('cricket', dataToSave);
                 
                 if (response.data.success) {
                     toast.success('Match data saved successfully!');

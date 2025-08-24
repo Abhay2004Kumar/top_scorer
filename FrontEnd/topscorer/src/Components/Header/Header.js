@@ -34,8 +34,12 @@ function Header({ islogin, setislogin }) {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     setIsUser('');
     setislogin(false);
+
+    // Dispatch auth change event
+    window.dispatchEvent(new Event('authChange'));
 
     toast.promise(
       Promise.resolve(),
@@ -50,23 +54,23 @@ function Header({ islogin, setislogin }) {
   };
 
   return (
-    <header className="bg-white text-black dark:bg-gray-900 dark:text-white flex justify-between items-center px-6 py-4 shadow-md">
-      <div className="flex items-center space-x-3">
-        <img src={icons} alt="Dark Icon" className="w-2-0 h-10" />
-        {/* <span className="hidden md:inline text-lg font-semibold">TopScorer</span> */}
-
+    <header className="bg-white text-black dark:bg-gray-900 dark:text-white flex justify-between items-center px-3 sm:px-6 py-3 sm:py-4 shadow-md">
+      <div className="flex items-center space-x-2 sm:space-x-3">
+        <img src={icons} alt="Dark Icon" className="w-8 h-8 sm:w-10 sm:h-10" />
+        <span className="hidden sm:inline text-lg font-semibold">TopScorer</span>
       </div>
-      <nav className="flex items-center space-x-6">
-        <Link to={"/"} className="text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">Home</Link>
+      <nav className="flex items-center space-x-3 sm:space-x-6">
+        <Link to={"/"} className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">Home</Link>
         {isUser ? (
-          <div className="flex items-center space-x-3">
-            <span className="text-sm font-medium">{isUser}</span>
-            <button onClick={handleLogout} className="text-gray-600 dark:text-gray-400 hover:text-red-500 transition">
-              <IoExitOutline size={24} />
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <span className="text-xs sm:text-sm font-medium hidden sm:inline">{isUser}</span>
+            <span className="text-xs font-medium sm:hidden">{isUser.length > 8 ? isUser.substring(0, 8) + '...' : isUser}</span>
+            <button onClick={handleLogout} className="text-gray-600 dark:text-gray-400 hover:text-red-500 transition p-1">
+              <IoExitOutline size={20} className="sm:w-6 sm:h-6" />
             </button>
           </div>
         ) : (
-          <button onClick={handleLoginClick} className="bg-green-500 text-white dark:bg-green-600 px-4 py-2 rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition">
+          <button onClick={handleLoginClick} className="bg-green-500 text-white dark:bg-green-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-green-600 dark:hover:bg-green-700 transition text-sm sm:text-base">
             Login
           </button>
         )}

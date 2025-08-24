@@ -14,7 +14,7 @@ import AdminTennis_D from './Pages/Tennis_D/Admin_Tennis_D';
 import Admin_Login from './Pages/Admin_Login/Admin_Login';
 import toast, { Toaster } from 'react-hot-toast';
 import Blog from './Pages/Blog/Blog';
-import axios from 'axios';
+import { adminApi } from './utils/api';
 import NotFound from './Pages/NotFound/NotFound';
 
 // Secure ProtectedRoute HOC
@@ -24,8 +24,9 @@ function ProtectedRoute({ isLogin, children }) {
 
 function App() {
   const [change, setChange] = useState(false);
-  const [isLogin, setIsLogin] = useState(false); // start as false
+  const [isLogin, setIsLogin] = useState(false);
   const [username, setUsername] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const validateToken = async () => {
@@ -33,20 +34,17 @@ function App() {
 
       if (!accessToken) {
         setIsLogin(false);
+        setIsLoading(false);
         return;
       }
 
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/admin/validateToken`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          withCredentials: true,
-        });
+        const res = await adminApi.validateToken();
 
         if (res.data?.success) {
           setIsLogin(true);
           setUsername(res.data.data.user.username);
+          toast.success('Admin session validated successfully');
         } else {
           setIsLogin(false);
           localStorage.removeItem('accessToken');
@@ -57,11 +55,31 @@ function App() {
         setIsLogin(false);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        
+        if (err.response?.data?.message) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error('Session expired. Please log in again.');
+        }
+      } finally {
+        setIsLoading(false);
       }
     };
 
     validateToken();
   }, [change]); // re-run when login state changes
+
+  // Show loading spinner while validating token
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Validating admin session...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -73,16 +91,18 @@ function App() {
             <Route
               path="/signin"
               element={
-                !isLogin && (
+                !isLogin ? (
                   <Admin_Login
                     setChange={setChange}
                     setusername={setUsername}
                   />
+                ) : (
+                  <Navigate to="/" />
                 )
               }
             />
-            {/* Protected Routes */}
             
+            {/* Protected Routes */}
             <Route path="/" element={<ProtectedRoute isLogin={isLogin}><Home /></ProtectedRoute>} />
             <Route path="/badminton" element={<ProtectedRoute isLogin={isLogin}><AdminBadminton /></ProtectedRoute>} />
             <Route path="/badmintonDoubles" element={<ProtectedRoute isLogin={isLogin}><AdminBadminton_D /></ProtectedRoute>} />
@@ -93,17 +113,17 @@ function App() {
             <Route path="/cricket" element={<ProtectedRoute isLogin={isLogin}><Cricket /></ProtectedRoute>} />
             <Route path='/blogs' element={<ProtectedRoute isLogin={isLogin}><Blog /></ProtectedRoute>} />
 
-             {/* 404 Not Found — must be last */}
-  <Route
-    path="*"
-    element={
-      <ProtectedRoute isLogin={isLogin}>
-        <NotFound />
-      </ProtectedRoute>
-    }
-  />
-           
+            {/* 404 Not Found — must be last */}
+            <Route
+              path="*"
+              element={
+                <ProtectedRoute isLogin={isLogin}>
+                  <NotFound />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
+          
           {isLogin && <Footer />}
         </div>
       </Router>

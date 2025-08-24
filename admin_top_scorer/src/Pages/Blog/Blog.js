@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import BlogCard from "./BlogCard";
-import axios from "axios";
+import { adminApi } from "../../utils/api";
 import { Editor } from '@tinymce/tinymce-react';
+import toast from "react-hot-toast";
 
 function Blog() {
   const [showPopup, setShowPopup] = useState(false);
@@ -14,6 +15,7 @@ function Blog() {
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deletingBlogId, setDeletingBlogId] = useState(null);
   const editorRef = useRef(null);
 
   const handleEditorChange = (content) => {
@@ -30,42 +32,31 @@ function Blog() {
 
   const handlePost = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        alert("You need to log in first");
-        return;
-      }
-
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
       if (imageFile) formData.append('imagefile', imageFile);
       if (editMode) formData.append('id', selectedId);
 
-      const url = editMode 
-        ? `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/updateBlog`
-        : `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/createBlog`;
-
-      const response = await axios({
-        method: editMode ? 'put' : 'post',
-        url,
-        data: formData,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      if (editMode) {
+        await adminApi.updateBlog(formData);
+        toast.success("Blog updated successfully!");
+      } else {
+        await adminApi.createBlog(formData);
+        toast.success("Blog created successfully!");
+      }
       
-        resetForm();
-        fetchBlogs();
+      resetForm();
+      fetchBlogs();
       
     } catch (err) {
       console.error("Error posting blog:", err);
       if (err.response?.status === 401) {
         localStorage.removeItem('accessToken');
-        alert("Your session has expired. Please log in again.");
+        toast.error("Your session has expired. Please log in again.");
+        window.location.href = '/signin';
       } else {
-        alert(err.response?.data?.message || err.message || "Failed to save blog");
+        toast.error(err.response?.data?.message || err.message || "Failed to save blog");
       }
     }
   };
@@ -89,9 +80,7 @@ function Blog() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/getAllblogs`
-      );
+      const response = await adminApi.getAllBlogs();
       
       if (response.data && Array.isArray(response.data.blogs)) {
         setBlogs(response.data.blogs);
@@ -109,20 +98,30 @@ function Blog() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
     
+    // Prevent multiple delete attempts
+    if (deletingBlogId === id) return;
+    
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/users/deleteBlog`, 
-        {
-          headers: { 
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}` 
-          },
-          data: { id } 
-        }
-      );
-      window.location.reload();
+      setDeletingBlogId(id);
+      await adminApi.deleteBlog(id);
+      
+      // ✅ FIXED: Immediately remove the blog from state instead of fetching again
+      setBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== id));
+      
+      toast.success("Blog deleted successfully!");
     } catch (err) {
       console.error("Error deleting blog:", err);
-      alert(err.response?.data?.message || err.message || "Failed to delete blog");
+      if (err.response?.status === 404) {
+        toast.error("Blog not found or already deleted");
+        // If blog is not found, remove it from state anyway
+        setBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== id));
+      } else if (err.response?.status === 403) {
+        toast.error("You are not authorized to delete this blog");
+      } else {
+        toast.error(err.response?.data?.message || err.message || "Failed to delete blog");
+      }
+    } finally {
+      setDeletingBlogId(null);
     }
   };
 
@@ -174,6 +173,7 @@ function Blog() {
                 image={blog.imageUrl}
                 onEdit={() => handleEdit(blog)}
                 onDelete={() => handleDelete(blog._id)}
+                isDeleting={deletingBlogId === blog._id}
               />
             ))}
           </div>
