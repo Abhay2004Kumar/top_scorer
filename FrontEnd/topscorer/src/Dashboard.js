@@ -134,7 +134,7 @@ function Dashboard() {
                 path="badminton_archived"
                 element={<BadmintonArchived />}
               ></Route>
-              <Route path="sign_up" element={<SignupPage />}></Route>
+              <Route path="signup" element={<SignupPage />}></Route>
               <Route
                 path="tennis_archived"
                 element={<TennisArchived />}
