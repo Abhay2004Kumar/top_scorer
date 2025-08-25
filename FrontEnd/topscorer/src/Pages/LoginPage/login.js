@@ -141,7 +141,7 @@ const Login = ({ setislogin }) => {
                         </h2>
                         <p className="mt-2 text-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             Or{' '}
-                            <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                            <Link to="/dashboard/signup" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
                                 create a new account
                             </Link>
                         </p>
