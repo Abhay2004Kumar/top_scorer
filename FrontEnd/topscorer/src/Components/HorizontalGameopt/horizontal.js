@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 function Horizontal() {
   const [selected, setSelected] = useState(null);
+  const [open, setOpen] = useState(false);
 
   // const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5', 'Option 6', 'Option 7'];
 
@@ -22,22 +23,47 @@ function Horizontal() {
 
   const handleSelect = (index) => {
     setSelected(index);
+    setOpen(false);
   };
  
   return (
-    <div className={style.scrollContainer}>
-      {options.map((option, index) => (
-        <Link to={option.path}>
-        <button 
-          key={index} 
-          className={`${style.scrollButton} ${selected === index ? style.selected : ''}`}
-          onClick={() => handleSelect(index)}
-        >
-        <FontAwesomeIcon icon={option.icon} style={{ float: 'left', marginRight: '1px' }} />
-          {option.name}
-        </button>
-        </Link>
-      ))}
+    <div className={style.menuBar}>
+      <button
+        className={style.menuButton}
+        onClick={() => setOpen(true)}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls="games-menu"
+      >
+        Browse Games
+      </button>
+
+      {open && (
+        <div className={style.sheetBackdrop} onClick={() => setOpen(false)}>
+          <div
+            id="games-menu"
+            className={style.sheet}
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={style.sheetHeader}>
+              <h3 className={style.sheetTitle}>Select a section</h3>
+              <button className={style.closeBtn} onClick={() => setOpen(false)} aria-label="Close menu">×</button>
+            </div>
+            <div className={style.optionGrid}>
+              {options.map((option, index) => (
+                <Link to={option.path} key={option.name} className={style.optionItem} onClick={() => handleSelect(index)}>
+                  <span className={style.optionIcon}>
+                    <FontAwesomeIcon icon={option.icon} />
+                  </span>
+                  <span className={style.optionLabel}>{option.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
