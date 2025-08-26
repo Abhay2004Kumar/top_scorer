@@ -1,17 +1,103 @@
+.menuBar{
+    display:flex;
+    justify-content:center;
+    padding:8px 12px;
+}
+
+.menuButton{
+    padding:10px 14px;
+    border:none;
+    border-radius:10px;
+    background:#1f2937;
+    color:#fff;
+    font-weight:600;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
+.sheetBackdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    align-items:flex-end;
+    z-index:40;
+}
+
+.sheet{
+    background:#0b1220;
+    color:#fff;
+    width:100%;
+    border-top-left-radius:16px;
+    border-top-right-radius:16px;
+    padding:12px;
+    max-height:80vh;
+    overflow:auto;
+}
+
+.sheetHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:4px 2px 10px 2px;
+}
+
+.sheetTitle{
+    font-size:16px;
+    font-weight:700;
+}
+
+.closeBtn{
+    background:transparent;
+    color:#9ca3af;
+    border:none;
+    font-size:22px;
+}
+
+.optionGrid{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap:10px;
+}
+
+.optionItem{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:12px 8px;
+    background:#111827;
+    border-radius:12px;
+    text-decoration:none;
+    color:#e5e7eb;
+}
+
+.optionIcon{
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:6px;
+}
+
+.optionLabel{
+    font-size:12px;
+    text-align:center;
+}
 .scrollContainer {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
-    width: 70%;
-    padding:5px;
-    gap: 10px; /* Gap between buttons */
-    background-color: #f2f2f2;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding: 6px;
+    gap: 8px;
+    background-color: #0b1220;
     border-radius: 10px;
-    margin: 5px;
-    height: 0px;
-    width: 0px;
-   visibility: collapse;
-} 
+    margin: 8px auto;
+    max-width: 100%;
+    visibility: collapse;
+}
 
 .scrollContainer::-webkit-scrollbar {
     height: 3px; /* Height of the scrollbar */
@@ -27,15 +113,19 @@
 }
 
 .scrollButton {
-    
-    padding: 10px 30px 10px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
     border: none;
-    border-radius: 5px;
-    background-color: #000A27;
-    color: white;
+    border-radius: 8px;
+    background-color: #0e1b3a;
+    color: #ffffff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    white-space: nowrap; /* Prevent text from wrapping */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 .scrollButton:hover {
@@ -43,12 +133,31 @@
 }
 
 .selected {
-    background-color: #088977;
+    background-color: #1d4ed8;
 }
 @media (max-width:639px){
     .scrollContainer{
         visibility: visible;
-        height: fit-content;
-        width: 95%;
+        height: auto;
+        width: 100%;
+        background-color: transparent;
+    }
+    .scrollButton{
+        font-size: 12px;
+        padding: 10px 10px;
+        border-radius: 10px;
+        background-color: #111827;
+    }
+    .iconWrap{
+        width: 16px;
+        height: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .label{
+        max-width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
